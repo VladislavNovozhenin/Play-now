@@ -1,0 +1,88 @@
+@font-face {
+  font-family: 'Circular';
+  font-style: normal;
+  font-weight: bold;
+  src:
+    url('/fonts/CircularStd-Bold.woff2') format('woff2'),
+    url('/fonts/CircularStd-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Circular';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    url('/fonts/CircularStd-Book.woff2') format('woff2'),
+    url('/fonts/CircularStd-Book.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Circular';
+  font-style: normal;
+  font-weight: 500;
+  src:
+    url('/fonts/CircularStd-Medium.woff2') format('woff2'),
+    url('/fonts/CircularStd-Medium.woff') format('woff');
+}
+
+:root {
+  --color-blackTxt: #11253d;
+  --color-greyTxt: #a4a4a4;
+  --color-lightGreyTxt: #c4c4c4;
+  --color-greyLightBg: #f5f5f5;
+  --color-greyBg: #e8e8e8;
+  --color-greyDarkBg: #aaaaaa;
+  --color-promo: #fc6d3e;
+  --color-white: #fff;
+  --transition-duration: 0.3s;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: 'Circular', sans-serif;
+  color: var(--color-blacktxt);
+  font-size: 14px;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  padding: 0;
+  font-family: inherit;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+}

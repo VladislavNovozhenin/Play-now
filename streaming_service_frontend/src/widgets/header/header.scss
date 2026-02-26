@@ -1,0 +1,26 @@
+.header {
+  display: flex;
+  width: 100%;
+  padding: 15px 30px 15px 70px;
+  justify-content: space-between;
+  align-items: center;
+  &__search {
+    display: flex;
+    gap: 8px;
+    padding: 12px 15px;
+    border-radius: 30px;
+    background-color: var(--color-greyLightBg);
+    width: 60%;
+    input {
+      background: transparent;
+      border: none;
+      color: var(--color-blackTxt);
+      &::placeholder {
+        color: var(--color-greyTxt);
+      }
+    }
+  }
+  &__profile {
+    display: flex;
+  }
+}

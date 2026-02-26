@@ -1,16 +1,22 @@
-import { ErrorBoundary } from '@app/components/error-boundary';
 import { AppRoutes } from '@app/router/appRoutes';
 import { Footer } from '@widgets/footer';
 import { Header } from '@widgets/header';
 
 function App() {
-    return (
-        <ErrorBoundary>
-            <Header />
-            <AppRoutes />
-            <Footer />
-        </ErrorBoundary>
-    );
+  return (
+    <>
+      <Header />
+
+      <main className="main">
+        <nav></nav>
+        <section className="content">
+          <AppRoutes />
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  );
 }
 
 export default App;
