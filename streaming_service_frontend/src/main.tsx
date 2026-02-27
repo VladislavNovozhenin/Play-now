@@ -6,13 +6,16 @@ import { BrowserRouter } from 'react-router-dom';
 import 'normalize.css';
 import './index.scss';
 import { ErrorBoundary } from '@app/components/error-boundary/index.ts';
+import { ConfigProvider } from 'antd';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
+      <ConfigProvider wave={{ disabled: true }}>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </ConfigProvider>
     </BrowserRouter>
   </StrictMode>
 );

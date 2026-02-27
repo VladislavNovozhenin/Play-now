@@ -1,26 +1,64 @@
+@use '@/index' as *;
+
 .header {
-  display: flex;
+  @include flex(space-between, center, 8px);
   width: 100%;
   padding: 15px 30px 15px 70px;
-  justify-content: space-between;
-  align-items: center;
-  &__search {
-    display: flex;
-    gap: 8px;
-    padding: 12px 15px;
-    border-radius: 30px;
-    background-color: var(--color-greyLightBg);
-    width: 60%;
-    input {
-      background: transparent;
-      border: none;
-      color: var(--color-blackTxt);
-      &::placeholder {
-        color: var(--color-greyTxt);
+  @media (max-width: 1200px) {
+    padding-left: 40px;
+  }
+  @media (max-width: 768px) {
+    padding: 17.5px 16px;
+  }
+
+  &__link {
+    @include transition(opacity);
+    &:hover {
+      opacity: 0.5;
+    }
+    img {
+      @media (max-width: 768px) {
+        width: 115px;
+        height: 23px;
       }
     }
   }
-  &__profile {
-    display: flex;
+  &__right {
+    @include flex(end, center, 30px);
+    width: 70%;
+    @media (max-width: 1024px) {
+      gap: 10px;
+    }
+  }
+  &__search-btn {
+    padding-top: 4px;
+    &:hover {
+      path {
+        stroke: var(--color-blackTxt);
+      }
+    }
+    svg {
+      width: 20px;
+      height: 20px;
+      path {
+        @include transition(stroke);
+        stroke: var(--color-greyTxt);
+      }
+    }
+  }
+  &__close-search-btn {
+    &:hover {
+      path {
+        fill: var(--color-blackTxt);
+      }
+    }
+    svg {
+      width: 20px;
+      height: 20px;
+      path {
+        @include transition(fill);
+        fill: var(--color-greyTxt);
+      }
+    }
   }
 }

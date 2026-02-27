@@ -86,3 +86,32 @@ button {
   cursor: pointer;
   border: none;
 }
+
+@mixin flex($justify: flex-start, $align: center, $gap: 0) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin transition($property: all) {
+  transition: $property 0.3s ease-in-out;
+}
+
+.ant-dropdown-menu {
+  border-radius: 30px !important;
+}
+
+.ant-dropdown-menu-item {
+  transition: all 0.3s ease-in-out !important;
+  border-radius: 30px !important;
+  @media (max-width: 768px) {
+    padding: 0px 12px !important;
+    span:first-of-type {
+      margin-right: 4px !important;
+    }
+    span:last-of-type {
+      font-size: 0.75rem !important;
+    }
+  }
+}

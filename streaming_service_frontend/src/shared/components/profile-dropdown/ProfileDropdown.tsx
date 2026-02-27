@@ -1,0 +1,32 @@
+import { Dropdown, Grid } from 'antd';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import ChevronRight from '@shared/assets/chevron-right.svg?react';
+import './profile-dropdown.scss';
+import { useTranslation } from 'react-i18next';
+
+const { useBreakpoint } = Grid;
+
+export const ProfileDropdown = () => {
+  const { md } = useBreakpoint();
+  const { t } = useTranslation('common');
+
+  const items = [
+    {
+      key: 'logout',
+      label: t('logout'),
+      danger: true,
+      icon: <LogoutOutlined />,
+    },
+  ];
+  return (
+    <Dropdown className="profile-dropdown" trigger={['click']} menu={{ items }}>
+      <button className="profile-dropdown__btn">
+        <div className="profile-dropdown__info">
+          <UserOutlined />
+          <span>Petrov V</span>
+        </div>
+        {md && <ChevronRight />}
+      </button>
+    </Dropdown>
+  );
+};

@@ -1,0 +1,33 @@
+@use '@/index' as *;
+
+.header-search {
+  @include flex(space-between, center, 8px);
+  @include transition(background-color);
+  padding: 12px 15px;
+  border-radius: 30px;
+  background-color: var(--color-greyLightBg);
+  flex-grow: 1;
+  &:hover,
+  &:focus-within {
+    background-color: var(--color-greyBg);
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ant-input-affix-wrapper {
+    background: transparent;
+    border: none;
+    padding: 0;
+    &:focus-within {
+      box-shadow: none;
+    }
+    input {
+      color: var(--color-blackTxt);
+      &::placeholder {
+        color: var(--color-greyTxt);
+      }
+    }
+  }
+}

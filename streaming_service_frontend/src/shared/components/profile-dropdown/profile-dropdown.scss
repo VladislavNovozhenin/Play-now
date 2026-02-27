@@ -1,0 +1,38 @@
+@use '@/index' as *;
+
+.profile-dropdown {
+  &__btn {
+    @include flex(space-between, center, 95px);
+    @include transition(background-color);
+    border-radius: 30px;
+    background-color: var(--color-greyLightBg);
+    padding: 14px 10px;
+    height: auto;
+    @media (max-width: 768px) {
+      padding: 6px 14px;
+    }
+    &:hover {
+      background-color: var(--color-greyBg);
+    }
+  }
+  &__info {
+    @include flex(space-between, center, 8px);
+    @media (max-width: 768px) {
+      gap: 4px;
+    }
+    span {
+      @media (max-width: 768px) {
+        font-size: 0.75rem;
+      }
+    }
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--color-blackTxt);
+      @media (max-width: 768px) {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}
