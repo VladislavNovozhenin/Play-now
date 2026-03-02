@@ -3,7 +3,7 @@ import logo from '@shared/assets/logo.png';
 import { Link } from 'react-router-dom';
 import Search from '@shared/assets/search.svg?react';
 
-import './header.scss';
+import './custom-header.scss';
 import { Grid } from 'antd';
 import { HeaderSearch } from '@shared/components/header-search/HeaderSearch';
 import { ProfileDropdown } from '@shared/components/profile-dropdown/ProfileDropdown';
@@ -12,12 +12,12 @@ import { CloseOutlined } from '@ant-design/icons';
 
 const { useBreakpoint } = Grid;
 
-export const Header = () => {
+export const CustomHeader = () => {
   const { md } = useBreakpoint();
   const [openSearch, setOpenSearch] = useState(false);
 
   return (
-    <header className="header">
+    <div className="header__container">
       {openSearch ? (
         <>
           <button className="header__close-search-btn" onClick={() => setOpenSearch(false)}>
@@ -43,6 +43,6 @@ export const Header = () => {
           </div>
         </>
       )}
-    </header>
+    </div>
   );
 };

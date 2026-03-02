@@ -1,3 +1,9 @@
+import { Table } from 'antd';
+
 export const TracksPage = () => {
-    return <></>;
+  const colums = [{
+  
+}]
+
+  return <Table />;
 };

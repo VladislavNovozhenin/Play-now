@@ -1,14 +1,22 @@
 @use '@/index' as *;
 
 .header {
-  @include flex(space-between, center, 8px);
-  width: 100%;
-  padding: 15px 30px 15px 70px;
-  @media (max-width: 1200px) {
-    padding-left: 40px;
-  }
-  @media (max-width: 768px) {
-    padding: 17.5px 16px;
+  padding: 0;
+  background-color: transparent;
+  height: auto;
+  line-height: 0;
+  color: inherit;
+
+  &__container {
+    @include flex(space-between, center, 8px);
+    width: 100%;
+    padding: 15px 30px 15px 70px;
+    @media (max-width: 1200px) {
+      padding-left: 40px;
+    }
+    @media (max-width: 768px) {
+      padding: 17.5px 16px;
+    }
   }
 
   &__link {

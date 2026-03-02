@@ -1,0 +1,33 @@
+@use '@/index' as *;
+
+.aside-menu {
+  background-color: var(--color-greyLightBg);
+  .ant-menu-item {
+    @include flex(start, center, 8px);
+    font-size: 1.1rem;
+    color: var(--color-blackTxt);
+    &:hover {
+      background-color: var(--color-greyBg) !important;
+    }
+  }
+
+  .ant-menu-item-selected {
+    background-color: var(--color-white) !important;
+  }
+
+  &--mobile {
+    display: flex;
+    flex-direction: row !important;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .ant-menu-item {
+      flex-shrink: 0;
+      max-width: max-content;
+    }
+  }
+}

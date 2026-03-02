@@ -1,21 +1,32 @@
 import { AppRoutes } from '@app/router/appRoutes';
-import { Footer } from '@widgets/footer';
-import { Header } from '@widgets/header';
+import { CustomMenu } from '@shared/components/custom-menu/CustomMenu';
+import { CustomFooter } from '@widgets/custom-footer';
+import { CustomHeader } from '@widgets/custom-header';
+import { Grid, Layout } from 'antd';
+import clsx from 'clsx';
+
+const { Header, Footer, Sider, Content } = Layout;
+const { useBreakpoint } = Grid;
 
 function App() {
+  const { md } = useBreakpoint();
   return (
-    <>
-      <Header />
-
-      <main className="main">
-        <nav></nav>
-        <section className="content">
+    <Layout className="layout">
+      <Header className="header">
+        <CustomHeader />
+      </Header>
+      <Layout className={clsx('layout', { 'layout--mobile': !md }, { 'layout--desktop': md })}>
+        <Sider className="aside">
+          <CustomMenu />
+        </Sider>
+        <Content>
           <AppRoutes />
-        </section>
-      </main>
-
-      <Footer />
-    </>
+        </Content>
+      </Layout>
+      <Footer className="footer">
+        <CustomFooter />
+      </Footer>
+    </Layout>
   );
 }
 

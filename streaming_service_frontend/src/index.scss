@@ -115,3 +115,25 @@ button {
     }
   }
 }
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  &--mobile {
+    flex-direction: column !important;
+  }
+  &--desktop {
+    flex-direction: row !important;
+  }
+}
+
+.aside {
+  flex: 0;
+  width: 25% !important;
+  max-width: 100% !important;
+  min-width: auto !important;
+  @media (max-width: 768px) {
+    width: 100% !important;
+  }
+}

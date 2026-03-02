@@ -1,4 +1,7 @@
 {
   "header-placeholder": "Что будем искать?",
-  "logout": "Выйти"
+  "logout": "Выйти",
+  "playlists": "Плейлисты",
+  "tracks": "Трэки",
+  "favorite-songs": "Любимые песни"
 }
