@@ -3,8 +3,8 @@
 .aside-menu {
   background-color: var(--color-greyLightBg);
   .ant-menu-item {
-    @include flex(start, center, 8px);
-    font-size: 1.1rem;
+    @include flex(start, center, 0);
+    font-size: 1.3rem;
     color: var(--color-blackTxt);
     &:hover {
       background-color: var(--color-greyBg) !important;

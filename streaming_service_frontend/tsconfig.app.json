@@ -32,7 +32,8 @@
       "@pages/*": ["./pages/*"],
       "@entities/*": ["./entities/*"],
       "@features/*": ["./features/*"],
-      "@widgets/*": ["./widgets/*"]
+      "@widgets/*": ["./widgets/*"],
+      "@store/*": ["./store/*"]
     }
   },
   "include": ["src"]

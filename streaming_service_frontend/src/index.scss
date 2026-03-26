@@ -33,12 +33,14 @@
   --color-greyBg: #e8e8e8;
   --color-greyDarkBg: #aaaaaa;
   --color-promo: #fc6d3e;
+  --color-promoLight: #fc906b;
   --color-white: #fff;
   --transition-duration: 0.3s;
 }
 
 html {
   box-sizing: border-box;
+  font-size: 14px;
 }
 
 *,
@@ -50,9 +52,10 @@ html {
 body {
   font-family: 'Circular', sans-serif;
   color: var(--color-blacktxt);
-  font-size: 14px;
+  font-size: 1rem;
 }
 
+//Reset
 input,
 textarea {
   font-family: inherit;
@@ -87,6 +90,7 @@ button {
   border: none;
 }
 
+//Mixin
 @mixin flex($justify: flex-start, $align: center, $gap: 0) {
   display: flex;
   justify-content: $justify;
@@ -98,8 +102,10 @@ button {
   transition: $property 0.3s ease-in-out;
 }
 
+//Custom ant style
 .ant-dropdown-menu {
   border-radius: 30px !important;
+  background-color: transparent !important;
 }
 
 .ant-dropdown-menu-item {
@@ -116,24 +122,28 @@ button {
   }
 }
 
-.layout {
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  &--mobile {
-    flex-direction: column !important;
-  }
-  &--desktop {
-    flex-direction: row !important;
+.ant-table-cell {
+  background-color: transparent !important;
+  color: var(--color-greyTxt) !important;
+  font-weight: 400 !important;
+  padding: 10px !important;
+  &::before {
+    content: none !important;
   }
 }
 
-.aside {
-  flex: 0;
-  width: 25% !important;
-  max-width: 100% !important;
-  min-width: auto !important;
-  @media (max-width: 768px) {
-    width: 100% !important;
-  }
+.ant-modal-close {
+  display: none;
+}
+
+.ant-modal-title {
+  font-size: 2rem !important;
+  color: var(--color-blacktxt) !important;
+}
+
+.title {
+  margin-bottom: 22px;
+  font-weight: 400;
+  font-size: 2.2rem;
+  color: black;
 }

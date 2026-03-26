@@ -1,0 +1,27 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  font-family: 'Circular', sans-serif !important;
+  &--mobile {
+    flex-direction: column !important;
+  }
+  &--desktop {
+    flex-direction: row !important;
+  }
+}
+
+.aside {
+  width: auto !important;
+  flex: 0 0 20% !important;
+  max-width: 100% !important;
+  min-width: auto !important;
+  background-color: var(--color-greyLightBg) !important;
+  @media (max-width: 768px) {
+    flex: 0 0 100% !important;
+  }
+}
+
+.content {
+  padding: 35px 30px 83px 46px;
+}

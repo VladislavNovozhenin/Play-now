@@ -1,11 +1,11 @@
 import { ACCESS_TOKEN, HTTP_METHODS, HTTP_STATUS } from '@shared/common/constants';
-import { getValueFromLocalStorage } from '@shared/common/helpers';
+import { useAppStore } from '@store/useAppStore';
 
 const getRequestHeaders = () => {
-  const access_token = getValueFromLocalStorage();
+  const token = useAppStore.getState().token;
   return {
     'Content-type': 'application/json',
-    Authorization: `Bearer ${access_token}`,
+    Authorization: `Bearer ${token}`,
   };
 };
 
@@ -31,12 +31,12 @@ export const getBaseQuery = async (url: string) => {
   }
 };
 
-export const postBaseQuery = async (url: string, body: any) => {
+export const postBaseQuery = async (url: string, body: any, noAuth: boolean) => {
   try {
     const response = await fetch(url, {
-      headers: getRequestHeaders(),
+      headers: noAuth ? { 'Content-type': 'application/json' } : getRequestHeaders(),
       method: HTTP_METHODS.POST,
-      body: body ?? {},
+      body: JSON.stringify(body ?? {}),
     });
 
     if (response.status === HTTP_STATUS.UNAUTHORIZED) {
@@ -44,7 +44,11 @@ export const postBaseQuery = async (url: string, body: any) => {
       throw new Error('Unauthorized');
     }
 
-    if (response.status !== HTTP_STATUS.OK) {
+    if (response.status === HTTP_STATUS.NO_CONTENT) {
+      return null;
+    }
+
+    if (!response.ok) {
       throw new Error('error');
     }
 

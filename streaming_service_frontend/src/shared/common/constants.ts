@@ -2,6 +2,10 @@ export const ACCESS_TOKEN = 'access_token';
 
 export const DEFAULT_NOTIFICATION_DURATION = 5;
 
+export const SERVER_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+
+export const DEFAULT_DATE_FORMAT = 'DD.MM.YYYY';
+
 export const APP_LANGUAGES = {
   RU: 'ru',
   EN: 'en',
@@ -15,10 +19,12 @@ export const HTTP_METHODS = {
 
 export const HTTP_STATUS = {
   OK: 200,
-  ACCEPTED: 202,
+  CREATED: 201,
   NO_CONTENT: 204,
   UNAUTHORIZED: 401,
   ACCESS_DENIED: 403,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
+
+export const NO_DATA = '-';

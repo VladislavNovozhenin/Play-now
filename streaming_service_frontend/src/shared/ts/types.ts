@@ -43,7 +43,7 @@ export interface ISong {
   image: string;
   duration: number;
   createdAt: string;
-  album: IAlbum[];
+  album: IAlbum;
   artist: IArtist[];
   playlists: IPlaylist[];
   likes: IUser;

@@ -3,6 +3,8 @@ import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import ChevronRight from '@shared/assets/chevron-right.svg?react';
 import './profile-dropdown.scss';
 import { useTranslation } from 'react-i18next';
+import { setTokenValue } from '@store/useAppStore';
+
 
 const { useBreakpoint } = Grid;
 
@@ -10,12 +12,17 @@ export const ProfileDropdown = () => {
   const { md } = useBreakpoint();
   const { t } = useTranslation('common');
 
+  const handleLogout = () => {
+    setTokenValue(null);
+  };
+
   const items = [
     {
       key: 'logout',
       label: t('logout'),
       danger: true,
       icon: <LogoutOutlined />,
+      onClick: handleLogout,
     },
   ];
   return (
@@ -23,7 +30,7 @@ export const ProfileDropdown = () => {
       <button className="profile-dropdown__btn">
         <div className="profile-dropdown__info">
           <UserOutlined />
-          <span>Petrov V</span>
+          <span>auth</span>
         </div>
         {md && <ChevronRight />}
       </button>

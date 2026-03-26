@@ -1,0 +1,45 @@
+@use '@/index' as *;
+
+.auth-form {
+  .ant-input {
+    @include transition(background-color);
+    border: none !important;
+    border-radius: 30px !important;
+    background-color: var(--color-greyLightBg) !important;
+    color: var(--color-blackTxt) !important;
+    padding: 8px 16px !important;
+    &:hover,
+    &:focus-within {
+      background-color: var(--color-greyBg) !important;
+      box-shadow: none !important;
+    }
+    &::placeholder {
+      color: var(--color-greyTxt) !important;
+    }
+  }
+  &__btn-group {
+    @include flex(end, center, 8px);
+  }
+  button {
+    @include transition(background-color);
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+  }
+  &__btn-out {
+    background-color: var(--color-greyLightBg);
+    &:hover {
+      background-color: var(--color-greyBg);
+    }
+  }
+  &__btn-enter {
+    color: var(--color-white);
+    background-color: var(--color-promo);
+    &:hover {
+      background-color: var(--color-promoLight);
+    }
+  }
+  .ant-form-item-additional {
+    margin-bottom: 10px;
+  }
+}

@@ -3,5 +3,18 @@
   "logout": "Выйти",
   "playlists": "Плейлисты",
   "tracks": "Трэки",
-  "favorite-songs": "Любимые песни"
+  "favorite-songs": "Любимые песни",
+  "name": "Название",
+  "album": "Альбом",
+  "login": "Войти",
+  "signup": "Зарегистрироваться",
+  "login-title": "Вход",
+  "signup-title": "Регистрация",
+  "already-have-an-account": "Уже есть аккаунт? Войти",
+  "dont-have-an-account": "Нет аккаунта? Зарегистрироваться",
+  "enter-username": "Введите логин",
+  "enter-password": "Введите пароль",
+  "enter-firstName": "Введите имя",
+  "enter-lastName": "Введите фамилию",
+  "required": "Обязательное поле"
 }

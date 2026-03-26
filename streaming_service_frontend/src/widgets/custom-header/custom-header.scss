@@ -69,4 +69,14 @@
       }
     }
   }
+  &__no-auth {
+    border-radius: 30px;
+    background-color: var(--color-greyLightBg);
+    padding: 14px 10px;
+    height: 100%;
+    @media (max-width: 768px) {
+      padding: 6px 14px;
+      font-size: 0.75rem;
+    }
+  }
 }
