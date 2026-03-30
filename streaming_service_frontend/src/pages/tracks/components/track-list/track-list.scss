@@ -1,0 +1,59 @@
+@use '@/index' as *;
+
+.track-list {
+  @include flex(center, auto, 0, column);
+  &__item {
+    @include flex(space-between, center);
+    @include transition(background-color);
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--color-greyLightBg);
+    }
+  }
+  &__left-content,
+  &__right-content {
+    @include flex(center, center, 10px);
+  }
+
+  &__likes {
+    @include flex(center, center);
+    &-not-svg {
+      path {
+        fill: var(--color-greyDarkBg);
+      }
+    }
+  }
+  &__img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
+  }
+
+  &__info {
+    @include flex(center, start, 5px, column);
+    span:first-of-type {
+      font-size: 1.2rem;
+    }
+    span:last-of-type {
+      color: var(--color-greyTxt);
+    }
+  }
+}
+
+.spin {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.track-list-wrapper {
+  @include scrollbar();
+  height: 630px;
+  overflow: auto;
+  padding-right: 6px;
+}

@@ -44,7 +44,7 @@ export interface ISong {
   duration: number;
   createdAt: string;
   album: IAlbum;
-  artist: IArtist[];
+  artist: IArtist;
   playlists: IPlaylist[];
   likes: IUser;
 }

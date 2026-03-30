@@ -1,5 +1,70 @@
+@use '@/index' as *;
+
 .track-table {
-  &__not-likes path {
-    fill: var(--color-greyDarkBg);
+  &__row {
+    cursor: pointer;
+    position: relative;
+    &::before {
+      @include transition(opacity);
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: var(--color-greyLightBg);
+      z-index: 1;
+      opacity: 0;
+    }
+    &:hover::before {
+      opacity: 1 !important;
+    }
+    td {
+      z-index: 1;
+    }
   }
+  &__likes {
+    @include flex(center, center);
+    &-not-svg {
+      path {
+        fill: var(--color-greyDarkBg);
+      }
+    }
+  }
+
+  &__id {
+    color: var(--color-blackTxt);
+    font-size: 1.3rem;
+  }
+  &__name {
+    @include flex(start, center, 10px);
+    img {
+      width: 60px;
+      height: 60px;
+      box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.7),
+        0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    &-content {
+      @include flex(center, start, 5px, column);
+      span:first-of-type {
+        color: var(--color-blackTxt);
+      }
+    }
+  }
+
+  &__album {
+    color: var(--color-blackTxt);
+  }
+}
+
+.spin {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.track-table-wrapper {
+  @include scrollbar();
+  padding-right: 6px;
+  height: 630px;
+  overflow: auto;
 }

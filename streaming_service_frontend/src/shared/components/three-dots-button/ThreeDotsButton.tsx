@@ -1,27 +1,41 @@
 import { Dropdown, type MenuProps } from 'antd';
 import ThreeDots from '@shared/assets/three-dots.svg?react';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { findTrackInPlaylists } from '@pages/tracks/helpers/helpers';
+import type { IPlaylist } from '@shared/ts/types';
+import { isNullOrUndefined } from '@shared/common/helpers';
 
 type ThreeDotsButtonProps = {
-  menuItems: MenuProps['items'];
+  trackId: number;
+  allTracksPage?: boolean;
+  playlists?: IPlaylist[];
 };
 
-const ThreeDotsButton = ({ menuItems }: ThreeDotsButtonProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const ThreeDotsButton = ({ trackId, allTracksPage, playlists }: ThreeDotsButtonProps) => {
+  const [isMenuItemValue, setIsMenuItemValue] = useState<boolean | null>(true);
 
+  const handleAddTrackToPlaylist = () => {};
+  const handleRemoveTrackFromPlaylist = () => {};
 
-  useEffect(() => {
-    if (isOpen) {
-      console.log('ddd');
+  const menuItems = useMemo<MenuProps['items']>(() => {
+    return [
+      {
+        key: isNullOrUndefined(isMenuItemValue) ? 'no-data' : isMenuItemValue ? 'remove' : 'add',
+        label: isNullOrUndefined(isMenuItemValue) ? 'нет данных' : isMenuItemValue ? 'удалить' : 'добавить',
+        onClick: isNullOrUndefined(isMenuItemValue) ? undefined : isMenuItemValue ? handleAddTrackToPlaylist : handleRemoveTrackFromPlaylist,
+      },
+    ];
+  }, [isMenuItemValue]);
+
+  const handleOpenChange = (open: boolean) => {
+    if (allTracksPage && open) {
+      const isTrackInPlaylists = playlists ? findTrackInPlaylists(playlists, trackId) : null;
+      setIsMenuItemValue(isTrackInPlaylists);
     }
-  }, [isOpen]);
-
-  const handleOpenChange = (flag: boolean) => {
-    setIsOpen(flag);
   };
   return (
-    <Dropdown onOpenChange={handleOpenChange} trigger={['click']} menu={{ items: menuItems }}>
-      <button>
+    <Dropdown placement='bottomRight' onOpenChange={handleOpenChange} trigger={['click']} menu={{ items: menuItems }}>
+      <button className='three-dots-button'>
         <ThreeDots />
       </button>
     </Dropdown>

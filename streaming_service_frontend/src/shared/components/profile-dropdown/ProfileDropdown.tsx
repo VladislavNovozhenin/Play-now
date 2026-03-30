@@ -26,7 +26,7 @@ export const ProfileDropdown = () => {
     },
   ];
   return (
-    <Dropdown className="profile-dropdown" trigger={['click']} menu={{ items }}>
+    <Dropdown className="profile-dropdown" trigger={['click']} menu={{ items }} placement='bottomRight'>
       <button className="profile-dropdown__btn">
         <div className="profile-dropdown__info">
           <UserOutlined />

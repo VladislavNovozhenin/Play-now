@@ -3,11 +3,8 @@
   flex-direction: column;
   background-color: transparent;
   font-family: 'Circular', sans-serif !important;
-  &--mobile {
+  @media (max-width: 768px) {
     flex-direction: column !important;
-  }
-  &--desktop {
-    flex-direction: row !important;
   }
 }
 
@@ -19,9 +16,15 @@
   background-color: var(--color-greyLightBg) !important;
   @media (max-width: 768px) {
     flex: 0 0 100% !important;
+    padding: 20px 16px;
   }
 }
 
 .content {
-  padding: 35px 30px 83px 46px;
+  padding: 35px 30px 33px 46px;
+  @media (max-width: 768px) {
+    width: 100%;
+    background-color: var(--color-greyLightBg) !important;
+    padding: 0 16px 33px;
+  }
 }

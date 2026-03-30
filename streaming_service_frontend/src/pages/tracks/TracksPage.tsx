@@ -3,9 +3,13 @@ import { TracksTable } from './components/tracks-table/TracksTable';
 import { useQuery } from '@tanstack/react-query';
 import type { ISong } from '@shared/ts/types';
 import { TRACKS_QUERY_KEYS, tracksAPI } from './api/api';
+import { Grid } from 'antd';
+import { TrackList } from './components/track-list/TrackList';
 
+const { useBreakpoint } = Grid;
 export const TracksPage = () => {
   const { t } = useTranslation('common');
+  const { xl, md } = useBreakpoint();
 
   const { data, isLoading, isFetching } = useQuery<ISong[]>({
     queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST],
@@ -15,8 +19,8 @@ export const TracksPage = () => {
 
   return (
     <>
-      <h1 className="title">{t('tracks')}</h1>
-      <TracksTable tableData={data || []} />
+      {md && <h1 className="title">{t('tracks')}</h1>}
+      {xl ? <TracksTable tableData={data || []} /> : <TrackList listData={data || []} />}
     </>
   );
 };

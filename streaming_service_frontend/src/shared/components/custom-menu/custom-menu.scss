@@ -3,19 +3,24 @@
 .aside-menu {
   background-color: var(--color-greyLightBg);
   .ant-menu-item {
-    @include flex(start, center, 0);
+    @include flex(start, center, 8px);
     font-size: 1.3rem;
     color: var(--color-blackTxt);
     &:hover {
       background-color: var(--color-greyBg) !important;
     }
   }
-
   .ant-menu-item-selected {
     background-color: var(--color-white) !important;
+    &:hover {
+      background-color: var(--color-white) !important;
+    }
+  }
+  .ant-menu-title-content {
+    margin-inline-start: 0 !important;
   }
 
-  &--mobile {
+  @media (max-width: 768px) {
     display: flex;
     flex-direction: row !important;
     overflow-x: scroll;
@@ -28,6 +33,22 @@
     .ant-menu-item {
       flex-shrink: 0;
       max-width: max-content;
+      background-color: var(--color-white) !important;
+      border-radius: 30px;
+      padding: 4px 16px !important;
+      height: auto !important;
+    }
+    .ant-menu-item-selected {
+      background-color: var(--color-promo) !important;
+      &:hover {
+        background-color: var(--color-promo) !important;
+      }
+      span {
+        color: var(--color-white);
+      }
+      path {
+        stroke: var(--color-white);
+      }
     }
   }
 }

@@ -91,15 +91,36 @@ button {
 }
 
 //Mixin
-@mixin flex($justify: flex-start, $align: center, $gap: 0) {
+@mixin flex($justify: flex-start, $align: center, $gap: 0, $direction: row) {
   display: flex;
   justify-content: $justify;
   align-items: $align;
   gap: $gap;
+  flex-direction: $direction;
 }
 
 @mixin transition($property: all) {
-  transition: $property 0.3s ease-in-out;
+  transition: $property 0.2s ease-in-out;
+}
+
+@mixin scrollbar() {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    @include transition(background-color);
+    background-color: var(--color-greyLightBg);
+    border-radius: 8px;
+    &:hover {
+      background-color: var(--color-greyBg);
+    }
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-greyBg) transparent;
 }
 
 //Custom ant style
@@ -109,16 +130,20 @@ button {
 }
 
 .ant-dropdown-menu-item {
-  transition: all 0.3s ease-in-out !important;
+  @include transition();
   border-radius: 30px !important;
+  span:last-of-type {
+    font-size: 1.15rem !important;
+  }
   @media (max-width: 768px) {
-    padding: 0px 12px !important;
-    span:first-of-type {
-      margin-right: 4px !important;
-    }
+    padding: 0px 10px !important;
+    gap: 4px;
     span:last-of-type {
-      font-size: 0.75rem !important;
+      font-size: 1rem !important;
     }
+  }
+  .ant-dropdown-menu-item-icon {
+    margin-inline-end: 0!important;
   }
 }
 
@@ -141,9 +166,28 @@ button {
   color: var(--color-blacktxt) !important;
 }
 
+.ant-divider {
+  margin: 0 !important;
+}
+
+.infinite-scroll-component__outerdiv {
+  position: relative;
+}
+.infinite-scroll-component {
+  overflow: hidden !important;
+}
+
 .title {
   margin-bottom: 22px;
   font-weight: 400;
   font-size: 2.2rem;
   color: black;
+  @media (max-width: 768px) {
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+  }
+}
+
+.three-dots-button {
+  @include flex(center, center);
 }

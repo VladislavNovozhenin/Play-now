@@ -31,7 +31,7 @@ export const getBaseQuery = async (url: string) => {
   }
 };
 
-export const postBaseQuery = async (url: string, body: any, noAuth: boolean) => {
+export const postBaseQuery = async (url: string, body?: any, noAuth: boolean = false) => {
   try {
     const response = await fetch(url, {
       headers: noAuth ? { 'Content-type': 'application/json' } : getRequestHeaders(),
