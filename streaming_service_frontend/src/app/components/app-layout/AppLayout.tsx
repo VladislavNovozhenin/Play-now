@@ -14,11 +14,11 @@ export const AppLayout = () => {
         <CustomHeader />
       </Header>
 
-      <Layout className="layout">
+      <Layout className="main-layout">
         <Sider className="aside">
           <CustomMenu />
         </Sider>
-        <Content className="content">
+        <Content className="content" id='content'>
           <Outlet />
         </Content>
       </Layout>

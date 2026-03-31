@@ -53,6 +53,7 @@ body {
   font-family: 'Circular', sans-serif;
   color: var(--color-blacktxt);
   font-size: 1rem;
+  background-color: var(--color-white);
 }
 
 //Reset
@@ -143,11 +144,12 @@ button {
     }
   }
   .ant-dropdown-menu-item-icon {
-    margin-inline-end: 0!important;
+    margin-inline-end: 0 !important;
   }
 }
 
 .ant-table-cell {
+  @include transition(background-color);
   background-color: transparent !important;
   color: var(--color-greyTxt) !important;
   font-weight: 400 !important;
@@ -155,6 +157,10 @@ button {
   &::before {
     content: none !important;
   }
+}
+
+.ant-table-cell-row-hover {
+  background-color: var(--color-greyLightBg)!important;
 }
 
 .ant-modal-close {

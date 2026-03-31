@@ -1,8 +1,22 @@
 .layout {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: transparent;
+  background-color: transparent !important;
   font-family: 'Circular', sans-serif !important;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.main-layout {
+  display: flex;
+  padding-bottom: 65px;
+  background-color: transparent !important;
+  flex-grow: 1;
   @media (max-width: 768px) {
     flex-direction: column !important;
   }
@@ -21,10 +35,17 @@
 }
 
 .content {
-  padding: 35px 30px 33px 46px;
+  padding: 35px 30px 40px 46px;
   @media (max-width: 768px) {
-    width: 100%;
+    width: 100% !important;
     background-color: var(--color-greyLightBg) !important;
     padding: 0 16px 33px;
   }
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
 }

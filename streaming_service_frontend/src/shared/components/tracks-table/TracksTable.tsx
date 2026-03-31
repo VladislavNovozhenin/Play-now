@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Calendar from '@shared/assets/calendar.svg?react';
 import Clock from '@shared/assets/clock.svg?react';
 import Heart from '@shared/assets/heart.svg?react';
+import Play from '@shared/assets/play.svg?react';
 import Table from 'antd/es/table';
 import { formatDate, formatMilliSecondsToMS, isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
 import { NO_DATA } from '@shared/common/constants';
@@ -22,15 +23,19 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
   const { t } = useTranslation('common');
   const { data } = UsePlaylistsList();
   const [visibleData, setVisibleData] = useState<ISong[]>([]);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     setVisibleData(tableData.slice(0, 9));
   }, [tableData.length]);
 
   const showMore = () => {
+    if (loadingMore) return;
+    setLoadingMore(true);
     setTimeout(() => {
       setVisibleData((prev) => [...prev, ...tableData.slice(prev.length, prev.length + 9)]);
-    }, 1000);
+      setLoadingMore(false);
+    }, 2000);
   };
 
   const colums: ColumnType<ISong>[] = [
@@ -46,7 +51,11 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
       key: 'name',
       render: (_, track) => (
         <div className="track-table__name">
-          <img src={track.image} alt="" />
+          <div className="track-table__name-img">
+            <img src={track.image} alt="" />
+            <Play />
+          </div>
+
           <div className="track-table__name-content">
             <span>{track.name}</span>
             <span>{track.artist.name}</span>
@@ -93,19 +102,18 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
     },
   ];
   return (
-    <div className="track-table-wrapper" id="track-table-wrapper">
-      <InfiniteScroll
-        loader={
+    <InfiniteScroll
+      loader={
+        loadingMore ? (
           <div className="spin">
             <Spin />
           </div>
-        }
-        next={showMore}
-        dataLength={visibleData.length}
-        hasMore={visibleData.length < tableData.length}
-        scrollableTarget="track-table-wrapper">
-        <Table pagination={false} className="track-table" columns={colums} dataSource={visibleData} scroll={undefined} rowClassName='track-table__row' />
-      </InfiniteScroll>
-    </div>
+        ) : null
+      }
+      next={showMore}
+      dataLength={visibleData.length}
+      hasMore={visibleData.length < tableData.length}>
+      <Table pagination={false} className="track-table" columns={colums} dataSource={visibleData} scroll={undefined} rowClassName="track-table__row" />
+    </InfiniteScroll>
   );
 };

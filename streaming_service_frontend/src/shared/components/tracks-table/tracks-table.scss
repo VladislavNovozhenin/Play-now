@@ -3,21 +3,15 @@
 .track-table {
   &__row {
     cursor: pointer;
-    position: relative;
-    &::before {
-      @include transition(opacity);
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-color: var(--color-greyLightBg);
-      z-index: 1;
-      opacity: 0;
-    }
-    &:hover::before {
-      opacity: 1 !important;
-    }
-    td {
-      z-index: 1;
+    &:hover {
+      .track-table__name-img {
+        img {
+          filter: brightness(30%);
+        }
+        svg {
+          opacity: 1;
+        }
+      }
     }
   }
   &__likes {
@@ -35,13 +29,29 @@
   }
   &__name {
     @include flex(start, center, 10px);
-    img {
+    &-img {
+      position: relative;
       width: 60px;
       height: 60px;
       box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.7),
         0 10px 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      img {
+        @include transition(opacity);
+        width: 100%;
+        height: 100%;
+      }
+      svg {
+        @include transition(opacity);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+      }
     }
+
     &-content {
       @include flex(center, start, 5px, column);
       span:first-of-type {
@@ -57,14 +67,8 @@
 
 .spin {
   position: absolute;
-  bottom: -40px;
+  bottom: -30px !important;
   left: 50%;
   transform: translateX(-50%);
-}
-
-.track-table-wrapper {
-  @include scrollbar();
-  padding-right: 6px;
-  height: 630px;
-  overflow: auto;
+  z-index: 1000;
 }

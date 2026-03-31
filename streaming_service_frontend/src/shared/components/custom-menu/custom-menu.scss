@@ -1,6 +1,7 @@
 @use '@/index' as *;
 
 .aside-menu {
+  border-inline-end: none !important;
   background-color: var(--color-greyLightBg);
   .ant-menu-item {
     @include flex(start, center, 8px);
@@ -17,7 +18,12 @@
     }
   }
   .ant-menu-title-content {
+    @include transition(color);
     margin-inline-start: 0 !important;
+  }
+
+  .ant-menu-item-icon path {
+    @include transition(stroke);
   }
 
   @media (max-width: 768px) {
@@ -37,16 +43,25 @@
       border-radius: 30px;
       padding: 4px 16px !important;
       height: auto !important;
+      &:hover {
+        background-color: var(--color-promoLight) !important;
+        .ant-menu-item-icon path {
+          stroke: var(--color-white);
+        }
+        .ant-menu-title-content {
+          color: var(--color-white);
+        }
+      }
     }
     .ant-menu-item-selected {
       background-color: var(--color-promo) !important;
       &:hover {
         background-color: var(--color-promo) !important;
       }
-      span {
+      .ant-menu-title-content {
         color: var(--color-white);
       }
-      path {
+      .ant-menu-item-icon path {
         stroke: var(--color-white);
       }
     }
