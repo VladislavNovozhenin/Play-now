@@ -19,12 +19,18 @@
   }
   &__btn-group {
     @include flex(end, center, 8px);
+    @media (max-width: 767px) {
+      flex-direction: column;
+    }
   }
   button {
     @include transition(background-color);
-    border-radius: 20px;
-    padding: 10px 20px;
+    border-radius: 8px;
+    padding: 12px 20px;
     font-size: 1.1rem;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
   }
   &__btn-out {
     background-color: var(--color-greyLightBg);

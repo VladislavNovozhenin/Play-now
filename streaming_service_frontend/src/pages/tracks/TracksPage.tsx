@@ -15,8 +15,8 @@ export const TracksPage = () => {
     queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST],
     queryFn: () => tracksAPI.getTracksList(),
     retry: false,
-    refetchOnMount: false,
   });
+
 
   return (
     <>

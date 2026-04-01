@@ -9,14 +9,14 @@ import { HeaderSearch } from '@shared/components/header-search/HeaderSearch';
 import { ProfileDropdown } from '@shared/components/profile-dropdown/ProfileDropdown';
 import { useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { useToken } from '@store/useAppStore';
+import { useGetUser } from '@store/useAppStore';
 
 const { useBreakpoint } = Grid;
 
 export const CustomHeader = () => {
   const { md } = useBreakpoint();
   const [openSearch, setOpenSearch] = useState(false);
-  const token = useToken();
+  const user = useGetUser();
 
   return (
     <div className="header__container">
@@ -41,7 +41,7 @@ export const CustomHeader = () => {
                 <Search />
               </button>
             )}
-            {token ? <ProfileDropdown /> : <div className="header__no-auth">No auth</div>}
+            {user && <ProfileDropdown />}
           </div>
         </>
       )}

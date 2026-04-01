@@ -17,7 +17,7 @@
   padding-bottom: 65px;
   background-color: transparent !important;
   flex-grow: 1;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     flex-direction: column !important;
   }
 }
@@ -28,7 +28,7 @@
   max-width: 100% !important;
   min-width: auto !important;
   background-color: var(--color-greyLightBg) !important;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     flex: 0 0 100% !important;
     padding: 20px 16px;
   }
@@ -36,7 +36,7 @@
 
 .content {
   padding: 35px 30px 40px 46px;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 100% !important;
     background-color: var(--color-greyLightBg) !important;
     padding: 0 16px 33px;

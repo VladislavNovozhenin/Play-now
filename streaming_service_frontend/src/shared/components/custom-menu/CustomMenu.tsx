@@ -19,7 +19,7 @@ export const CustomMenu = () => {
   const menuItems: MenuItemType[] = [
     { key: '/playlists', label: t('playlists'), icon: <Note width={28} height={28} /> },
     { key: '/tracks', label: t('tracks'), icon: <PlayTrack width={28} height={28} /> },
-    { key: '/favorite', label: t('favorite-songs') },
+    { key: '/favorite', label: t('like-songs') },
   ];
 
   return <Menu ref={menuRef} overflowedIndicator={null} mode={'vertical'} selectedKeys={[location.pathname]} className="aside-menu" items={menuItems} onClick={({ key }) => navigate(`/${key}`)} />;

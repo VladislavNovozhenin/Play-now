@@ -1,4 +1,4 @@
-import type { IAlbum, ISong } from '@shared/ts/types';
+import type { IAlbum, ISong, IUser } from '@shared/ts/types';
 import type { ColumnType } from 'antd/es/table';
 import { useTranslation } from 'react-i18next';
 import Calendar from '@shared/assets/calendar.svg?react';
@@ -6,7 +6,7 @@ import Clock from '@shared/assets/clock.svg?react';
 import Heart from '@shared/assets/heart.svg?react';
 import Play from '@shared/assets/play.svg?react';
 import Table from 'antd/es/table';
-import { formatDate, formatMilliSecondsToMS, isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
+import { formatDate, formatMilliSecondsToMS, getLikeTracksByUsername, isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
 import { NO_DATA } from '@shared/common/constants';
 import clsx from 'clsx';
 import './tracks-table.scss';
@@ -15,6 +15,11 @@ import { UsePlaylistsList } from '@shared/hooks/usePlaylistsList';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useState } from 'react';
 import { Spin } from 'antd';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { TRACKS_QUERY_KEYS, tracksAPI } from '@pages/tracks/api/api';
+import { useGetUser } from '@store/useAppStore';
+import { useNotification } from '@shared/hooks/useNotification';
+import { LIKES_QUERY_KEYS } from '@pages/likes-tracks/api/api';
 
 type TracksTableProps = {
   tableData: ISong[];
@@ -24,10 +29,13 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
   const { data } = UsePlaylistsList();
   const [visibleData, setVisibleData] = useState<ISong[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
+  const queryClient = useQueryClient();
+  const user = useGetUser();
+  const { showSuccess } = useNotification();
 
   useEffect(() => {
     setVisibleData(tableData.slice(0, 9));
-  }, [tableData.length]);
+  }, [tableData]);
 
   const showMore = () => {
     if (loadingMore) return;
@@ -36,6 +44,38 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
       setVisibleData((prev) => [...prev, ...tableData.slice(prev.length, prev.length + 9)]);
       setLoadingMore(false);
     }, 2000);
+  };
+
+  const likeMutation = useMutation({
+    mutationFn: (songId: number) => tracksAPI.likeSong(songId),
+    onSuccess: async () => {
+      showSuccess({ title: t('like-success') });
+      await queryClient.invalidateQueries({ queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST] });
+      await queryClient.invalidateQueries({ queryKey: [LIKES_QUERY_KEYS.LIKES_LIST] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const unLikeMutation = useMutation({
+    mutationFn: (trackId: number) => tracksAPI.unLikeSong(trackId),
+    onSuccess: async () => {
+      showSuccess({ title: t('unlike-success') });
+      await queryClient.invalidateQueries({ queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST] });
+      await queryClient.invalidateQueries({ queryKey: [LIKES_QUERY_KEYS.LIKES_LIST] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleLikeOrUnLike = (track: ISong) => {
+    if (isIterableArray(getLikeTracksByUsername(track.likes, user!.username))) {
+      unLikeMutation.mutate(track.id);
+    } else {
+      likeMutation.mutate(track.id);
+    }
   };
 
   const colums: ColumnType<ISong>[] = [
@@ -80,10 +120,10 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
       title: '',
       dataIndex: 'likes',
       key: 'likes',
-      render: (likes: any[]) => {
+      render: (_, track) => {
         return (
-          <button className="track-table__likes">
-            <Heart className={clsx(isIterableArray(likes) ? 'track-table__likes-svg' : 'track-table__likes-not-svg')} />
+          <button onClick={() => handleLikeOrUnLike(track)} className="track-table__likes">
+            <Heart className={clsx(isIterableArray(getLikeTracksByUsername(track.likes, user!.username)) ? 'track-table__likes-svg' : 'track-table__likes-not-svg')} />
           </button>
         );
       },
@@ -113,7 +153,7 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
       next={showMore}
       dataLength={visibleData.length}
       hasMore={visibleData.length < tableData.length}>
-      <Table pagination={false} className="track-table" columns={colums} dataSource={visibleData} scroll={undefined} rowClassName="track-table__row" />
+      <Table rowKey="id" pagination={false} className="track-table" columns={colums} dataSource={visibleData} scroll={undefined} rowClassName="track-table__row" />
     </InfiniteScroll>
   );
 };

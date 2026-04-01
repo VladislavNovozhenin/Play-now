@@ -4,11 +4,12 @@
   &__btn {
     @include flex(space-between, center, 95px);
     @include transition(background-color);
+    min-width: 100px;
     border-radius: 30px;
     background-color: var(--color-greyLightBg);
     padding: 14px 10px;
     height: auto;
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       padding: 6px 14px;
     }
     &:hover {
@@ -17,12 +18,12 @@
   }
   &__info {
     @include flex(space-between, center, 8px);
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       gap: 4px;
     }
     span {
       font-size: 1.15rem;
-      @media (max-width: 768px) {
+      @media (max-width: 767px) {
         font-size: 1rem;
       }
     }
@@ -30,10 +31,45 @@
       width: 20px;
       height: 20px;
       fill: var(--color-blackTxt);
-      @media (max-width: 768px) {
+      @media (max-width: 767px) {
         width: 16px;
         height: 16px;
       }
+    }
+  }
+}
+
+.profile-dropdown-root {
+  .ant-dropdown-menu {
+    border-radius: 30px !important;
+    background-color: var(--color-white) !important;
+  }
+
+  .ant-dropdown-menu-item {
+    @include transition();
+    border-radius: 30px !important;
+    padding: 5px 6px !important;
+    gap: 8px;
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+    span:last-of-type {
+      font-size: 1.15rem !important;
+    }
+    @media (max-width: 767px) {
+      padding: 0px 10px !important;
+      gap: 4px;
+      svg {
+      width: 15px;
+      height: 15px;
+    }
+      span:last-of-type {
+        font-size: 1rem !important;
+      }
+    }
+    .ant-dropdown-menu-item-icon {
+      margin-inline-end: 0 !important;
     }
   }
 }

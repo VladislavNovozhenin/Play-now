@@ -2,7 +2,7 @@ import { getBaseQuery, postBaseQuery } from '@shared/api/base-api';
 
 const BASE_URL = import.meta.env.VITE_API;
 
-const getPlaylists = () => getBaseQuery(`${BASE_URL}/users/playlists`);
+const getPlaylists = (username: string) => getBaseQuery(`${BASE_URL}/users/${username}/playlists`);
 
 const addPlaylist = (name: string) => postBaseQuery(`${BASE_URL}/playlists`, { name });
 

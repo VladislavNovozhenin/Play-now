@@ -4,8 +4,12 @@ import type React from 'react';
 import { useTranslation } from 'react-i18next';
 import './auth-form.scss';
 import { useEffect } from 'react';
-import { loginUser, registerUser } from '@pages/auth/helpers';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { authAPI } from '@pages/auth/api/api';
+import type { LoginRequest, RegisterRequest } from '@pages/auth/ts/types';
+import { setUserValue } from '@store/useAppStore';
+import { useNotification } from '@shared/hooks/useNotification';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -15,18 +19,41 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
   const { t } = useTranslation('common');
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const { showSuccess } = useNotification();
 
   useEffect(() => {
     form.resetFields();
   }, [isLogin]);
 
+  const loginMutation = useMutation({
+    mutationFn: (payload: LoginRequest) => authAPI.login(payload),
+    onSuccess: (response, user) => {
+      setUserValue({ token: response.access_token, username: user.username });
+      showSuccess({ title: t('login-success') });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: (payload: RegisterRequest) => authAPI.register(payload),
+    onSuccess: (response, user) => {
+      setUserValue({ token: response.access_token, username: user.username });
+      showSuccess({ title: t('register-success') });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const handleSubmit = async () => {
     const value = form.getFieldsValue();
     try {
       if (isLogin) {
-        await loginUser(value);
+        await loginMutation.mutateAsync(value);
       } else {
-        registerUser(value);
+        await registerMutation.mutateAsync(value);
       }
       navigate('/');
     } catch (error) {}
@@ -75,7 +102,7 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
           {isLogin ? t('dont-have-an-account') : t('already-have-an-account')}
         </button>
         <button type="submit" className="auth-form__btn-enter">
-          {isLogin ? t('login') : t('signup')}
+          {isLogin ? t('login') : t('register')}
         </button>
       </div>
     </Form>

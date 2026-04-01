@@ -1,6 +1,6 @@
 export const ACCESS_TOKEN = 'access_token';
 
-export const DEFAULT_NOTIFICATION_DURATION = 5;
+export const DEFAULT_NOTIFICATION_DURATION = 3;
 
 export const SERVER_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 

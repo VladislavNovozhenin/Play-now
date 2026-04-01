@@ -2,33 +2,80 @@ import type { ISong } from '@shared/ts/types';
 import './tracks-list.scss';
 import ThreeDotsButton from '@shared/components/three-dots-button/ThreeDotsButton';
 import Heart from '@shared/assets/heart.svg?react';
-import { isIterableArray } from '@shared/common/helpers';
+import { getLikeTracksByUsername, isIterableArray } from '@shared/common/helpers';
 import clsx from 'clsx';
 import { UsePlaylistsList } from '@shared/hooks/usePlaylistsList';
-import { Divider, Spin } from 'antd';
+import { Divider, Grid, Spin } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Fragment, useEffect, useState } from 'react';
 import Play from '@shared/assets/play.svg?react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { TRACKS_QUERY_KEYS, tracksAPI } from '@pages/tracks/api/api';
+import { useNotification } from '@shared/hooks/useNotification';
+import { useTranslation } from 'react-i18next';
+import { useGetUser } from '@store/useAppStore';
+import { LIKES_QUERY_KEYS } from '@pages/likes-tracks/api/api';
 
 type TracksListProps = {
   listData: ISong[];
 };
+
+const { useBreakpoint } = Grid;
 export const TracksList = ({ listData }: TracksListProps) => {
+  const { t } = useTranslation('common');
   const { data } = UsePlaylistsList();
   const [visibleData, setVisibleData] = useState<ISong[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
+  const queryClient = useQueryClient();
+  const { showSuccess } = useNotification();
+  const user = useGetUser();
+  const { md } = useBreakpoint();
+
+  const INITIAL_COUNT = md ? 15 : 10;
 
   useEffect(() => {
-    setVisibleData(listData.slice(0, 9));
-  }, [listData.length]);
+    setVisibleData(listData.slice(0, INITIAL_COUNT));
+  }, [listData]);
 
   const showMore = () => {
     if (loadingMore) return;
     setLoadingMore(true);
     setTimeout(() => {
-      setVisibleData((prev) => [...prev, ...listData.slice(prev.length, prev.length + 9)]);
+      setVisibleData((prev) => [...prev, ...listData.slice(prev.length, prev.length + INITIAL_COUNT)]);
       setLoadingMore(false);
     }, 2000);
+  };
+
+  const likeMutation = useMutation({
+    mutationFn: (trackId: number) => tracksAPI.likeSong(trackId),
+    onSuccess: async () => {
+      showSuccess({ title: t('like-success') });
+      await queryClient.invalidateQueries({ queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST] });
+      await queryClient.invalidateQueries({ queryKey: [LIKES_QUERY_KEYS.LIKES_LIST] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const unLikeMutation = useMutation({
+    mutationFn: (songId: number) => tracksAPI.unLikeSong(songId),
+    onSuccess: async () => {
+      showSuccess({ title: t('unlike-success') });
+      await queryClient.invalidateQueries({ queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST] });
+      await queryClient.invalidateQueries({ queryKey: [LIKES_QUERY_KEYS.LIKES_LIST] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleLikeOrUnLike = (track: ISong) => {
+    if (isIterableArray(getLikeTracksByUsername(track.likes, user!.username))) {
+      unLikeMutation.mutate(track.id);
+    } else {
+      likeMutation.mutate(track.id);
+    }
   };
 
   return (
@@ -61,8 +108,8 @@ export const TracksList = ({ listData }: TracksListProps) => {
                 </div>
 
                 <div className="track-list__right-content">
-                  <button className="track-list__likes">
-                    <Heart className={clsx(isIterableArray(track.likes) ? 'track-list__likes-svg' : 'track-list__likes-not-svg')} />
+                  <button onClick={() => handleLikeOrUnLike(track)} className="track-list__likes">
+                    <Heart className={clsx(isIterableArray(getLikeTracksByUsername(track.likes, user!.username)) ? 'track-list__likes-svg' : 'track-list__likes-not-svg')} />
                   </button>
                   <ThreeDotsButton trackId={track.id} allTracksPage playlists={data} />
                 </div>

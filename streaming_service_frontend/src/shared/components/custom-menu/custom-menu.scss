@@ -26,7 +26,7 @@
     @include transition(stroke);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     display: flex;
     flex-direction: row !important;
     overflow-x: scroll;

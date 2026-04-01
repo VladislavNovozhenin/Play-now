@@ -8,7 +8,7 @@ export const AuthPage = () => {
   const { t } = useTranslation('common');
 
   return (
-    <Modal className='auth-modal' footer={null} open={true} title={isLogin ? t('login-title') : t('signup-title')}>
+    <Modal className='auth-modal' footer={null} open={true} title={isLogin ? t('login-title') : t('register-title')}>
       <AuthForm isLogin={isLogin} setIsLogin={setIsLogin} />
     </Modal>
   );

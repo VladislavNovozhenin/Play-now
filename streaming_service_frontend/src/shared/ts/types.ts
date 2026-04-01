@@ -46,5 +46,5 @@ export interface ISong {
   album: IAlbum;
   artist: IArtist;
   playlists: IPlaylist[];
-  likes: IUser;
+  likes: IUser[];
 }

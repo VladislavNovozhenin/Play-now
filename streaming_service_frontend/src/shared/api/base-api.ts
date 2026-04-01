@@ -2,7 +2,7 @@ import { ACCESS_TOKEN, HTTP_METHODS, HTTP_STATUS } from '@shared/common/constant
 import { useAppStore } from '@store/useAppStore';
 
 const getRequestHeaders = () => {
-  const token = useAppStore.getState().token;
+  const token = useAppStore.getState().user?.token;
   return {
     'Content-type': 'application/json',
     Authorization: `Bearer ${token}`,

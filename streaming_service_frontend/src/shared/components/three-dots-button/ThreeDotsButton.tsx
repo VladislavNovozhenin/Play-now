@@ -1,9 +1,8 @@
 import { Dropdown, type MenuProps } from 'antd';
 import ThreeDots from '@shared/assets/three-dots.svg?react';
 import { useMemo, useState } from 'react';
-import { findTrackInPlaylists } from '@pages/tracks/helpers/helpers';
 import type { IPlaylist } from '@shared/ts/types';
-import { isNullOrUndefined } from '@shared/common/helpers';
+import { findTrackInPlaylists, isNullOrUndefined } from '@shared/common/helpers';
 
 type ThreeDotsButtonProps = {
   trackId: number;

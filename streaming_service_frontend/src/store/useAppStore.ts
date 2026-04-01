@@ -3,17 +3,20 @@ import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 type State = {
-  token: string | null;
+  user: {
+    username: string;
+    token: string;
+  } | null;
 };
 
 type Action = {
-  setToken: (value: string | null) => void;
+  setUser: (value: { username: string; token: string } | null) => void;
 };
 
 type Store = State & Action;
 
 const initialState: State = {
-  token: null,
+  user: null,
 };
 
 export const useAppStore = create<Store>()(
@@ -21,9 +24,9 @@ export const useAppStore = create<Store>()(
     persist(
       immer((set) => ({
         ...initialState,
-        setToken: (value) =>
+        setUser: (value) =>
           set((state) => {
-            state.token = value;
+            state.user = value;
           }),
       })),
       { name: 'app-storage' }
@@ -31,5 +34,5 @@ export const useAppStore = create<Store>()(
   )
 );
 
-export const useToken = () => useAppStore((state) => state.token);
-export const setTokenValue = (value: string | null) => useAppStore.getState().setToken(value);
+export const useGetUser = () => useAppStore((state) => state.user);
+export const setUserValue = (value: { username: string; token: string } | null) => useAppStore.getState().setUser(value);

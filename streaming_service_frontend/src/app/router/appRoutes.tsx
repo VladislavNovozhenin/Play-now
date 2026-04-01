@@ -8,7 +8,7 @@ import { ProtectedRoute } from './ProtectedRoute';
 const TracksPage = lazy(() => import('@pages/tracks/TracksPage').then((mod) => ({ default: mod.TracksPage })));
 const PlaylistPage = lazy(() => import('@pages/playlist/PlaylistPage').then((mod) => ({ default: mod.PlaylistPage })));
 const PlaylistsPage = lazy(() => import('@pages/playlists/PlaylistsPage').then((mod) => ({ default: mod.PlaylistsPage })));
-const LikesSongsPage = lazy(() => import('@pages/likes-songs/LikesSongsPage').then((mod) => ({ default: mod.LikesSongsPage })));
+const LikesTracksPage = lazy(() => import('@pages/likes-tracks/LikesTracksPage').then((mod) => ({ default: mod.LikesTracksPage })));
 
 export const AppRoutes = () => {
   return (
@@ -51,7 +51,7 @@ export const AppRoutes = () => {
             path={'/favorite'}
             element={
               <ProtectedRoute>
-                <LikesSongsPage />
+                <LikesTracksPage />
               </ProtectedRoute>
             }
           />

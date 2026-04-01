@@ -16,7 +16,7 @@
     @media (max-width: 1200px) {
       padding-left: 40px;
     }
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       padding: 17.5px 16px;
     }
   }
@@ -27,7 +27,7 @@
       opacity: 0.5;
     }
     img {
-      @media (max-width: 768px) {
+      @media (max-width: 767px) {
         width: 115px;
         height: 23px;
       }
@@ -76,7 +76,7 @@
     background-color: var(--color-greyLightBg);
     padding: 14px 10px;
     height: 100%;
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       padding: 6px 14px;
       font-size: 0.75rem;
     }
