@@ -1,20 +1,14 @@
 @use '@/index' as *;
 
 .header {
-  padding: 0;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.95));
-  backdrop-filter: blur(4px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  height: auto;
-  line-height: 0;
-  color: inherit;
-
   &__container {
+    max-width: 1180px !important;
     @include flex(space-between, center, 8px);
     width: 100%;
-    padding: 15px 30px 15px 70px;
-    @media (max-width: 1200px) {
-      padding-left: 40px;
+    padding: 15px 30px 15px 30px;
+    margin: 0 auto;
+    @media (max-width: 1023px) {
+       padding: 15px 15px 15px 15px;
     }
     @media (max-width: 767px) {
       padding: 17.5px 16px;

@@ -8,6 +8,7 @@ import { TracksList } from '@shared/components/tracks-list/TracksList';
 
 const { useBreakpoint } = Grid;
 export const TracksPage = () => {
+  console.log('render parent')
   const { t } = useTranslation('common');
   const { xl, md } = useBreakpoint();
 

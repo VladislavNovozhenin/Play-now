@@ -20,6 +20,8 @@ import { TRACKS_QUERY_KEYS, tracksAPI } from '@pages/tracks/api/api';
 import { useGetUser } from '@store/useAppStore';
 import { useNotification } from '@shared/hooks/useNotification';
 import { LIKES_QUERY_KEYS } from '@pages/likes-tracks/api/api';
+import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
+import { UpOutlined } from '@ant-design/icons';
 
 type TracksTableProps = {
   tableData: ISong[];
@@ -32,10 +34,28 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
   const queryClient = useQueryClient();
   const user = useGetUser();
   const { showSuccess } = useNotification();
+  const buttonToUp = useScrollToTopButton();
 
   useEffect(() => {
-    setVisibleData(tableData.slice(0, 9));
+    if (tableData.length) {
+      setVisibleData(tableData.slice(0, 9));
+    }
   }, [tableData]);
+
+  useEffect(() => {
+    const checkSizeWindow = () => {
+      const windowHeight = window.innerHeight;
+      const documentHeigth = document.documentElement.scrollHeight;
+      if (windowHeight >= documentHeigth) {
+        showMore();
+      }
+    };
+    if (isIterableArray(visibleData)) {
+      checkSizeWindow();
+    }
+    window.addEventListener('resize', checkSizeWindow);
+    return () => window.removeEventListener('resize', checkSizeWindow);
+  }, [visibleData]);
 
   const showMore = () => {
     if (loadingMore) return;
@@ -76,6 +96,10 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
     } else {
       likeMutation.mutate(track.id);
     }
+  };
+
+  const scrollToUp = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const colums: ColumnType<ISong>[] = [
@@ -142,18 +166,26 @@ export const TracksTable = ({ tableData }: TracksTableProps) => {
     },
   ];
   return (
-    <InfiniteScroll
-      loader={
-        loadingMore ? (
-          <div className="spin">
-            <Spin />
-          </div>
-        ) : null
-      }
-      next={showMore}
-      dataLength={visibleData.length}
-      hasMore={visibleData.length < tableData.length}>
-      <Table rowKey="id" pagination={false} className="track-table" columns={colums} dataSource={visibleData} scroll={undefined} rowClassName="track-table__row" />
-    </InfiniteScroll>
+    <>
+      <InfiniteScroll
+        loader={
+          loadingMore ? (
+            <div className="spin">
+              <Spin />
+            </div>
+          ) : null
+        }
+        next={showMore}
+        dataLength={visibleData.length}
+        hasMore={visibleData.length < tableData.length}>
+        <Table rowKey="id" pagination={false} className="track-table" columns={colums} dataSource={visibleData} scroll={undefined} rowClassName="track-table__row" />
+      </InfiniteScroll>
+      {buttonToUp && (
+        <button onClick={scrollToUp} className="track-table__button-up">
+          <UpOutlined />
+          <span>{t('up')}</span>
+        </button>
+      )}
+    </>
   );
 };

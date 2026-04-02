@@ -15,6 +15,8 @@ import { useNotification } from '@shared/hooks/useNotification';
 import { useTranslation } from 'react-i18next';
 import { useGetUser } from '@store/useAppStore';
 import { LIKES_QUERY_KEYS } from '@pages/likes-tracks/api/api';
+import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
+import { UpOutlined } from '@ant-design/icons';
 
 type TracksListProps = {
   listData: ISong[];
@@ -30,12 +32,28 @@ export const TracksList = ({ listData }: TracksListProps) => {
   const { showSuccess } = useNotification();
   const user = useGetUser();
   const { md } = useBreakpoint();
+  const buttonToUp = useScrollToTopButton();
 
   const INITIAL_COUNT = md ? 15 : 10;
 
   useEffect(() => {
     setVisibleData(listData.slice(0, INITIAL_COUNT));
   }, [listData]);
+
+  useEffect(() => {
+    const checkSizeWindow = () => {
+      const windowHeight = window.innerHeight;
+      const documentHeigth = document.documentElement.scrollHeight;
+      if (windowHeight >= documentHeigth) {
+        showMore();
+      }
+    };
+    if (isIterableArray(visibleData)) {
+      checkSizeWindow();
+    }
+    window.addEventListener('resize', checkSizeWindow);
+    return () => window.removeEventListener('resize', checkSizeWindow);
+  }, [visibleData]);
 
   const showMore = () => {
     if (loadingMore) return;
@@ -78,47 +96,59 @@ export const TracksList = ({ listData }: TracksListProps) => {
     }
   };
 
-  return (
-    <InfiniteScroll
-      loader={
-        loadingMore ? (
-          <div className="spin">
-            <Spin />
-          </div>
-        ) : null
-      }
-      next={showMore}
-      dataLength={visibleData.length}
-      hasMore={visibleData.length < listData.length}
-      scrollableTarget="track-list-wrapper">
-      <ul className="track-list">
-        {visibleData.map((track, index) => {
-          return (
-            <Fragment key={track.id}>
-              <li className="track-list__item">
-                <div className="track-list__left-content">
-                  <div className="track-list__img">
-                    <img src={track.image} alt="" />
-                    <Play />
-                  </div>
-                  <div className="track-list__info">
-                    <span>{track.name}</span>
-                    <span>{track.artist.name}</span>
-                  </div>
-                </div>
+  const scrollToUp = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-                <div className="track-list__right-content">
-                  <button onClick={() => handleLikeOrUnLike(track)} className="track-list__likes">
-                    <Heart className={clsx(isIterableArray(getLikeTracksByUsername(track.likes, user!.username)) ? 'track-list__likes-svg' : 'track-list__likes-not-svg')} />
-                  </button>
-                  <ThreeDotsButton trackId={track.id} allTracksPage playlists={data} />
-                </div>
-              </li>
-              {index !== listData.length - 1 && <Divider />}
-            </Fragment>
-          );
-        })}
-      </ul>
-    </InfiniteScroll>
+  return (
+    <>
+      <InfiniteScroll
+        loader={
+          loadingMore ? (
+            <div className="spin">
+              <Spin />
+            </div>
+          ) : null
+        }
+        next={showMore}
+        dataLength={visibleData.length}
+        hasMore={visibleData.length < listData.length}
+        scrollableTarget="track-list-wrapper">
+        <ul className="track-list">
+          {visibleData.map((track, index) => {
+            return (
+              <Fragment key={track.id}>
+                <li className="track-list__item">
+                  <div className="track-list__left-content">
+                    <div className="track-list__img">
+                      <img src={track.image} alt="" />
+                      <Play />
+                    </div>
+                    <div className="track-list__info">
+                      <span>{track.name}</span>
+                      <span>{track.artist.name}</span>
+                    </div>
+                  </div>
+
+                  <div className="track-list__right-content">
+                    <button onClick={() => handleLikeOrUnLike(track)} className="track-list__likes">
+                      <Heart className={clsx(isIterableArray(getLikeTracksByUsername(track.likes, user!.username)) ? 'track-list__likes-svg' : 'track-list__likes-not-svg')} />
+                    </button>
+                    <ThreeDotsButton trackId={track.id} allTracksPage playlists={data} />
+                  </div>
+                </li>
+                {index !== listData.length - 1 && <Divider />}
+              </Fragment>
+            );
+          })}
+        </ul>
+      </InfiniteScroll>
+      {buttonToUp && md && (
+        <button onClick={scrollToUp} className="track-list__button-up">
+          <UpOutlined />
+          <span>{t('up')}</span>
+        </button>
+      )}
+    </>
   );
 };

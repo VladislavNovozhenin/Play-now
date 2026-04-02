@@ -16,6 +16,10 @@
   }
   &__likes {
     @include flex(center, center);
+    @include transition(opacity);
+    &:hover {
+      opacity: 0.7;
+    }
     &-not-svg {
       path {
         fill: var(--color-greyDarkBg);
@@ -33,6 +37,7 @@
       position: relative;
       width: 60px;
       height: 60px;
+      border-radius: 8px;
       box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.7),
         0 10px 20px rgba(0, 0, 0, 0.3);
@@ -62,6 +67,18 @@
 
   &__album {
     color: var(--color-blackTxt);
+  }
+  &__button-up {
+    @include flex(center, center, 5px);
+    @include transition(color);
+    font-size: 1.2rem;
+    position: fixed;
+    left: 10%;
+    bottom: 30px;
+    color: var(--color-greyTxt);
+    &:hover {
+      color: var(--color-blackTxt);
+    }
   }
 }
 

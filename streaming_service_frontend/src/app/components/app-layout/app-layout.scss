@@ -1,7 +1,7 @@
+@use '@/index' as *;
 .layout {
+  @include flex(center, center, 0, column);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   background-color: transparent !important;
   font-family: 'Circular', sans-serif !important;
 }
@@ -10,40 +10,58 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
+  padding: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.95));
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: auto;
+  line-height: 0;
+  color: inherit;
 }
 
 .main-layout {
+  width: 100%;
+  max-width: 1180px !important;
   display: flex;
-  padding-bottom: 65px;
+  padding: 35px 30px 65px 30px;
   background-color: transparent !important;
   flex-grow: 1;
+  gap: 40px;
+  @media (max-width: 1023px) {
+    padding: 35px 15px 65px 15px;
+    gap: 10px;
+  }
   @media (max-width: 767px) {
     flex-direction: column !important;
+    padding-top: 15px;
   }
 }
 
 .aside {
+  margin-top: -7px;
   width: auto !important;
-  flex: 0 0 20% !important;
+  flex: 0 0 18% !important;
   max-width: 100% !important;
   min-width: auto !important;
-  background-color: var(--color-greyLightBg) !important;
+  background-color: var(--color-white) !important;
+  @media (max-width: 1023px) {
+    flex: 0 0 15% !important;
+  }
   @media (max-width: 767px) {
     flex: 0 0 100% !important;
-    padding: 20px 16px;
+     margin-top: 0;
   }
 }
 
 .content {
-  padding: 35px 30px 40px 46px;
   @media (max-width: 767px) {
     width: 100% !important;
-    background-color: var(--color-greyLightBg) !important;
-    padding: 0 16px 33px;
   }
 }
 
 .footer {
+  max-width: 1180px !important;
   position: fixed;
   bottom: 0;
   width: 100%;

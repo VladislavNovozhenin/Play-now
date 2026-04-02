@@ -2,19 +2,33 @@
 
 .aside-menu {
   border-inline-end: none !important;
-  background-color: var(--color-greyLightBg);
+  background-color: var(--color-white);
   .ant-menu-item {
     @include flex(start, center, 8px);
     font-size: 1.3rem;
     color: var(--color-blackTxt);
     &:hover {
-      background-color: var(--color-greyBg) !important;
+      background-color: var(--color-greyLightBg) !important;
+    }
+    @media (max-width: 1023px) {
+      font-size: 1.1rem;
+      height: 30px !important;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
     }
   }
   .ant-menu-item-selected {
-    background-color: var(--color-white) !important;
+    background-color: var(--color-promo) !important;
     &:hover {
-      background-color: var(--color-white) !important;
+      background-color: var(--color-promo) !important;
+    }
+    .ant-menu-title-content {
+      color: var(--color-white);
+    }
+    .ant-menu-item-icon path {
+      stroke: var(--color-white);
     }
   }
   .ant-menu-title-content {
@@ -39,31 +53,10 @@
     .ant-menu-item {
       flex-shrink: 0;
       max-width: max-content;
-      background-color: var(--color-white) !important;
       border-radius: 30px;
-      padding: 4px 16px !important;
-      height: auto !important;
-      &:hover {
-        background-color: var(--color-promoLight) !important;
-        .ant-menu-item-icon path {
-          stroke: var(--color-white);
-        }
-        .ant-menu-title-content {
-          color: var(--color-white);
-        }
-      }
-    }
-    .ant-menu-item-selected {
-      background-color: var(--color-promo) !important;
-      &:hover {
-        background-color: var(--color-promo) !important;
-      }
-      .ant-menu-title-content {
-        color: var(--color-white);
-      }
-      .ant-menu-item-icon path {
-        stroke: var(--color-white);
-      }
+      padding: 0 16px !important;
+      height: 35px !important;
+      box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
     }
   }
 }

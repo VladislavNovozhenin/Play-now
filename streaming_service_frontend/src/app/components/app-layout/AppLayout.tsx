@@ -23,9 +23,9 @@ export const AppLayout = () => {
         </Content>
       </Layout>
 
-      <Footer className="footer">
+      {/* <Footer className="footer">
         <CustomFooter />
-      </Footer>
+      </Footer> */}
     </Layout>
   );
 };
