@@ -1,50 +1,50 @@
-import type { ISong } from '@shared/ts/types';
+import type { Song, User } from '@shared/ts/types';
 import './tracks-list.scss';
 import ThreeDotsButton from '@shared/components/three-dots-button/ThreeDotsButton';
-import Heart from '@shared/assets/heart.svg?react';
-import { getLikeTracksByUsername, isIterableArray } from '@shared/common/helpers';
-import clsx from 'clsx';
+import { isIterableArray } from '@shared/common/helpers';
 import { UsePlaylistsList } from '@shared/hooks/usePlaylistsList';
 import { Divider, Grid, Spin } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Fragment, useEffect, useState } from 'react';
 import Play from '@shared/assets/play.svg?react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { TRACKS_QUERY_KEYS, tracksAPI } from '@pages/tracks/api/api';
-import { useNotification } from '@shared/hooks/useNotification';
 import { useTranslation } from 'react-i18next';
-import { useGetUser } from '@store/useAppStore';
-import { LIKES_QUERY_KEYS } from '@pages/likes-tracks/api/api';
 import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
 import { UpOutlined } from '@ant-design/icons';
+import { LikesButton } from '../likes-button/LikesButton';
 
 type TracksListProps = {
-  listData: ISong[];
+  listData: Song[];
+  isLikesPage?: boolean;
 };
 
 const { useBreakpoint } = Grid;
-export const TracksList = ({ listData }: TracksListProps) => {
+export const TracksList = ({ listData, isLikesPage }: TracksListProps) => {
   const { t } = useTranslation('common');
   const { data } = UsePlaylistsList();
-  const [visibleData, setVisibleData] = useState<ISong[]>([]);
+  const [visibleData, setVisibleData] = useState<Song[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
-  const queryClient = useQueryClient();
-  const { showSuccess } = useNotification();
-  const user = useGetUser();
   const { md } = useBreakpoint();
   const buttonToUp = useScrollToTopButton();
 
   const INITIAL_COUNT = md ? 15 : 10;
 
+  const updateVisibleData = (trackId: number, newLikes: User[]) => {
+    if (isLikesPage) {
+      setVisibleData((prev) => prev.filter((track) => track.id !== trackId));
+    } else {
+      setVisibleData((prev) => prev.map((track) => (track.id === trackId ? { ...track, likes: newLikes } : track)));
+    }
+  };
+
   useEffect(() => {
-    setVisibleData(listData.slice(0, INITIAL_COUNT));
+    setVisibleData(listData.slice(0, 9));
   }, [listData]);
 
   useEffect(() => {
     const checkSizeWindow = () => {
       const windowHeight = window.innerHeight;
       const documentHeigth = document.documentElement.scrollHeight;
-      if (windowHeight >= documentHeigth) {
+      if (windowHeight >= documentHeigth && visibleData.length < listData.length) {
         showMore();
       }
     };
@@ -62,38 +62,6 @@ export const TracksList = ({ listData }: TracksListProps) => {
       setVisibleData((prev) => [...prev, ...listData.slice(prev.length, prev.length + INITIAL_COUNT)]);
       setLoadingMore(false);
     }, 2000);
-  };
-
-  const likeMutation = useMutation({
-    mutationFn: (trackId: number) => tracksAPI.likeSong(trackId),
-    onSuccess: async () => {
-      showSuccess({ title: t('like-success') });
-      await queryClient.invalidateQueries({ queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST] });
-      await queryClient.invalidateQueries({ queryKey: [LIKES_QUERY_KEYS.LIKES_LIST] });
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
-  const unLikeMutation = useMutation({
-    mutationFn: (songId: number) => tracksAPI.unLikeSong(songId),
-    onSuccess: async () => {
-      showSuccess({ title: t('unlike-success') });
-      await queryClient.invalidateQueries({ queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST] });
-      await queryClient.invalidateQueries({ queryKey: [LIKES_QUERY_KEYS.LIKES_LIST] });
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
-  const handleLikeOrUnLike = (track: ISong) => {
-    if (isIterableArray(getLikeTracksByUsername(track.likes, user!.username))) {
-      unLikeMutation.mutate(track.id);
-    } else {
-      likeMutation.mutate(track.id);
-    }
   };
 
   const scrollToUp = () => {
@@ -131,9 +99,7 @@ export const TracksList = ({ listData }: TracksListProps) => {
                   </div>
 
                   <div className="track-list__right-content">
-                    <button onClick={() => handleLikeOrUnLike(track)} className="track-list__likes">
-                      <Heart className={clsx(isIterableArray(getLikeTracksByUsername(track.likes, user!.username)) ? 'track-list__likes-svg' : 'track-list__likes-not-svg')} />
-                    </button>
+                    <LikesButton updateVisibleData={updateVisibleData} track={track} />
                     <ThreeDotsButton trackId={track.id} allTracksPage playlists={data} />
                   </div>
                 </li>

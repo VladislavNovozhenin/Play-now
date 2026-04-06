@@ -1,0 +1,14 @@
+@use '@/index' as *;
+
+.likes-btn {
+  @include flex(center, center);
+  @include transition(opacity);
+  &:hover {
+    opacity: 0.7;
+  }
+  &__unlike {
+    path {
+      fill: var(--color-greyDarkBg);
+    }
+  }
+}

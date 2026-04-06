@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, HTTP_METHODS, HTTP_STATUS } from '@shared/common/constants';
+import { HTTP_METHODS, } from '@shared/common/constants';
 import { useAppStore } from '@store/useAppStore';
 
 const getRequestHeaders = () => {
@@ -16,16 +16,13 @@ export const getBaseQuery = async (url: string) => {
       method: HTTP_METHODS.GET,
     });
 
-    if (response.status === HTTP_STATUS.UNAUTHORIZED) {
-      localStorage.removeItem(ACCESS_TOKEN);
-      throw new Error('Unauthorized');
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw data;
     }
 
-    if (response.status !== HTTP_STATUS.OK) {
-      throw new Error('error');
-    }
-
-    return await response.json();
+    return data;
   } catch (error) {
     throw error;
   }
@@ -39,20 +36,13 @@ export const postBaseQuery = async (url: string, body?: any, noAuth: boolean = f
       body: JSON.stringify(body ?? {}),
     });
 
-    if (response.status === HTTP_STATUS.UNAUTHORIZED) {
-      localStorage.removeItem(ACCESS_TOKEN);
-      throw new Error('Unauthorized');
-    }
-
-    if (response.status === HTTP_STATUS.NO_CONTENT) {
-      return null;
-    }
+    const data = await response.json();
 
     if (!response.ok) {
-      throw new Error('error');
+      throw data;
     }
 
-    return await response.json();
+    return data;
   } catch (error) {
     throw error;
   }
@@ -65,16 +55,13 @@ export const deleteBaseQuery = async (url: string) => {
       method: HTTP_METHODS.DELETE,
     });
 
-    if (response.status === HTTP_STATUS.UNAUTHORIZED) {
-      localStorage.removeItem(ACCESS_TOKEN);
-      throw new Error('Unauthorized');
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw data;
     }
 
-    if (response.status !== HTTP_STATUS.OK) {
-      throw new Error('error');
-    }
-
-    return response.json();
+    return data;
   } catch (error) {
     throw error;
   }

@@ -21,5 +21,18 @@
   "register-title": "Регистрация",
   "register-success": "Аккаунт создан, вы вошли в систему",
   "required": "Обязательное поле",
-  "up": "Наверх"
+  "up": "Наверх",
+  "errors": {
+    "400": {
+      "like": "Song is already liked",
+      "unLike": "Song is not liked"
+    },
+    "404": {
+      "likesTracks": "Пользователь не найден"
+    },
+    "network": "Нет соединения с сервером",
+    "unknown": "Неизестная ошибка"
+  },
+  "addInPlaylist": "Добавить в плейлист",
+  "removeFromPlaylist": "Удалить из плейлиста"
 }

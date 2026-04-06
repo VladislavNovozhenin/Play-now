@@ -14,19 +14,6 @@
       }
     }
   }
-  &__likes {
-    @include flex(center, center);
-    @include transition(opacity);
-    &:hover {
-      opacity: 0.7;
-    }
-    &-not-svg {
-      path {
-        fill: var(--color-greyDarkBg);
-      }
-    }
-  }
-
   &__id {
     color: var(--color-blackTxt);
     font-size: 1.3rem;

@@ -1,41 +1,41 @@
-export interface IUser {
+export interface User {
   id: number;
   username: string;
   firstName: string;
   lastName: string;
-  playlists: IPlaylist[];
-  artistLikes: IArtist[];
-  albumLikes: IAlbum[];
-  songLikes: ISong[];
+  playlists: Playlist[];
+  artistLikes: Artist[];
+  albumLikes: Album[];
+  songLikes: Song[];
 }
-export interface IAlbum {
+export interface Album {
   id: number;
   name: string;
   image: string;
   createdAt: string;
-  songs: ISong[];
-  artist: IArtist[];
-  likes: IUser;
+  songs: Song[];
+  artist: Artist[];
+  likes: User;
 }
 
-export interface IArtist {
+export interface Artist {
   id: number;
   name: string;
   image: string;
   createdAt: string;
-  album: IAlbum[];
-  likes: IUser;
+  album: Album[];
+  likes: User;
 }
 
-export interface IPlaylist {
+export interface Playlist {
   id: number;
   name: string;
   createdAt: string;
-  user: IUser;
-  songs: ISong[];
+  user: User;
+  songs: Song[];
 }
 
-export interface ISong {
+export interface Song {
   id: number;
   name: string;
   filename: string;
@@ -43,8 +43,17 @@ export interface ISong {
   image: string;
   duration: number;
   createdAt: string;
-  album: IAlbum;
-  artist: IArtist;
-  playlists: IPlaylist[];
-  likes: IUser[];
+  album: Album;
+  artist: Artist;
+  playlists: Playlist[];
+  likes: User[];
+}
+
+export interface ApiError {
+  statusCode: number;
+  message: string;
+}
+
+export interface BaseApiError extends ApiError {
+  error: string;
 }

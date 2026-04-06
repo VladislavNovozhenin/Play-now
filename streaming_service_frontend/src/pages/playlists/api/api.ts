@@ -1,8 +1,9 @@
 import { getBaseQuery, postBaseQuery } from '@shared/api/base-api';
+import type { Playlist } from '@shared/ts/types';
 
 const BASE_URL = import.meta.env.VITE_API;
 
-const getPlaylists = (username: string) => getBaseQuery(`${BASE_URL}/users/${username}/playlists`);
+const getPlaylists = (username: string): Promise<Playlist[]> => getBaseQuery(`${BASE_URL}/users/${username}/playlists`);
 
 const addPlaylist = (name: string) => postBaseQuery(`${BASE_URL}/playlists`, { name });
 
@@ -11,7 +12,7 @@ const addTrackInPlaylist = (playlistId: string, trackId: string) => postBaseQuer
 export const playlistsAPI = {
   getPlaylists,
   addPlaylist,
-  addTrackInPlaylist
+  addTrackInPlaylist,
 };
 
 export const PLAYLISTS_QUERY_KEYS = {

@@ -25,19 +25,6 @@
   &__right-content {
     @include flex(center, center, 10px);
   }
-
-  &__likes {
-    @include flex(center, center);
-    @include transition(opacity);
-    &:hover {
-      opacity: 0.7;
-    }
-    &-not-svg {
-      path {
-        fill: var(--color-greyDarkBg);
-      }
-    }
-  }
   &__img {
     position: relative;
     width: 60px;
