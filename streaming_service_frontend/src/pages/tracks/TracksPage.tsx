@@ -7,20 +7,13 @@ import { TracksList } from '@shared/components/tracks-list/TracksList';
 import type { Song } from '@shared/ts/types';
 import { useNotification } from '@shared/hooks/useNotification';
 import { handleApiError } from '@shared/helpers/helpers';
-import { useEffect, useState } from 'react';
-import { AddTrackModal } from '@shared/components/add-track-modal/AddTrackModal';
-import { RemoveTrackModal } from '@shared/components/remove-track-modal/RemoveTrackModal';
+import { useEffect } from 'react';
 
 const { useBreakpoint } = Grid;
 export const TracksPage = () => {
   const { t } = useTranslation('common');
   const { xl, md } = useBreakpoint();
   const { showError } = useNotification();
-  const [isOpenAddModal, setIsOpenAddModal] = useState(false);
-  const [isOpenRemoveModal, setIsOpenRemoveModal] = useState(false);
-
-  const toogleAddModal = () => setIsOpenAddModal((prev) => !prev);
-  const toogleRemoveModal = () => setIsOpenRemoveModal((prev) => !prev);
 
   const { data, error } = useQuery<Song[], unknown>({
     queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST],
@@ -38,8 +31,6 @@ export const TracksPage = () => {
     <>
       {md && <h1 className="title">{t('tracks')}</h1>}
       {xl ? <TracksTable tableData={data ?? []} /> : <TracksList listData={data ?? []} />}
-      {isOpenAddModal && <AddTrackModal open={isOpenAddModal} onClose={toogleAddModal} />}
-      {isOpenRemoveModal && <RemoveTrackModal open={isOpenRemoveModal} onClose={toogleRemoveModal} />}
     </>
   );
 };

@@ -1,9 +1,10 @@
 import { Modal } from 'antd';
 
 type RemoveTrackModalProps = {
-  open: boolean;
   onClose: () => void;
+  isOpen: boolean;
+  trackId: number;
 };
-export const RemoveTrackModal = ({ open, onClose }: RemoveTrackModalProps) => {
-  return <Modal open={open} onCancel={onClose} />;
+export const RemoveTrackModal = ({ onClose, isOpen, trackId }: RemoveTrackModalProps) => {
+  return <Modal open={isOpen} onCancel={onClose} />;
 };

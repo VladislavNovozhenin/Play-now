@@ -19,6 +19,8 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
   const user = useGetUser();
   const { showSuccess, showError } = useNotification();
 
+  const isLiked = isIterableArray(getLikeTracksByUsername(track.likes, user!.username));
+
   const likeMutation = useMutation({
     mutationFn: (songId: number) => tracksAPI.likeSong(songId),
     onSuccess: async (response) => {
@@ -32,7 +34,7 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
 
   const unLikeMutation = useMutation({
     mutationFn: (trackId: number) => tracksAPI.unLikeSong(trackId),
-    onSuccess: async (response) => {
+    onSuccess: (response) => {
       showSuccess({ title: t('unlike-success') });
       updateVisibleData(track.id, response.likes);
     },
@@ -42,7 +44,7 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
   });
 
   const handleLikeOrUnLike = (track: Song) => {
-    if (isIterableArray(getLikeTracksByUsername(track.likes, user!.username))) {
+    if (isLiked) {
       unLikeMutation.mutate(track.id);
     } else {
       likeMutation.mutate(track.id);
@@ -50,7 +52,7 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
   };
   return (
     <button onClick={() => handleLikeOrUnLike(track)} className="likes-btn">
-      <Heart className={clsx(isIterableArray(getLikeTracksByUsername(track.likes, user!.username)) ? 'likes-btn__like' : 'likes-btn__unlike')} />
+      <Heart className={clsx(isLiked ? 'likes-btn__like' : 'likes-btn__unlike')} />
     </button>
   );
 };

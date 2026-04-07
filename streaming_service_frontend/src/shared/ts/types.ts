@@ -57,3 +57,5 @@ export interface ApiError {
 export interface BaseApiError extends ApiError {
   error: string;
 }
+
+export type ModalState = { type: 'add'; trackId: number } | { type: 'remove'; trackId: number } | { type: 'createPlaylist'; trackId: number } | null;

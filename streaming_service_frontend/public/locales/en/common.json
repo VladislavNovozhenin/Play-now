@@ -2,6 +2,7 @@
   "header-placeholder": "Что будем искать?",
   "logout": "Выйти",
   "playlists": "Плейлисты",
+  "playlist": "Плейлист",
   "tracks": "Трэки",
   "like-songs": "Любимые песни",
   "name": "Название",
@@ -33,6 +34,24 @@
     "network": "Нет соединения с сервером",
     "unknown": "Неизестная ошибка"
   },
-  "addInPlaylist": "Добавить в плейлист",
-  "removeFromPlaylist": "Удалить из плейлиста"
+  "add-in-playlist": "Добавить в плейлист",
+  "remove-from-playlist": "Удалить из плейлиста",
+  "count-tracks": {
+    "zero": "Нет треков",
+    "one": "{{count}} трек",
+    "few": "{{count}} трека",
+    "other": "{{count}} треков"
+  },
+  "add-btn": "Добавить",
+  "cancel-btn": "Отмена",
+  "delete-btn": "Удалить",
+  "add-track-modal": {
+    "empty": "У вас пока нет плейлистов",
+    "create-first-playlist": "Создать первый плейлист"
+  },
+  "create-playlist-modal": {
+    "enter-playlist-name": "Введите имя плейлиста",
+    "create-playlist": "Создать плейлист"
+  },
+  "create-playlist-success": "Плейлист успешно создан"
 }
