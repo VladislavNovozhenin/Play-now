@@ -1,6 +1,6 @@
 import dayjs from '@shared/lib/dayjs';
 import { DEFAULT_DATE_FORMAT, SERVER_DATE_FORMAT } from './constants';
-import type { IPlaylist, IUser } from '@shared/ts/types';
+import type { Playlist, User } from '@shared/ts/types';
 export const isNullOrUndefined = (value: unknown): value is null | undefined => value == null;
 
 export const isIterableArray = (value: any): boolean => Array.isArray(value) && !!value.length;
@@ -24,9 +24,23 @@ export const formatMilliSecondsToMS = (ms: number) => {
   return `${minutes}:${paddedSeconds}`;
 };
 
-//Проверяем есть ли трек в каком-либо playlist
-export const findTrackInPlaylists = (playlists: IPlaylist[], trackId: number) => {
-  return playlists.some((playlist) => playlist.songs.some((track) => track.id === trackId));
+export const findTrackInPlaylists = (playlists: Playlist[], trackId: number) => {
+
+  const playlistsWithTrack: Playlist[] = [];
+  const playlistsWithoutTrack: Playlist[] = [];
+  for (let playlist of playlists) {
+    const isFind = playlist.songs.some((track) => track.id === trackId);
+    if (isFind) {
+      playlistsWithTrack.push(playlist);
+    } else {
+      playlistsWithoutTrack.push(playlist);
+    }
+  }
+  return {
+    playlistsWithTrack,
+    playlistsWithoutTrack,
+    findLength: playlistsWithTrack.length,
+  };
 };
 
-export const getLikeTracksByUsername = (likeTracks: IUser[], username: string) => likeTracks.filter((track) => track.username === username);
+export const getLikeTracksByUsername = (likeTracks: User[], username: string) => likeTracks.filter((track) => track.username === username);

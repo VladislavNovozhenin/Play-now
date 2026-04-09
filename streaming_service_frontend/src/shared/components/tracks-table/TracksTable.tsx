@@ -21,6 +21,8 @@ import { useAutoLoadOnResize } from '@shared/hooks/useAutoLoadOnResize';
 import { AddTrackModal } from '../add-track-modal/AddTrackModal';
 import { RemoveTrackModal } from '../remove-track-modal/RemoveTrackModal';
 import { CreatePlaylistModal } from '../create-playlist-modal/CreatePlaylistModal';
+import { handleApiError } from '@shared/helpers/helpers';
+import { useNotification } from '@shared/hooks/useNotification';
 
 type TracksTableProps = {
   tableData: Song[];
@@ -28,7 +30,7 @@ type TracksTableProps = {
 };
 export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
   const { t } = useTranslation('common');
-  const { data } = UsePlaylistsList();
+  const { data: playlists, error } = UsePlaylistsList();
   const [visibleData, setVisibleData] = useState<Song[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const buttonToUp = useScrollToTopButton();
@@ -36,11 +38,20 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
   const minVisibleRef = useRef<number>(INITIAL_COUNT);
   const isShowMore = visibleData.length < tableData.length && visibleData.length >= minVisibleRef.current;
   const [modalType, setModalType] = useState<ModalState>(null);
+  const [trackId, setTrackId] = useState<number | null>(null);
+  const { showError } = useNotification();
 
   const handleOpenModal = (type: ModalState) => {
     setModalType(type);
   };
-  const handleCloseModal = () => setModalType(null);
+  const handleCloseModal = () => {
+    setModalType(null);
+    setTrackId(null);
+  };
+
+  const handleSetTrackId = (value: number) => {
+    setTrackId(value);
+  };
 
   useAutoLoadOnResize({ isShowMore, visibleData, showMore });
 
@@ -55,6 +66,13 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
   useEffect(() => {
     setVisibleData(tableData.slice(0, INITIAL_COUNT));
   }, [tableData]);
+
+  useEffect(() => {
+    if (error) {
+      handleApiError(error, showError, t);
+      handleCloseModal();
+    }
+  }, [error]);
 
   function showMore() {
     setLoadingMore(true);
@@ -132,10 +150,10 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
         title: '',
         dataIndex: 'actions',
         key: 'actions',
-        render: (_, track) => <ThreeDotsButton openModal={handleOpenModal} trackId={track.id} allTracksPage playlists={data} />,
+        render: (_, track) => <ThreeDotsButton setTrackId={handleSetTrackId} openModal={handleOpenModal} trackId={track.id} />,
       },
     ],
-    [t, data]
+    [t, playlists, error]
   );
   return (
     <>
@@ -166,25 +184,14 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
           <span>{t('up')}</span>
         </button>
       )}
-      {modalType?.type === 'add' && (
-        <AddTrackModal
-          playlists={data}
-          isOpen={modalType.type === 'add'}
-          onClose={handleCloseModal}
-          openModal={handleOpenModal}
-          trackId={modalType.trackId}
-        />
+      {modalType === 'add' && !isNullOrUndefined(trackId) && !isNullOrUndefined(playlists) && (
+        <AddTrackModal isOpen={modalType === 'add'} onClose={handleCloseModal} openModal={handleOpenModal} trackId={trackId} playlists={playlists} />
       )}
-      {modalType?.type === 'remove' && (
-        <RemoveTrackModal isOpen={modalType.type === 'remove'} onClose={handleCloseModal} trackId={modalType.trackId} />
+      {modalType === 'remove' && !isNullOrUndefined(trackId) && !isNullOrUndefined(playlists) && (
+        <RemoveTrackModal isOpen={modalType === 'remove'} onClose={handleCloseModal} trackId={trackId} playlists={playlists} />
       )}
-      {modalType?.type === 'createPlaylist' && (
-        <CreatePlaylistModal
-          isOpen={modalType.type === 'createPlaylist'}
-          onClose={handleCloseModal}
-          openModal={handleOpenModal}
-          trackId={modalType.trackId}
-        />
+      {modalType === 'createPlaylist' && !isNullOrUndefined(trackId) && !isNullOrUndefined(playlists) && (
+        <CreatePlaylistModal isOpen={modalType === 'createPlaylist'} onClose={handleCloseModal} openModal={handleOpenModal} />
       )}
     </>
   );

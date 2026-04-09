@@ -94,7 +94,7 @@ export const TracksList = ({ listData, isLikesPage }: TracksListProps) => {
 
                   <div className="track-list__right-content">
                     <LikesButton updateVisibleData={updateVisibleData} track={track} />
-                    <ThreeDotsButton openModal={toogleModalType} trackId={track.id} allTracksPage playlists={data} />
+                    {/* <ThreeDotsButton openModal={toogleModalType} trackId={track.id} allTracksPage playlists={data} /> */}
                   </div>
                 </li>
                 {index !== listData.length - 1 && <Divider />}

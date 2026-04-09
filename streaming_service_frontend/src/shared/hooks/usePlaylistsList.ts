@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const UsePlaylistsList = () => {
   const user = useGetUser();
-  return useQuery<Playlist[]>({
+  return useQuery<Playlist[], unknown>({
     queryKey: [PLAYLISTS_QUERY_KEYS.PLAYLISTS_LIST],
     queryFn: () => playlistsAPI.getPlaylists(user!.username),
     retry: false,

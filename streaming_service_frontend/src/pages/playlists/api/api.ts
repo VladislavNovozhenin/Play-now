@@ -7,12 +7,15 @@ const getPlaylists = (username: string): Promise<Playlist[]> => getBaseQuery(`${
 
 const createPlaylist = (name: string) => postBaseQuery(`${BASE_URL}/playlists`, { name });
 
-const addTrackInPlaylist = (playlistId: string, trackId: string) => postBaseQuery(`${BASE_URL}/${playlistId}/add/${trackId}`);
+const addTrackInPlaylist = (playlistId: number, trackId: number) => postBaseQuery(`${BASE_URL}/playlists/${playlistId}/add/${trackId}`);
+
+const removeTrackFromPlaylist = (playlistId: number, trackId: number) => postBaseQuery(`${BASE_URL}/playlists/${playlistId}/remove/${trackId}`);
 
 export const playlistsAPI = {
   getPlaylists,
   createPlaylist,
   addTrackInPlaylist,
+  removeTrackFromPlaylist,
 };
 
 export const PLAYLISTS_QUERY_KEYS = {

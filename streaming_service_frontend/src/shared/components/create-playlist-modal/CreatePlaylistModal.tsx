@@ -3,16 +3,15 @@ import { handleApiError } from '@shared/helpers/helpers';
 import { useNotification } from '@shared/hooks/useNotification';
 import type { ApiError, ModalState } from '@shared/ts/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Form, Modal } from 'antd';
+import { Form, Input, Modal } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 type CreatePlaylistModalProps = {
   onClose: () => void;
   isOpen: boolean;
-  trackId: number;
   openModal: (type: ModalState) => void;
 };
-export const CreatePlaylistModal = ({ onClose, isOpen, trackId, openModal }: CreatePlaylistModalProps) => {
+export const CreatePlaylistModal = ({ onClose, isOpen, openModal }: CreatePlaylistModalProps) => {
   const { t } = useTranslation('common');
   const [form] = Form.useForm<{ name: string }>();
   const { showError, showSuccess } = useNotification();
@@ -23,7 +22,7 @@ export const CreatePlaylistModal = ({ onClose, isOpen, trackId, openModal }: Cre
     onSuccess: async () => {
       showSuccess({ title: t('create-playlist-success') });
       await queryClient.invalidateQueries({ queryKey: [PLAYLISTS_QUERY_KEYS.PLAYLISTS_LIST] });
-      openModal({ type: 'add', trackId });
+      openModal('add');
     },
     onError: (error: ApiError) => {
       handleApiError(error, showError, t);
@@ -39,7 +38,7 @@ export const CreatePlaylistModal = ({ onClose, isOpen, trackId, openModal }: Cre
     <Modal open={isOpen} onCancel={onClose} title={t('create-playlist-modal.create-playlist')} mask footer={null}>
       <Form form={form} onFinish={handleSumbit}>
         <Form.Item name='name'>
-          <input placeholder={t('create-playlist-modal.enter-playlist-name')} />
+          <Input placeholder={t('create-playlist-modal.enter-playlist-name')} />
         </Form.Item>
         <button type="submit">{t('create-playlist-modal.create-playlist')}</button>
       </Form>

@@ -1,42 +1,55 @@
 import { Dropdown, type MenuProps } from 'antd';
 import ThreeDots from '@shared/assets/three-dots.svg?react';
 import { useMemo, useState } from 'react';
-import type { ModalState, Playlist } from '@shared/ts/types';
+import type { ModalState } from '@shared/ts/types';
 import { findTrackInPlaylists, isNullOrUndefined } from '@shared/common/helpers';
 import { useTranslation } from 'react-i18next';
 import './three-dots-button.scss';
+import { UsePlaylistsList } from '@shared/hooks/usePlaylistsList';
 
 type ThreeDotsButtonProps = {
-  trackId: number;
-  allTracksPage?: boolean;
-  playlists?: Playlist[];
+  trackId: number | null;
+  playlistPage?: boolean;
   openModal: (type: ModalState) => void;
+  setTrackId: (value: number) => void;
 };
 
-const ThreeDotsButton = ({ trackId, allTracksPage, playlists, openModal }: ThreeDotsButtonProps) => {
-  const [isMenuItemValue, setIsMenuItemValue] = useState<boolean | null>(true);
+type MenuState = {
+  isFindOneTrack: boolean;
+  findTracksValue: number;
+} | null;
+
+const ThreeDotsButton = ({ trackId, playlistPage, openModal, setTrackId }: ThreeDotsButtonProps) => {
+  const { data: playlists } = UsePlaylistsList();
+  const [menuItemValue, setMenuItemValue] = useState<MenuState>(null);
   const { t } = useTranslation('common');
   const handleAddTrackInPlaylist = () => {
-    openModal({ type: 'add', trackId });
+    openModal('add');
+    setTrackId(trackId!);
   };
   const handleRemoveTrackFromPlaylist = () => {
-    openModal({ type: 'remove', trackId });
+    openModal('remove');
+    setTrackId(trackId!);
   };
 
   const menuItems = useMemo<MenuProps['items']>(() => {
+    if (isNullOrUndefined(menuItemValue)) return [{ label: 'нет данных', key: 'no-data', disabled: true }];
+
     return [
       {
-        key: isNullOrUndefined(isMenuItemValue) ? 'no-data' : isMenuItemValue ? 'remove' : 'add',
-        label: isNullOrUndefined(isMenuItemValue) ? 'нет данных' : isMenuItemValue ? t('remove-from-playlist') : t('add-in-playlist'),
-        onClick: isNullOrUndefined(isMenuItemValue) ? undefined : isMenuItemValue ? handleRemoveTrackFromPlaylist : handleAddTrackInPlaylist,
+        label: t('add-in-playlist'),
+        key: 'add',
+        onClick: handleAddTrackInPlaylist,
+        disabled: menuItemValue.isFindOneTrack && menuItemValue.findTracksValue === playlists?.length,
       },
+      { label: t('remove-from-playlist'), key: 'remove', onClick: handleRemoveTrackFromPlaylist, disabled: !menuItemValue },
     ];
-  }, [isMenuItemValue]);
+  }, [menuItemValue]);
 
   const handleOpenChange = (open: boolean) => {
-    if (allTracksPage && open) {
-      const isTrackInPlaylists = playlists ? findTrackInPlaylists(playlists, trackId) : null;
-      setIsMenuItemValue(isTrackInPlaylists);
+    if (!playlistPage && open && !isNullOrUndefined(playlists) && !isNullOrUndefined(trackId)) {
+      const { findLength } = findTrackInPlaylists(playlists, trackId);
+      setMenuItemValue({ isFindOneTrack: findLength !== 0, findTracksValue: findLength });
     }
   };
   return (
