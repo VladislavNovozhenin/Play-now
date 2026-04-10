@@ -1,0 +1,23 @@
+@use '@/index' as *;
+
+.playlists-list {
+  @include flex(center, center, 5px, column);
+  &__item {
+    width: 100%;
+  }
+  &__btn {
+    @include flex(start, center, 10px);
+    width: 100%;
+    padding: 8px 12px !important;
+    background-color: var(--color-greyLightBg) !important;
+    &-selected {
+      background-color: var(--color-greyBg) !important;
+    }
+    &:hover {
+      background-color: var(--color-greyBg) !important;
+    }
+  }
+  &__info {
+    @include flex(center, start, 5px, column);
+  }
+}

@@ -7,6 +7,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import './add-track-modal.scss';
+import { PlaylistsListModal } from '../playlists-list-modal/PlaylistsListModal';
 
 type AddTrackModalProps = {
   onClose: () => void;
@@ -49,32 +51,34 @@ export const AddTrackModal = ({ onClose, isOpen, trackId, openModal, playlists }
   };
 
   return (
-    <Modal open={isOpen} onCancel={onClose} footer={null} title={t('add-in-playlist')} mask>
+    <Modal className="add-track-modal" open={isOpen} onCancel={onClose} footer={null} title={t('add-in-playlist')} mask>
       {isIterableArray(playlists) ? (
         <>
-          <ul>
-            {playlistsWithoutTrack.map((playlist) => {
-              return (
-                <li key={playlist.id}>
-                  <button
-                    style={{ backgroundColor: playlist.id === selectedPlaylistId ? 'grey' : 'transparent' }}
-                    onClick={() => handleChangePlaylistId(playlist.id)}>
-                    {playlist.name}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-          <div>
-            {!isNullOrUndefined(selectedPlaylistId) && <button onClick={handleAddTrack}>{t('add-btn')}</button>}
-            <button onClick={onClose}>{t('cancel-btn')}</button>
+          <PlaylistsListModal
+            playlists={playlistsWithoutTrack}
+            handleChangePlaylistId={handleChangePlaylistId}
+            selectedPlaylistId={selectedPlaylistId}
+          />
+          <div className="add-track-modal__footer">
+            {!isNullOrUndefined(selectedPlaylistId) && (
+              <button className="add-track-modal__btn-add-track" onClick={handleAddTrack}>
+                {t('add-btn')}
+              </button>
+            )}
+            <button className="add-track-modal__btn-cancel" onClick={onClose}>
+              {t('cancel-btn')}
+            </button>
           </div>
         </>
       ) : (
         <>
-          <p>{t('add-track-modal.empty')}</p>
-          <button onClick={() => openModal('createPlaylist')}>{t('add-track-modal.create-first-playlist')}</button>
-          <button onClick={onClose}>{t('cancel-btn')}</button>
+          <p className="add-track-modal__empty-descr">{t('add-track-modal.empty')}</p>
+          <button className="add-track-modal__btn-add-playlist" onClick={() => openModal('createPlaylist')}>
+            {t('add-track-modal.create-first-playlist')}
+          </button>
+          <button className="add-track-modal__btn-cancel" onClick={onClose}>
+            {t('cancel-btn')}
+          </button>
         </>
       )}
     </Modal>

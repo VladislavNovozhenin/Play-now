@@ -41,21 +41,7 @@
 html {
   box-sizing: border-box;
   font-size: 14px;
-  overflow-y: scroll;
 }
-
-// html::-webkit-scrollbar-thumb {
-//   background-color: var(--color-greyLightBg);
-//   border-radius: 8px;
-// }
-
-// html::-webkit-scrollbar-thumb:hover {
-//   background-color: var(--color-greyBg);
-// }
-
-// html::-webkit-scrollbar-track {
-//   background: transparent;
-// }
 
 *,
 *::after,
@@ -68,8 +54,6 @@ body {
   color: var(--color-blacktxt);
   font-size: 1rem;
   background-color: var(--color-white);
-  // scrollbar-width: thin;
-  // scrollbar-color: var(--color-greyBg) transparent;
 }
 
 //Reset
@@ -142,6 +126,11 @@ button {
 
 .ant-table-cell-row-hover {
   background-color: var(--color-greyLightBg) !important;
+}
+
+.ant-modal,
+.ant-modal * {
+  font-family: 'Circular', sans-serif !important;
 }
 
 .ant-modal-close {

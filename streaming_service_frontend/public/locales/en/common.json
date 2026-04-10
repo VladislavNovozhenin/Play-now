@@ -37,10 +37,10 @@
   "add-in-playlist": "Добавить в плейлист",
   "remove-from-playlist": "Удалить из плейлиста",
   "count-tracks": {
-    "zero": "Нет треков",
-    "one": "{{count}} трек",
-    "few": "{{count}} трека",
-    "other": "{{count}} треков"
+    "count-tracks_zero": "Нет треков",
+    "count-tracks_one": "{{count}} трек",
+    "count-tracks_few": "{{count}} трека",
+    "count-tracks_other": "{{count}} треков"
   },
   "add-btn": "Добавить",
   "cancel-btn": "Отмена",
