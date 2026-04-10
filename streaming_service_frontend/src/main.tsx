@@ -8,7 +8,7 @@ import { ConfigProvider } from 'antd';
 import { QueryProvider } from '@app/components/query-provider/QueryProvider.tsx';
 
 import 'normalize.css';
-import './index.scss';
+import '@shared/styles/index.scss';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

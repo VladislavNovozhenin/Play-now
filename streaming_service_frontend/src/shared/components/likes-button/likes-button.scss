@@ -1,4 +1,4 @@
-@use '@/index' as *;
+@use '@shared/styles/mixin' as *;
 
 .likes-btn {
   @include flex(center, center);

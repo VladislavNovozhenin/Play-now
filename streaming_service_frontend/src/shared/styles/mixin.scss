@@ -1,0 +1,11 @@
+@mixin flex($justify: flex-start, $align: center, $gap: 0, $direction: row) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+  flex-direction: $direction;
+}
+
+@mixin transition($property: all) {
+  transition: $property 0.2s ease-in-out;
+}

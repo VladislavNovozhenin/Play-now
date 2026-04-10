@@ -42,7 +42,7 @@ const ThreeDotsButton = ({ trackId, playlistPage, openModal, setTrackId }: Three
         onClick: handleAddTrackInPlaylist,
         disabled: menuItemValue.isFindOneTrack && menuItemValue.findTracksValue === playlists?.length,
       },
-      { label: t('remove-from-playlist'), key: 'remove', onClick: handleRemoveTrackFromPlaylist, disabled: !menuItemValue },
+      { label: t('remove-from-playlist'), key: 'remove', onClick: handleRemoveTrackFromPlaylist, disabled: !menuItemValue.findTracksValue },
     ];
   }, [menuItemValue]);
 

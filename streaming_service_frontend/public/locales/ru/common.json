@@ -44,7 +44,7 @@
   },
   "add-btn": "Добавить",
   "cancel-btn": "Отмена",
-  "delete-btn": "Удалить",
+  "remove-btn": "Удалить",
   "add-track-modal": {
     "empty": "У вас пока нет плейлистов",
     "create-first-playlist": "Создать первый плейлист"

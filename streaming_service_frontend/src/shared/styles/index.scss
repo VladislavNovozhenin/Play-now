@@ -1,3 +1,7 @@
+@use '@shared/styles/mixin' as *;
+@use '@shared/styles/variables';
+@use '@shared/styles/ant';
+
 @font-face {
   font-family: 'Circular';
   font-style: normal;
@@ -25,19 +29,6 @@
     url('/fonts/CircularStd-Medium.woff') format('woff');
 }
 
-:root {
-  --color-blackTxt: #11253d;
-  --color-greyTxt: #a4a4a4;
-  --color-lightGreyTxt: #c4c4c4;
-  --color-greyLightBg: #f5f5f5;
-  --color-greyBg: #e8e8e8;
-  --color-greyDarkBg: #aaaaaa;
-  --color-promo: #fc6d3e;
-  --color-promoLight: #fc906b;
-  --color-white: #fff;
-  --transition-duration: 0.3s;
-}
-
 html {
   box-sizing: border-box;
   font-size: 14px;
@@ -51,12 +42,11 @@ html {
 
 body {
   font-family: 'Circular', sans-serif;
-  color: var(--color-blacktxt);
+  color: var(--color-blackTxt);
   font-size: 1rem;
   background-color: var(--color-white);
 }
 
-//Reset
 input,
 textarea {
   font-family: inherit;
@@ -89,61 +79,6 @@ button {
   background: transparent;
   cursor: pointer;
   border: none;
-}
-
-//Mixin
-@mixin flex($justify: flex-start, $align: center, $gap: 0, $direction: row) {
-  display: flex;
-  justify-content: $justify;
-  align-items: $align;
-  gap: $gap;
-  flex-direction: $direction;
-}
-
-@mixin transition($property: all) {
-  transition: $property 0.2s ease-in-out;
-}
-
-//Custom ant style
-.ant-table-cell {
-  @include transition(background-color);
-  background-color: transparent !important;
-  color: var(--color-greyTxt) !important;
-  font-weight: 400 !important;
-  padding: 10px !important;
-  &:first-of-type {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-  &:last-of-type {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-  }
-  &::before {
-    content: none !important;
-  }
-}
-
-.ant-table-cell-row-hover {
-  background-color: var(--color-greyLightBg) !important;
-}
-
-.ant-modal,
-.ant-modal * {
-  font-family: 'Circular', sans-serif !important;
-}
-
-.ant-modal-close {
-  display: none;
-}
-
-.ant-modal-title {
-  font-size: 2rem !important;
-  color: var(--color-blacktxt) !important;
-}
-
-.ant-divider {
-  margin: 0 !important;
 }
 
 .infinite-scroll-component__outerdiv {

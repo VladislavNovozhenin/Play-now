@@ -1,0 +1,44 @@
+@use '@shared/styles/mixin' as *;
+@use '@shared/styles/variables';
+
+.ant-table-cell {
+  @include transition(background-color);
+  background-color: transparent !important;
+  color: var(--color-greyTxt) !important;
+  font-weight: 400 !important;
+  padding: 10px !important;
+  &:first-of-type {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  &:last-of-type {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  &::before {
+    content: none !important;
+  }
+}
+
+.ant-table-cell-row-hover {
+  background-color: var(--color-greyLightBg) !important;
+}
+
+.ant-modal,
+.ant-modal * {
+  font-family: 'Circular', sans-serif !important;
+  color: var(--color-blackTxt);
+}
+
+.ant-modal-close {
+  display: none;
+}
+
+.ant-modal-title {
+  font-size: 2rem !important;
+  color: var(--color-blackTxt) !important;
+}
+
+.ant-divider {
+  margin: 0 !important;
+}

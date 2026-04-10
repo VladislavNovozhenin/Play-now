@@ -7,6 +7,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PlaylistsListModal } from '../playlists-list-modal/PlaylistsListModal';
+import './remove-track-modal.scss';
 
 type RemoveTrackModalProps = {
   onClose: () => void;
@@ -16,7 +18,7 @@ type RemoveTrackModalProps = {
 };
 export const RemoveTrackModal = ({ onClose, isOpen, trackId, playlists }: RemoveTrackModalProps) => {
   const { playlistsWithTrack } = findTrackInPlaylists(playlists, trackId);
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
   const { showError, showSuccess } = useNotification();
   const queryClient = useQueryClient();
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
@@ -48,23 +50,17 @@ export const RemoveTrackModal = ({ onClose, isOpen, trackId, playlists }: Remove
   };
 
   return (
-    <Modal title={t('remove-from-playlist')} open={isOpen} onCancel={onClose} footer={null} mask>
-      <ul>
-        {playlistsWithTrack.map((playlist) => {
-          return (
-            <li key={playlist.id}>
-              <button
-                style={{ backgroundColor: playlist.id === selectedPlaylistId ? 'grey' : 'transparent' }}
-                onClick={() => handleChangePlaylistId(playlist.id)}>
-                {playlist.name}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      <div>
-        {!isNullOrUndefined(selectedPlaylistId) && <button onClick={handleRemoveTrack}>{t('delete-btn')}</button>}
-        <button onClick={onClose}>{t('cancel-btn')}</button>
+    <Modal className="remove-track-modal" title={t('remove-from-playlist')} open={isOpen} onCancel={onClose} footer={null} mask>
+      <PlaylistsListModal playlists={playlistsWithTrack} handleChangePlaylistId={handleChangePlaylistId} selectedPlaylistId={selectedPlaylistId} />
+      <div className="remove-track-modal__footer">
+        {!isNullOrUndefined(selectedPlaylistId) && (
+          <button className="remove-track-modal__btn-remove-track" onClick={handleRemoveTrack}>
+            {t('remove-btn')}
+          </button>
+        )}
+        <button className="remove-track-modal__btn-cancel" onClick={onClose}>
+          {t('cancel-btn')}
+        </button>
       </div>
     </Modal>
   );

@@ -19,12 +19,9 @@ export const PlaylistsListModal = ({ playlists, handleChangePlaylistId, selected
             <button
               className={clsx('playlists-list__btn', playlist.id === selectedPlaylistId && 'playlists-list__btn-selected')}
               onClick={() => handleChangePlaylistId(playlist.id)}>
-              <PlaylistSvg width={45} height={45} />
+              <PlaylistSvg width={50} height={50} />
               <div className="playlists-list__info">
-                <div>
-                  <span>{t('playlist')}</span>
-                  <span>{playlist.name}</span>
-                </div>
+                <span>{playlist.name}</span>
                 <span>
                   {playlist.songs.length > 0 ? t('count-tracks.count-tracks', { count: playlist.songs.length }) : t('count-tracks.count-tracks_zero')}
                 </span>

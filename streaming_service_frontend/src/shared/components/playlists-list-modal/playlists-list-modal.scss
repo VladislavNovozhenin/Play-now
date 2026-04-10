@@ -1,7 +1,26 @@
-@use '@/index' as *;
+@use '@shared/styles/mixin' as *;
 
 .playlists-list {
   @include flex(center, center, 5px, column);
+  margin-bottom: 15px;
+  max-height: 500px;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-greyLightBg);
+    border-radius: 8px;
+    &:hover {
+      background-color: var(--color-greyBg);
+    }
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-greyBg) transparent;
   &__item {
     width: 100%;
   }
@@ -19,5 +38,9 @@
   }
   &__info {
     @include flex(center, start, 5px, column);
+    span:last-of-type {
+      color: var(--color-promoLight);
+      font-size: 1rem;
+    }
   }
 }

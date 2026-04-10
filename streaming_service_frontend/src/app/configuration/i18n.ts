@@ -6,7 +6,7 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: 'ru',
     debug: false,
     interpolation: {
       escapeValue: false, // react already safes from xss
