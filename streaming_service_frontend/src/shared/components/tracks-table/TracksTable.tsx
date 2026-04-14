@@ -8,50 +8,30 @@ import { formatDate, formatMilliSecondsToMS, isNullOrUndefined } from '@shared/c
 import { NO_DATA } from '@shared/common/constants';
 import './tracks-table.scss';
 import ThreeDotsButton from '@shared/components/three-dots-button/ThreeDotsButton';
-import { UsePlaylistsList } from '@shared/hooks/usePlaylistsList';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Spin } from 'antd';
+import { Spin, type MenuProps } from 'antd';
 import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
 import { UpOutlined } from '@ant-design/icons';
-import type { Song, Album, User, ModalState } from '@shared/ts/types';
+import type { Song, Album, User } from '@shared/ts/types';
 
 import { LikesButton } from '../likes-button/LikesButton';
 import { useAutoLoadOnResize } from '@shared/hooks/useAutoLoadOnResize';
-import { AddTrackModal } from '../add-track-modal/AddTrackModal';
-import { RemoveTrackModal } from '../remove-track-modal/RemoveTrackModal';
-import { CreatePlaylistModal } from '../create-playlist-modal/CreatePlaylistModal';
-import { handleApiError } from '@shared/helpers/helpers';
-import { useNotification } from '@shared/hooks/useNotification';
 
 type TracksTableProps = {
   tableData: Song[];
+  getMenuItems: (trackId: number) => MenuProps['items'];
   isLikesPage?: boolean;
 };
-export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
+export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTableProps) => {
   const { t } = useTranslation('common');
-  const { data: playlists, error } = UsePlaylistsList();
+
   const [visibleData, setVisibleData] = useState<Song[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const buttonToUp = useScrollToTopButton();
   const INITIAL_COUNT = 9;
   const minVisibleRef = useRef<number>(INITIAL_COUNT);
   const isShowMore = visibleData.length < tableData.length && visibleData.length >= minVisibleRef.current;
-  const [modalType, setModalType] = useState<ModalState>(null);
-  const [trackId, setTrackId] = useState<number | null>(null);
-  const { showError } = useNotification();
-
-  const handleOpenModal = (type: ModalState) => {
-    setModalType(type);
-  };
-  const handleCloseModal = () => {
-    setModalType(null);
-    setTrackId(null);
-  };
-
-  const handleSetTrackId = (value: number) => {
-    setTrackId(value);
-  };
 
   useAutoLoadOnResize({ isShowMore, visibleData, showMore });
 
@@ -66,13 +46,6 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
   useEffect(() => {
     setVisibleData(tableData.slice(0, INITIAL_COUNT));
   }, [tableData]);
-
-  useEffect(() => {
-    if (error) {
-      handleApiError(error, showError, t);
-      handleCloseModal();
-    }
-  }, [error]);
 
   function showMore() {
     setLoadingMore(true);
@@ -100,7 +73,7 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
         render: (id: number) => <span className="track-table__id">{id}</span>,
       },
       {
-        title: t('name'),
+        title: t('tracks-table.name'),
         dataIndex: 'name',
         key: 'name',
         render: (_, track) => (
@@ -118,7 +91,7 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
         ),
       },
       {
-        title: t('album'),
+        title: t('tracks-table.album'),
         dataIndex: 'album',
         key: 'album',
         render: (album: Album) => <span className="track-table__album">{album.name}</span>,
@@ -150,10 +123,10 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
         title: '',
         dataIndex: 'actions',
         key: 'actions',
-        render: (_, track) => <ThreeDotsButton setTrackId={handleSetTrackId} openModal={handleOpenModal} trackId={track.id} />,
+        render: (_, track) => <ThreeDotsButton getMenuItems={getMenuItems} trackId={track.id} />,
       },
     ],
-    [t, playlists, error]
+    [getMenuItems]
   );
   return (
     <>
@@ -183,15 +156,6 @@ export const TracksTable = ({ tableData, isLikesPage }: TracksTableProps) => {
           <UpOutlined />
           <span>{t('up')}</span>
         </button>
-      )}
-      {modalType === 'add' && !isNullOrUndefined(trackId) && !isNullOrUndefined(playlists) && (
-        <AddTrackModal isOpen={modalType === 'add'} onClose={handleCloseModal} openModal={handleOpenModal} trackId={trackId} playlists={playlists} />
-      )}
-      {modalType === 'remove' && !isNullOrUndefined(trackId) && !isNullOrUndefined(playlists) && (
-        <RemoveTrackModal isOpen={modalType === 'remove'} onClose={handleCloseModal} trackId={trackId} playlists={playlists} />
-      )}
-      {modalType === 'createPlaylist' && !isNullOrUndefined(trackId) && !isNullOrUndefined(playlists) && (
-        <CreatePlaylistModal isOpen={modalType === 'createPlaylist'} onClose={handleCloseModal} openModal={handleOpenModal} />
       )}
     </>
   );

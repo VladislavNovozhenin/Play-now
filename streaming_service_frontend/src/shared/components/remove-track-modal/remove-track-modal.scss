@@ -1,15 +1,14 @@
 @use '@shared/styles/mixin' as *;
 
 .remove-track-modal {
+  &__container {
+    @include flex(center, center, 0px, column);
+  }
   &__footer {
     @include flex(end, center, 8px);
+    margin-left: auto;
   }
-  button {
-    @include transition(background-color);
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 1.1rem;
-  }
+
   &__btn-cancel {
     background-color: var(--color-greyLightBg);
     &:hover {
@@ -17,7 +16,7 @@
     }
   }
   &__btn-remove-track {
-    color: var(--color-white);
+    color: var(--color-white)!important;
     background-color: var(--color-promo);
     &:hover {
       background-color: var(--color-promoLight);

@@ -1,5 +1,5 @@
-import { PLAYLISTS_QUERY_KEYS, playlistsAPI } from '@pages/playlists/api/api';
-import { findTrackInPlaylists, isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
+import { playlistsAPI } from '@shared/api/playlists-api';
+import { isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
 import { handleApiError } from '@shared/helpers/helpers';
 import { useNotification } from '@shared/hooks/useNotification';
 import type { ApiError, ModalState, Playlist } from '@shared/ts/types';
@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './add-track-modal.scss';
 import { PlaylistsListModal } from '../playlists-list-modal/PlaylistsListModal';
+import { USERS_QUERY_KEYS } from '@shared/api/users-api';
 
 type AddTrackModalProps = {
   onClose: () => void;
@@ -16,9 +17,9 @@ type AddTrackModalProps = {
   trackId: number;
   openModal: (type: ModalState) => void;
   playlists: Playlist[];
+  getPlaylistsByTrack: (trackId: number, include: boolean) => Playlist[];
 };
-export const AddTrackModal = ({ onClose, isOpen, trackId, openModal, playlists }: AddTrackModalProps) => {
-  const { playlistsWithoutTrack } = findTrackInPlaylists(playlists, trackId);
+export const AddTrackModal = ({ onClose, isOpen, trackId, openModal, playlists, getPlaylistsByTrack }: AddTrackModalProps) => {
   const { t } = useTranslation('common');
   const [selectedPlaylistId, setSelectedPlaylistId] = useState<number | null>(null);
   const { showError, showSuccess } = useNotification();
@@ -27,8 +28,8 @@ export const AddTrackModal = ({ onClose, isOpen, trackId, openModal, playlists }
   const addTrackMutation = useMutation({
     mutationFn: ({ playlistId, songId }: { playlistId: number; songId: number }) => playlistsAPI.addTrackInPlaylist(playlistId, songId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: [PLAYLISTS_QUERY_KEYS.PLAYLISTS_LIST] });
-      showSuccess({ title: t('success') });
+      await queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEYS.PLAYLISTS_LIST] });
+      showSuccess({ title: t('success-notification.track-added') });
       onClose();
     },
     onError: (error: ApiError) => {
@@ -51,23 +52,23 @@ export const AddTrackModal = ({ onClose, isOpen, trackId, openModal, playlists }
   };
 
   return (
-    <Modal className="add-track-modal" open={isOpen} onCancel={onClose} footer={null} title={t('add-in-playlist')} mask>
-      <div className='add-track-modal__container'>
+    <Modal className="add-track-modal" open={isOpen} onCancel={onClose} footer={null} title={t('add-track-modal.title')} mask>
+      <div className="add-track-modal__container">
         {isIterableArray(playlists) ? (
           <>
             <PlaylistsListModal
-              playlists={playlistsWithoutTrack}
+              playlists={getPlaylistsByTrack(trackId, false)}
               handleChangePlaylistId={handleChangePlaylistId}
               selectedPlaylistId={selectedPlaylistId}
             />
             <div className="add-track-modal__footer">
               {!isNullOrUndefined(selectedPlaylistId) && (
                 <button className="add-track-modal__btn-add-track" onClick={handleAddTrack}>
-                  {t('add-btn')}
+                  {t('add-track-modal.add-btn')}
                 </button>
               )}
               <button className="add-track-modal__btn-cancel" onClick={onClose}>
-                {t('cancel-btn')}
+                {t('add-track-modal.cancel-btn')}
               </button>
             </div>
           </>
@@ -75,10 +76,10 @@ export const AddTrackModal = ({ onClose, isOpen, trackId, openModal, playlists }
           <>
             <p className="add-track-modal__empty-descr">{t('add-track-modal.empty')}</p>
             <button className="add-track-modal__btn-add-playlist" onClick={() => openModal('createPlaylist')}>
-              {t('add-track-modal.create-first-playlist')}
+              {t('add-track-modal.create-first-playlist-btn')}
             </button>
             <button className="add-track-modal__btn-cancel" onClick={onClose}>
-              {t('cancel-btn')}
+              {t('add-track-modal.cancel-btn')}
             </button>
           </>
         )}

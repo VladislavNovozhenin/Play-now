@@ -25,12 +25,12 @@
   width: 100%;
   max-width: 1180px !important;
   display: flex;
-  padding: 35px 30px 65px 30px;
+  padding: 35px 30px 35px 30px;
   background-color: transparent !important;
   flex-grow: 1;
   gap: 40px;
   @media (max-width: 1023px) {
-    padding: 35px 15px 65px 15px;
+    padding: 35px 15px 35px 15px;
     gap: 10px;
   }
   @media (max-width: 767px) {

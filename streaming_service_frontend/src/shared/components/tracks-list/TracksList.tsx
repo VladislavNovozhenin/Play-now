@@ -1,8 +1,7 @@
-import type { ModalState, Song, User } from '@shared/ts/types';
+import type { Song, User } from '@shared/ts/types';
 import './tracks-list.scss';
 import ThreeDotsButton from '@shared/components/three-dots-button/ThreeDotsButton';
-import { UsePlaylistsList } from '@shared/hooks/usePlaylistsList';
-import { Divider, Grid, Spin } from 'antd';
+import { Divider, Grid, Spin, type MenuProps } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Play from '@shared/assets/play.svg?react';
@@ -11,19 +10,16 @@ import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
 import { UpOutlined } from '@ant-design/icons';
 import { LikesButton } from '../likes-button/LikesButton';
 import { useAutoLoadOnResize } from '@shared/hooks/useAutoLoadOnResize';
-import { AddTrackModal } from '../add-track-modal/AddTrackModal';
-import { RemoveTrackModal } from '../remove-track-modal/RemoveTrackModal';
-import { CreatePlaylistModal } from '../create-playlist-modal/CreatePlaylistModal';
 
 type TracksListProps = {
   listData: Song[];
   isLikesPage?: boolean;
+  getMenuItems: (trackId: number) => MenuProps['items'];
 };
 
 const { useBreakpoint } = Grid;
-export const TracksList = ({ listData, isLikesPage }: TracksListProps) => {
+export const TracksList = ({ listData, isLikesPage, getMenuItems }: TracksListProps) => {
   const { t } = useTranslation('common');
-  const { data } = UsePlaylistsList();
   const [visibleData, setVisibleData] = useState<Song[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const { md } = useBreakpoint();
@@ -31,9 +27,6 @@ export const TracksList = ({ listData, isLikesPage }: TracksListProps) => {
   const INITIAL_COUNT = md ? 18 : 12;
   const minVisibleRef = useRef<number>(INITIAL_COUNT);
   const isShowMore = visibleData.length < listData.length && visibleData.length >= minVisibleRef.current;
-  const [isModalType, setIsModalType] = useState<ModalState>(null);
-
-  const toogleModalType = (type: ModalState) => setIsModalType(type);
 
   useAutoLoadOnResize({ isShowMore, visibleData, showMore });
 
@@ -94,7 +87,7 @@ export const TracksList = ({ listData, isLikesPage }: TracksListProps) => {
 
                   <div className="track-list__right-content">
                     <LikesButton updateVisibleData={updateVisibleData} track={track} />
-                    {/* <ThreeDotsButton openModal={toogleModalType} trackId={track.id} allTracksPage playlists={data} /> */}
+                    <ThreeDotsButton getMenuItems={getMenuItems} trackId={track.id} />
                   </div>
                 </li>
                 {index !== listData.length - 1 && <Divider />}
@@ -109,9 +102,6 @@ export const TracksList = ({ listData, isLikesPage }: TracksListProps) => {
           <span>{t('up')}</span>
         </button>
       )}
-      {/* {isModalType === 'add' && <AddTrackModal isOpen={isModalType === 'add'} onClose={toogleModalType} />}
-      {isModalType === 'remove' && <RemoveTrackModal isOpen={isModalType === 'remove'} onClose={toogleModalType} />}
-      {isModalType === 'createPlaylist' && <CreatePlaylistModal isOpen={isModalType === 'createPlaylist'} onClose={toogleModalType} />} */}
     </>
   );
 };

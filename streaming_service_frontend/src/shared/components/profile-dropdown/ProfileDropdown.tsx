@@ -19,7 +19,7 @@ export const ProfileDropdown = () => {
   const items = [
     {
       key: 'logout',
-      label: t('logout'),
+      label: t('header.logout-btn'),
       danger: true,
       icon: <LogoutOutlined />,
       onClick: handleLogout,

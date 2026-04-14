@@ -1,10 +1,23 @@
 @use '@shared/styles/mixin' as *;
 
-.auth-form {
+.create-playlist-modal {
+  &__container {
+    @include flex(center, start, 0px, column);
+  }
+
+  .ant-form {
+    width: 100%;
+    margin: 15px 0 25px;
+  }
+
+  .ant-form-item {
+    margin-bottom: 10px;
+  }
+
   .ant-input {
     @include transition(background-color);
     border: none !important;
-    border-radius: 30px !important;
+    border-radius: 8px !important;
     background-color: var(--color-greyLightBg) !important;
     color: var(--color-blackTxt) !important;
     padding: 8px 16px !important;
@@ -17,35 +30,30 @@
       color: var(--color-greyTxt) !important;
     }
   }
-  &__btn-group {
-    @include flex(end, center, 8px);
-    @media (max-width: 767px) {
-      flex-direction: column;
-    }
-  }
-  button {
-    @include transition(background-color);
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 1.1rem;
-    @media (max-width: 767px) {
-      width: 100%;
-    }
-  }
-  &__btn-out {
+
+  &__btn-cancel {
+    margin-left: auto;
     background-color: var(--color-greyLightBg);
     &:hover {
       background-color: var(--color-greyBg);
     }
   }
-  &__btn-enter {
-    color: var(--color-white);
+  &__btn-create-playlist {
+    color: var(--color-white) !important;
     background-color: var(--color-promo);
     &:hover {
       background-color: var(--color-promoLight);
     }
   }
-  .ant-form-item-additional {
-    margin-bottom: 10px;
+  &__btn-add-playlist + .add-track-modal__btn-cancel {
+    margin-left: auto;
+  }
+  &__empty-descr {
+    margin: 15px 0;
+    font-size: 1.6rem;
+  }
+
+  &__empty-descr + .add-track-modal__btn-add-playlist {
+    margin-bottom: 25px;
   }
 }

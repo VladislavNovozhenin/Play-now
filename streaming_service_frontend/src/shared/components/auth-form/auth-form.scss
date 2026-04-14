@@ -4,7 +4,7 @@
   .ant-input {
     @include transition(background-color);
     border: none !important;
-    border-radius: 30px !important;
+    border-radius: 8px !important;
     background-color: var(--color-greyLightBg) !important;
     color: var(--color-blackTxt) !important;
     padding: 8px 16px !important;
@@ -24,10 +24,6 @@
     }
   }
   button {
-    @include transition(background-color);
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 1.1rem;
     @media (max-width: 767px) {
       width: 100%;
     }

@@ -7,15 +7,15 @@ const getTracksList = (): Promise<Song[]> => getBaseQuery(`${BASE_URL}/songs`);
 
 const getTrack = (trackId: number): Promise<Song> => getBaseQuery(`${BASE_URL}/songs/${trackId}`);
 
-const likeSong = (songId: number): Promise<Song> => postBaseQuery(`${BASE_URL}/songs/${songId}/like`);
+const likeTrack = (songId: number): Promise<Song> => postBaseQuery(`${BASE_URL}/songs/${songId}/like`);
 
-const unLikeSong = (songId: number): Promise<Song> => postBaseQuery(`${BASE_URL}/songs/${songId}/unlike`);
+const unlikeTrack = (songId: number): Promise<Song> => postBaseQuery(`${BASE_URL}/songs/${songId}/unlike`);
 
 export const tracksAPI = {
   getTracksList,
   getTrack,
-  likeSong,
-  unLikeSong,
+  likeTrack,
+  unlikeTrack
 };
 
 export const TRACKS_QUERY_KEYS = {

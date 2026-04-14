@@ -1,5 +1,5 @@
 import { postBaseQuery } from '@shared/api/base-api';
-import type { JwtResponse, LoginRequest, RegisterRequest } from '../ts/types';
+import type { RegisterRequest, JwtResponse, LoginRequest } from '@shared/ts/types';
 
 const BASE_URL = import.meta.env.VITE_API;
 

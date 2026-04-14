@@ -1,29 +1,62 @@
 {
-  "header-placeholder": "Что будем искать?",
-  "logout": "Выйти",
-  "playlists": "Плейлисты",
-  "playlist": "Плейлист",
-  "tracks": "Трэки",
-  "like-songs": "Любимые песни",
-  "name": "Название",
-  "album": "Альбом",
-  "like-success": "Трек добавлен в любимые песни",
-  "unlike-success": "Трек убран из любимые песни",
-  "login": "Войти",
-  "login-success": "Вход выполнен",
-  "login-title": "Вход",
-  "already-have-an-account": "Уже есть аккаунт? Войти",
-  "dont-have-an-account": "Нет аккаунта? Зарегистрироваться",
-  "enter-username": "Введите логин",
-  "enter-password": "Введите пароль",
-  "enter-firstName": "Введите имя",
-  "enter-lastName": "Введите фамилию",
-  "register": "Зарегистрироваться",
-  "register-title": "Регистрация",
-  "register-success": "Аккаунт создан, вы вошли в систему",
-  "required": "Обязательное поле",
-  "up": "Наверх",
-  "errors": {
+  "auth": {
+    "enter-username": "Введите логин",
+    "enter-password": "Введите пароль",
+    "enter-firstName": "Введите имя",
+    "enter-lastName": "Введите фамилию",
+    "already-have-an-account-btn": "Уже есть аккаунт? Войти",
+    "dont-have-an-account-btn": "Нет аккаунта? Зарегистрироваться",
+    "login-btn": "Войти",
+    "login-title": "Вход",
+    "register-btn": "Зарегистрироваться",
+    "register-title": "Регистрация"
+  },
+
+  "tracks-table": {
+    "name": "Название",
+    "album": "Альбом",
+    "add-in-playlist-btn": "Добавить в плейлист",
+    "remove-from-playlist-btn": "Удалить из плейлиста"
+  },
+
+  "aside-menu": {
+    "like-songs": "Любимые песни",
+    "playlists": "Плейлисты",
+    "tracks": "Трэки"
+  },
+
+  "add-track-modal": {
+    "title": "Добавить в плейлист",
+    "empty": "У вас пока нет плейлистов",
+    "create-first-playlist-btn": "Создать первый плейлист",
+    "cancel-btn": "Отмена",
+    "add-btn": "Добавить"
+  },
+
+  "remove-track-modal": {
+    "title": "Удалить из плейлиста",
+    "remove-btn": "Удалить",
+    "cancel-btn": "Отмена"
+  },
+
+  "create-playlist-modal": {
+    "enter-playlist-name": "Введите имя плейлиста",
+    "title": "Создать плейлист",
+    "create-playlist-btn": "Создать",
+    "cancel-btn": "Отмена"
+  },
+
+  "success-notification": {
+    "create-playlist": "Плейлист успешно создан",
+    "like": "Трек добавлен в любимые песни",
+    "unlike": "Трек убран из любимые песни",
+    "register": "Аккаунт создан, вы вошли в систему",
+    "login": "Вход выполнен",
+    "track-added": "Трек добавлен в плейлист",
+    "track-removed": "Трек удалён из плейлиста"
+  },
+
+  "errors-notification": {
     "400": {
       "like": "Song is already liked",
       "unLike": "Song is not liked"
@@ -34,24 +67,23 @@
     "network": "Нет соединения с сервером",
     "unknown": "Неизестная ошибка"
   },
-  "add-in-playlist": "Добавить в плейлист",
-  "remove-from-playlist": "Удалить из плейлиста",
+
+  "header": {
+    "search-placeholder": "Что будем искать?",
+    "logout-btn": "Выйти"
+  },
+
+  "like-tracks-title": "Любимые песни",
+  "playlists-title": "Плейлисты",
+  "tracks-title": "Трэки",
+  "playlist": "Плейлист",
+  "required": "Обязательное поле",
+  "up": "Наверх",
   "count-tracks": {
     "count-tracks_zero": "Нет треков",
     "count-tracks_one": "{{count}} трек",
     "count-tracks_few": "{{count}} трека",
+    "count-tracks_many": "{{count}} треков",
     "count-tracks_other": "{{count}} треков"
-  },
-  "add-btn": "Добавить",
-  "cancel-btn": "Отмена",
-  "remove-btn": "Удалить",
-  "add-track-modal": {
-    "empty": "У вас пока нет плейлистов",
-    "create-first-playlist": "Создать первый плейлист"
-  },
-  "create-playlist-modal": {
-    "enter-playlist-name": "Введите имя плейлиста",
-    "create-playlist": "Создать плейлист"
-  },
-  "create-playlist-success": "Плейлист успешно создан"
+  }
 }

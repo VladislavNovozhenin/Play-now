@@ -7,13 +7,9 @@
 
   &__footer {
     @include flex(end, center, 8px);
+    margin-left: auto;
   }
-  button {
-    @include transition(background-color);
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 1.1rem;
-  }
+
   &__btn-cancel {
     background-color: var(--color-greyLightBg);
     &:hover {
@@ -22,7 +18,7 @@
   }
   &__btn-add-track,
   &__btn-add-playlist {
-    color: var(--color-white);
+    color: var(--color-white) !important;
     background-color: var(--color-promo);
     &:hover {
       background-color: var(--color-promoLight);
@@ -30,5 +26,13 @@
   }
   &__btn-add-playlist + .add-track-modal__btn-cancel {
     margin-left: auto;
+  }
+  &__empty-descr {
+    margin: 15px 0;
+    font-size: 1.6rem;
+  }
+
+  &__empty-descr + .add-track-modal__btn-add-playlist {
+    margin-bottom: 25px;
   }
 }

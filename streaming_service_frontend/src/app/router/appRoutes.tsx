@@ -1,14 +1,14 @@
 import { AppLayout } from '@app/components/app-layout/AppLayout';
-import { AuthPage } from '@pages/auth/AuthPage';
-import { HomePage } from '@pages/home/HomePage';
+import { AuthPage } from '@pages/AuthPage';
+import { HomePage } from '@pages/HomePage';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 
-const TracksPage = lazy(() => import('@pages/tracks/TracksPage').then((mod) => ({ default: mod.TracksPage })));
-const PlaylistPage = lazy(() => import('@pages/playlist/PlaylistPage').then((mod) => ({ default: mod.PlaylistPage })));
-const PlaylistsPage = lazy(() => import('@pages/playlists/PlaylistsPage').then((mod) => ({ default: mod.PlaylistsPage })));
-const LikesTracksPage = lazy(() => import('@pages/likes-tracks/LikesTracksPage').then((mod) => ({ default: mod.LikesTracksPage })));
+const TracksPage = lazy(() => import('@pages/TracksPage').then((mod) => ({ default: mod.TracksPage })));
+const PlaylistPage = lazy(() => import('@pages/PlaylistPage').then((mod) => ({ default: mod.PlaylistPage })));
+const PlaylistsPage = lazy(() => import('@pages/PlaylistsPage').then((mod) => ({ default: mod.PlaylistsPage })));
+const LikesTracksPage = lazy(() => import('@pages/LikesTracksPage').then((mod) => ({ default: mod.LikesTracksPage })));
 
 export const AppRoutes = () => {
   return (

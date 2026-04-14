@@ -1,8 +1,9 @@
 @use '@shared/styles/mixin' as *;
 
 .playlists-list {
-  @include flex(center, center, 5px, column);
-  margin-bottom: 15px;
+  @include flex(start, start, 5px, column);
+  width: 100%;
+  margin-bottom: 25px;
   max-height: 500px;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -21,13 +22,16 @@
   }
   scrollbar-width: thin;
   scrollbar-color: var(--color-greyBg) transparent;
+  @media (min-width: 996px) and (max-height: 800px) {
+      max-height: 300px;
+  }
   &__item {
     width: 100%;
   }
   &__btn {
     @include flex(start, center, 10px);
     width: 100%;
-    padding: 8px 12px !important;
+    padding: 4px 12px !important;
     background-color: var(--color-greyLightBg) !important;
     &-selected {
       background-color: var(--color-greyBg) !important;
@@ -40,7 +44,7 @@
     @include flex(center, start, 5px, column);
     span:last-of-type {
       color: var(--color-promoLight);
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
   }
 }

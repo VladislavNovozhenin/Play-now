@@ -15,7 +15,7 @@ export const HeaderSearch = () => {
   return (
     <div className="header-search">
       <Search />
-      <Input value={inputValue} onChange={(e) => handleChange(e)} placeholder={t('header-placeholder')} allowClear />
+      <Input value={inputValue} onChange={(e) => handleChange(e)} placeholder={t('header.search-placeholder')} allowClear />
     </div>
   );
 };

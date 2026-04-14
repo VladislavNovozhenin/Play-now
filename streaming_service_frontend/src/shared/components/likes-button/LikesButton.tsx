@@ -1,4 +1,4 @@
-import { tracksAPI } from '@pages/tracks/api/api';
+import { tracksAPI } from '@shared/api/tracks-api';
 import Heart from '@shared/assets/heart.svg?react';
 import { getLikeTracksByUsername, isIterableArray } from '@shared/common/helpers';
 import { handleApiError } from '@shared/helpers/helpers';
@@ -22,9 +22,9 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
   const isLiked = isIterableArray(getLikeTracksByUsername(track.likes, user!.username));
 
   const likeMutation = useMutation({
-    mutationFn: (songId: number) => tracksAPI.likeSong(songId),
+    mutationFn: (songId: number) => tracksAPI.likeTrack(songId),
     onSuccess: async (response) => {
-      showSuccess({ title: t('like-success') });
+      showSuccess({ title: t('success-notification.like') });
       updateVisibleData(track.id, response.likes);
     },
     onError: (error: unknown) => {
@@ -33,9 +33,9 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
   });
 
   const unLikeMutation = useMutation({
-    mutationFn: (trackId: number) => tracksAPI.unLikeSong(trackId),
+    mutationFn: (trackId: number) => tracksAPI.unlikeTrack(trackId),
     onSuccess: (response) => {
-      showSuccess({ title: t('unlike-success') });
+      showSuccess({ title: t('success-notification.unlike') });
       updateVisibleData(track.id, response.likes);
     },
     onError: (error: ApiError) => {

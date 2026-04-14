@@ -6,10 +6,10 @@ import './auth-form.scss';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { authAPI } from '@pages/auth/api/api';
-import type { LoginRequest, RegisterRequest } from '@pages/auth/ts/types';
+import { authAPI } from '@shared/api/auth-api';
 import { setUserValue } from '@store/useAppStore';
 import { useNotification } from '@shared/hooks/useNotification';
+import type { LoginRequest, RegisterRequest } from '@shared/ts/types';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -29,7 +29,7 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
     mutationFn: (payload: LoginRequest) => authAPI.login(payload),
     onSuccess: (response, user) => {
       setUserValue({ token: response.access_token, username: user.username });
-      showSuccess({ title: t('login-success') });
+      showSuccess({ title: t('success-notification.login') });
     },
     onError: (error) => {
       console.log(error);
@@ -40,7 +40,7 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
     mutationFn: (payload: RegisterRequest) => authAPI.register(payload),
     onSuccess: (response, user) => {
       setUserValue({ token: response.access_token, username: user.username });
-      showSuccess({ title: t('register-success') });
+      showSuccess({ title: t('success-notification.register') });
     },
     onError: (error) => {
       console.log(error);
@@ -69,7 +69,7 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
               { required: true, message: t('required') },
               { whitespace: true, message: t('required') },
             ]}>
-            <Input placeholder={t('enter-firstName')} />
+            <Input placeholder={t('auth.enter-firstName')} />
           </FormItem>
           <FormItem
             name={'lastName'}
@@ -77,7 +77,7 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
               { required: true, message: t('required') },
               { whitespace: true, message: t('required') },
             ]}>
-            <Input placeholder={t('enter-lastName')} />
+            <Input placeholder={t('auth.enter-lastName')} />
           </FormItem>
         </>
       )}
@@ -87,7 +87,7 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
           { required: true, message: t('required') },
           { whitespace: true, message: t('required') },
         ]}>
-        <Input placeholder={t('enter-username')} />
+        <Input placeholder={t('auth.enter-username')} />
       </FormItem>
       <FormItem
         name={'password'}
@@ -95,14 +95,14 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
           { required: true, message: t('required') },
           { whitespace: true, message: t('required') },
         ]}>
-        <Input placeholder={t('enter-password')} />
+        <Input placeholder={t('auth.enter-password')} />
       </FormItem>
       <div className="auth-form__btn-group">
         <button type="button" className="auth-form__btn-out" onClick={() => setIsLogin((prev) => !prev)}>
-          {isLogin ? t('dont-have-an-account') : t('already-have-an-account')}
+          {isLogin ? t('auth.dont-have-an-account-btn') : t('auth.already-have-an-account-btn')}
         </button>
         <button type="submit" className="auth-form__btn-enter">
-          {isLogin ? t('login') : t('register')}
+          {isLogin ? t('auth.login-btn') : t('auth.register-btn')}
         </button>
       </div>
     </Form>

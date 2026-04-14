@@ -59,3 +59,25 @@ export interface BaseApiError extends ApiError {
 }
 
 export type ModalState = 'add' | 'remove' | 'createPlaylist' | null;
+
+export interface RegisterRequest {
+  username: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface JwtResponse {
+  access_token: string;
+}
+
+export interface LikesResponse {
+  artistLikes: Artist[];
+  albumLikes: Album[];
+  songLikes: Song[];
+}

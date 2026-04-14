@@ -3,10 +3,24 @@
 .aside-menu {
   border-inline-end: none !important;
   background-color: var(--color-white);
+  .ant-menu-submenu-title {
+    @include transition(background-color);
+    &:hover {
+      background-color: var(--color-greyLightBg) !important;
+    }
+  }
+  .ant-menu-sub {
+    max-height: 500px;
+    overflow-y: scroll;
+    background-color: transparent !important;
+  }
+
   .ant-menu-item {
     @include flex(start, center, 8px);
-    font-size: 1.3rem;
+    @include transition(background-color);
+    font-size: 1.15rem;
     color: var(--color-blackTxt);
+    padding-left: 18px !important;
     &:hover {
       background-color: var(--color-greyLightBg) !important;
     }
@@ -19,6 +33,7 @@
       }
     }
   }
+
   .ant-menu-item-selected {
     background-color: var(--color-promo) !important;
     &:hover {
@@ -30,6 +45,9 @@
     .ant-menu-item-icon path {
       stroke: var(--color-white);
     }
+    span path {
+      fill: var(--color-white);
+    }
   }
   .ant-menu-title-content {
     @include transition(color);
@@ -38,6 +56,18 @@
 
   .ant-menu-item-icon path {
     @include transition(stroke);
+  }
+
+  span {
+    svg {
+      margin-left: 4px;
+      width: 20px;
+      height: 20px;
+    }
+    path {
+      fill: var(--color-promo);
+      @include transition(fill);
+    }
   }
 
   @media (max-width: 767px) {

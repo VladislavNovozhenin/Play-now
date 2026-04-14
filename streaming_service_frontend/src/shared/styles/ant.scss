@@ -28,6 +28,12 @@
 .ant-modal * {
   font-family: 'Circular', sans-serif !important;
   color: var(--color-blackTxt);
+  button {
+    @include transition(background-color);
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 1rem;
+  }
 }
 
 .ant-modal-close {
@@ -35,7 +41,7 @@
 }
 
 .ant-modal-title {
-  font-size: 2rem !important;
+  font-size: 1.6rem !important;
   color: var(--color-blackTxt) !important;
 }
 
