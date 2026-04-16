@@ -1,0 +1,38 @@
+@use '@shared/styles/mixin' as *;
+
+.error-data {
+  @include flex(center, center, 20px, column);
+  padding-top: 80px;
+  &__content {
+    @include flex(center, center, 10px);
+    svg {
+      padding-top: 3px;
+      width: 19px;
+      height: 19px;
+      @media (max-width: 767px) {
+        width: 15px;
+        height: 15px;
+      }
+    }
+    path {
+      fill: var(--color-danger);
+    }
+  }
+  &__title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    @media (max-width: 767px) {
+      font-size: 1.4rem;
+    }
+  }
+  &__btn {
+    @include transition(background-color);
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    background-color: var(--color-greyLightBg);
+    &:hover {
+      background-color: var(--color-greyBg);
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import { CustomMenu } from '@shared/components/custom-menu/CustomMenu';
-import { CustomFooter } from '@widgets/custom-footer';
 import { CustomHeader } from '@widgets/custom-header';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';

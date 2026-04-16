@@ -1,10 +1,12 @@
 import { DEFAULT_NOTIFICATION_DURATION } from '@shared/common/constants';
 import { isNullOrUndefined } from '@shared/common/helpers';
-import { notification } from 'antd';
-import type { ArgsProps } from 'antd/es/notification';
+import { App } from 'antd';
+import type { NotificationArgsProps } from 'antd';
 
 export const useNotification = () => {
-  const showError = (config: ArgsProps) => {
+  const { notification } = App.useApp();
+  const showError = (config: NotificationArgsProps) => {
+    console.trace('🔥 NOTIFICATION ERROR CALLED');
     notification.error({
       ...config,
       placement: config?.placement ?? 'top',
@@ -12,7 +14,7 @@ export const useNotification = () => {
     });
   };
 
-  const showInfo = (config: ArgsProps) => {
+  const showInfo = (config: NotificationArgsProps) => {
     notification.info({
       ...config,
       placement: config?.placement ?? 'top',
@@ -20,7 +22,7 @@ export const useNotification = () => {
     });
   };
 
-  const showSuccess = (config: ArgsProps) => {
+  const showSuccess = (config: NotificationArgsProps) => {
     notification.success({
       ...config,
       placement: config?.placement ?? 'top',
@@ -28,7 +30,7 @@ export const useNotification = () => {
     });
   };
 
-  const showWarning = (config: ArgsProps) => {
+  const showWarning = (config: NotificationArgsProps) => {
     notification.warning({
       ...config,
       placement: config?.placement ?? 'top',

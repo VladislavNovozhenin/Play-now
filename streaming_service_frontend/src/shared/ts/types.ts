@@ -49,15 +49,6 @@ export interface Song {
   likes: User[];
 }
 
-export interface ApiError {
-  statusCode: number;
-  message: string;
-}
-
-export interface BaseApiError extends ApiError {
-  error: string;
-}
-
 export type ModalState = 'add' | 'remove' | 'createPlaylist' | null;
 
 export interface RegisterRequest {
@@ -80,4 +71,8 @@ export interface LikesResponse {
   artistLikes: Artist[];
   albumLikes: Album[];
   songLikes: Song[];
+}
+
+export interface AppError {
+  type: 'api' | 'network';
 }

@@ -9,7 +9,8 @@ import { useMutation } from '@tanstack/react-query';
 import { authAPI } from '@shared/api/auth-api';
 import { setUserValue } from '@store/useAppStore';
 import { useNotification } from '@shared/hooks/useNotification';
-import type { LoginRequest, RegisterRequest } from '@shared/ts/types';
+import type { AppError, LoginRequest, RegisterRequest } from '@shared/ts/types';
+import { handleApiError } from '@shared/helpers/helpers';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -19,7 +20,7 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
   const { t } = useTranslation('common');
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { showSuccess } = useNotification();
+  const { showSuccess, showError } = useNotification();
 
   useEffect(() => {
     form.resetFields();
@@ -31,8 +32,8 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
       setUserValue({ token: response.access_token, username: user.username });
       showSuccess({ title: t('success-notification.login') });
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error: AppError) => {
+      handleApiError(error, showError, t);
     },
   });
 
@@ -42,8 +43,8 @@ export const AuthForm = ({ isLogin, setIsLogin }: AuthFormProps) => {
       setUserValue({ token: response.access_token, username: user.username });
       showSuccess({ title: t('success-notification.register') });
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error: AppError) => {
+      handleApiError(error, showError, t);
     },
   });
 

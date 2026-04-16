@@ -2,7 +2,7 @@ import { playlistsAPI } from '@shared/api/playlists-api';
 import { isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
 import { handleApiError } from '@shared/helpers/helpers';
 import { useNotification } from '@shared/hooks/useNotification';
-import type { ApiError, ModalState, Playlist } from '@shared/ts/types';
+import type { AppError, ModalState, Playlist } from '@shared/ts/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from 'antd';
 import { useState } from 'react';
@@ -28,11 +28,11 @@ export const AddTrackModal = ({ onClose, isOpen, trackId, openModal, playlists, 
   const addTrackMutation = useMutation({
     mutationFn: ({ playlistId, songId }: { playlistId: number; songId: number }) => playlistsAPI.addTrackInPlaylist(playlistId, songId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEYS.PLAYLISTS_LIST] });
+      await queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEYS.PLAYLISTS_LIST] },);
       showSuccess({ title: t('success-notification.track-added') });
       onClose();
     },
-    onError: (error: ApiError) => {
+    onError: (error: AppError) => {
       handleApiError(error, showError, t);
     },
   });

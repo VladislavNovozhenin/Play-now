@@ -9,3 +9,30 @@
 @mixin transition($property: all) {
   transition: $property 0.2s ease-in-out;
 }
+
+@mixin scrollbar() {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-greyLightBg);
+    border-radius: 8px;
+    &:hover {
+      background-color: var(--color-greyBg);
+    }
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-greyBg) transparent;
+}
+
+@mixin no-scrollbar() {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

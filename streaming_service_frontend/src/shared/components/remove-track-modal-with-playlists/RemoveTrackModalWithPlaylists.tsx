@@ -2,23 +2,22 @@ import { playlistsAPI } from '@shared/api/playlists-api';
 import { isNullOrUndefined } from '@shared/common/helpers';
 import { handleApiError } from '@shared/helpers/helpers';
 import { useNotification } from '@shared/hooks/useNotification';
-import type { ApiError, Playlist } from '@shared/ts/types';
+import type { AppError, Playlist } from '@shared/ts/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Modal } from 'antd';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PlaylistsListModal } from '../playlists-list-modal/PlaylistsListModal';
-import './remove-track-modal.scss';
+import './remove-track-modal-with-playlists.scss';
 import { USERS_QUERY_KEYS } from '@shared/api/users-api';
 
-type RemoveTrackModalProps = {
+type RemoveTrackModalWithPlaylistsProps = {
   onClose: () => void;
   isOpen: boolean;
   trackId: number;
-  playlists: Playlist[];
   getPlaylistsByTrack: (trackId: number, include: boolean) => Playlist[];
 };
-export const RemoveTrackModal = ({ onClose, isOpen, trackId, playlists, getPlaylistsByTrack }: RemoveTrackModalProps) => {
+export const RemoveTrackModalWithPlaylists = ({ onClose, isOpen, trackId, getPlaylistsByTrack }: RemoveTrackModalWithPlaylistsProps) => {
   const { t } = useTranslation('common');
   const { showError, showSuccess } = useNotification();
   const queryClient = useQueryClient();
@@ -31,7 +30,7 @@ export const RemoveTrackModal = ({ onClose, isOpen, trackId, playlists, getPlayl
       showSuccess({ title: t('success-notification.track-removed') });
       onClose();
     },
-    onError: (error: ApiError) => {
+    onError: (error: AppError) => {
       handleApiError(error, showError, t);
     },
   });
@@ -51,20 +50,20 @@ export const RemoveTrackModal = ({ onClose, isOpen, trackId, playlists, getPlayl
   };
 
   return (
-    <Modal className="remove-track-modal" title={t('remove-track-modal.title')} open={isOpen} onCancel={onClose} footer={null} mask>
-      <div className="remove-track-modal__container">
+    <Modal className="remove-track-modal-with-playlist" title={t('remove-track-modal.title')} open={isOpen} onCancel={onClose} footer={null} mask>
+      <div className="remove-track-modal-with-playlist__container">
         <PlaylistsListModal
           playlists={getPlaylistsByTrack(trackId, true)}
           handleChangePlaylistId={handleChangePlaylistId}
           selectedPlaylistId={selectedPlaylistId}
         />
-        <div className="remove-track-modal__footer">
+        <div className="remove-track-modal-with-playlist__footer">
           {!isNullOrUndefined(selectedPlaylistId) && (
-            <button className="remove-track-modal__btn-remove-track" onClick={handleRemoveTrack}>
+            <button className="remove-track-modal-with-playlist__btn-remove-track" onClick={handleRemoveTrack}>
               {t('remove-track-modal.remove-btn')}
             </button>
           )}
-          <button className="remove-track-modal__btn-cancel" onClick={onClose}>
+          <button className="remove-track-modal-with-playlist__btn-cancel" onClick={onClose}>
             {t('remove-track-modal.cancel-btn')}
           </button>
         </div>

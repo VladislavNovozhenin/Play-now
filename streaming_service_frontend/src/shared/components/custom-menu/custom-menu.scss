@@ -3,17 +3,6 @@
 .aside-menu {
   border-inline-end: none !important;
   background-color: var(--color-white);
-  .ant-menu-submenu-title {
-    @include transition(background-color);
-    &:hover {
-      background-color: var(--color-greyLightBg) !important;
-    }
-  }
-  .ant-menu-sub {
-    max-height: 500px;
-    overflow-y: scroll;
-    background-color: transparent !important;
-  }
 
   .ant-menu-item {
     @include flex(start, center, 8px);
@@ -25,7 +14,7 @@
       background-color: var(--color-greyLightBg) !important;
     }
     @media (max-width: 1023px) {
-      font-size: 1.1rem;
+      font-size: 1rem;
       height: 30px !important;
       svg {
         width: 20px;
@@ -63,6 +52,10 @@
       margin-left: 4px;
       width: 20px;
       height: 20px;
+      @media (max-width: 1023px) {
+        width: 17px !important;
+        height: 17px !important;
+      }
     }
     path {
       fill: var(--color-promo);
@@ -70,16 +63,33 @@
     }
   }
 
+  .ant-menu-submenu-selected > .ant-menu-submenu-title {
+    color: var(--color-promo) !important;
+  }
+
+  .ant-menu-submenu-title {
+    @include transition(background-color);
+    font-size: 1.15rem;
+    &:hover {
+      background-color: var(--color-greyLightBg) !important;
+    }
+    @media (max-width: 1023px) {
+      font-size: 1rem;
+    }
+  }
+  .ant-menu-sub {
+    @include scrollbar();
+    max-height: 500px;
+    overflow-y: auto;
+    background-color: transparent !important;
+  }
+
   @media (max-width: 767px) {
+    @include no-scrollbar();
     display: flex;
     flex-direction: row !important;
-    overflow-x: scroll;
+    overflow-x: auto;
     flex-wrap: nowrap;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
     .ant-menu-item {
       flex-shrink: 0;
       max-width: max-content;

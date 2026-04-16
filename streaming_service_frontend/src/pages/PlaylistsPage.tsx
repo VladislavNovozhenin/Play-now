@@ -12,17 +12,17 @@ export const PlaylistsPage = () => {
   const user = useGetUser();
   const { t } = useTranslation('common');
   const { showError } = useNotification();
-  const { data, error } = useQuery<Playlist[], unknown>({
-    queryKey: [USERS_QUERY_KEYS.PLAYLISTS_LIST],
-    queryFn: () => usersAPI.getPlaylists(user!.username),
-    retry: false,
-  });
+  // const { data, error } = useQuery<Playlist[], unknown>({
+  //   queryKey: [USERS_QUERY_KEYS.PLAYLISTS_LIST],
+  //   queryFn: () => usersAPI.getPlaylists(user!.username),
+  //   retry: false,
+  // });
 
-  useEffect(() => {
-    if (error) {
-      handleApiError(error, showError, t, 'playlists');
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     handleApiError(error, showError, t, 'playlists');
+  //   }
+  // }, [error]);
 
   return <></>;
 };

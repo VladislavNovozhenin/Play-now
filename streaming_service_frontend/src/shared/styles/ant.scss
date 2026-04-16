@@ -24,10 +24,8 @@
   background-color: var(--color-greyLightBg) !important;
 }
 
-.ant-modal,
-.ant-modal * {
-  font-family: 'Circular', sans-serif !important;
-  color: var(--color-blackTxt);
+.ant-modal {
+  width: 440px !important;
   button {
     @include transition(background-color);
     border-radius: 8px;
@@ -47,4 +45,11 @@
 
 .ant-divider {
   margin: 0 !important;
+}
+
+.ant-empty {
+  padding-top: 80px;
+}
+.ant-empty-description {
+  color: var(--color-blackTxt) !important;
 }

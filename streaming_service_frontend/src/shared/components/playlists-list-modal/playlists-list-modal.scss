@@ -2,28 +2,13 @@
 
 .playlists-list {
   @include flex(start, start, 5px, column);
+  @include scrollbar();
   width: 100%;
   margin-bottom: 25px;
   max-height: 500px;
   overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--color-greyLightBg);
-    border-radius: 8px;
-    &:hover {
-      background-color: var(--color-greyBg);
-    }
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-greyBg) transparent;
   @media (min-width: 996px) and (max-height: 800px) {
-      max-height: 300px;
+    max-height: 300px;
   }
   &__item {
     width: 100%;
@@ -32,12 +17,15 @@
     @include flex(start, center, 10px);
     width: 100%;
     padding: 4px 12px !important;
-    background-color: var(--color-greyLightBg) !important;
+
+    &:hover {
+      background-color: var(--color-greyLightBg) !important;
+    }
     &-selected {
       background-color: var(--color-greyBg) !important;
-    }
-    &:hover {
-      background-color: var(--color-greyBg) !important;
+      &:hover {
+        background-color: var(--color-greyBg) !important;
+      }
     }
   }
   &__info {

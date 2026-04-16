@@ -1,5 +1,4 @@
 import { getBaseQuery, postBaseQuery } from '@shared/api/base-api';
-import type { Song } from '@shared/ts/types';
 
 const BASE_URL = import.meta.env.VITE_API;
 

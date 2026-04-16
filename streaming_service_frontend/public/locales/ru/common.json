@@ -16,13 +16,15 @@
     "name": "Название",
     "album": "Альбом",
     "add-in-playlist-btn": "Добавить в плейлист",
-    "remove-from-playlist-btn": "Удалить из плейлиста"
+    "remove-from-playlist-btn": "Удалить из плейлиста",
+    "no-data": "Нет данных"
   },
 
   "aside-menu": {
     "like-songs": "Любимые песни",
     "playlists": "Плейлисты",
-    "tracks": "Трэки"
+    "tracks": "Трэки",
+    "my-playlists": "Мои плейлисты"
   },
 
   "add-track-modal": {
@@ -56,16 +58,11 @@
     "track-removed": "Трек удалён из плейлиста"
   },
 
-  "errors-notification": {
-    "400": {
-      "like": "Song is already liked",
-      "unLike": "Song is not liked"
-    },
-    "404": {
-      "likesTracks": "Пользователь не найден"
-    },
+  "errors": {
     "network": "Нет соединения с сервером",
-    "unknown": "Неизестная ошибка"
+    "api": "Что-то пошло не так",
+    "unknown": "Неизвестная ошибка",
+    "retry-btn": "Повторить"
   },
 
   "header": {
@@ -85,5 +82,6 @@
     "count-tracks_few": "{{count}} трека",
     "count-tracks_many": "{{count}} треков",
     "count-tracks_other": "{{count}} треков"
-  }
+  },
+  "empty": "Треки не найдены"
 }

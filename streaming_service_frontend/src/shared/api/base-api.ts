@@ -1,4 +1,5 @@
-import { HTTP_METHODS, } from '@shared/common/constants';
+import { HTTP_METHODS } from '@shared/common/constants';
+import type { AppError } from '@shared/ts/types';
 import { useAppStore } from '@store/useAppStore';
 
 const getRequestHeaders = () => {
@@ -9,60 +10,38 @@ const getRequestHeaders = () => {
   };
 };
 
-export const getBaseQuery = async (url: string) => {
+const baseFetch = async (url: string, options: RequestInit) => {
+  let response: Response;
   try {
-    const response = await fetch(url, {
-      headers: getRequestHeaders(),
-      method: HTTP_METHODS.GET,
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw data;
-    }
-
-    return data;
+    response = await fetch(url, options);
   } catch (error) {
-    throw error;
+    throw { type: 'network' } satisfies AppError;
   }
+
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw { type: 'api' } satisfies AppError;
+  }
+
+  return data;
 };
 
-export const postBaseQuery = async (url: string, body?: any, noAuth: boolean = false) => {
-  try {
-    const response = await fetch(url, {
-      headers: noAuth ? { 'Content-type': 'application/json' } : getRequestHeaders(),
-      method: HTTP_METHODS.POST,
-      body: JSON.stringify(body ?? {}),
-    });
+export const getBaseQuery = (url: string) =>
+  baseFetch(url, {
+    headers: getRequestHeaders(),
+    method: HTTP_METHODS.GET,
+  });
 
-    const data = await response.json();
+export const postBaseQuery = (url: string, body?: any, noAuth: boolean = false) =>
+  baseFetch(url, {
+    headers: noAuth ? { 'Content-type': 'application/json' } : getRequestHeaders(),
+    method: HTTP_METHODS.POST,
+    body: JSON.stringify(body ?? {}),
+  });
 
-    if (!response.ok) {
-      throw data;
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const deleteBaseQuery = async (url: string) => {
-  try {
-    const response = await fetch(url, {
-      headers: getRequestHeaders(),
-      method: HTTP_METHODS.DELETE,
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw data;
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
+export const deleteBaseQuery = (url: string) =>
+  baseFetch(url, {
+    headers: getRequestHeaders(),
+    method: HTTP_METHODS.DELETE,
+  });
