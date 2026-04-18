@@ -1,28 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
-
-import { useGetUser } from '@store/useAppStore';
-import type { Playlist } from '@shared/ts/types';
-import { useEffect } from 'react';
-import { handleApiError } from '@shared/helpers/helpers';
+import { parseApiError } from '@shared/helpers/helpers';
 import { useTranslation } from 'react-i18next';
-import { useNotification } from '@shared/hooks/useNotification';
-import { USERS_QUERY_KEYS, usersAPI } from '@shared/api/users-api';
+import { UsePlaylists } from '@shared/hooks/usePlaylists';
+import { Loader } from '@shared/components/loader/Loader';
+import { ErrorData } from '@shared/components/error-data/ErrorData';
+import { PlaylistsList } from '@shared/components/playlists-list/PlaylistsList';
 
 export const PlaylistsPage = () => {
-  const user = useGetUser();
   const { t } = useTranslation('common');
-  const { showError } = useNotification();
-  // const { data, error } = useQuery<Playlist[], unknown>({
-  //   queryKey: [USERS_QUERY_KEYS.PLAYLISTS_LIST],
-  //   queryFn: () => usersAPI.getPlaylists(user!.username),
-  //   retry: false,
-  // });
+  const { data: playlists, error: playlistsError, isLoading, refetch } = UsePlaylists();
+  const playlistsErrorMessage = playlistsError ? parseApiError(playlistsError, t) : null;
 
-  // useEffect(() => {
-  //   if (error) {
-  //     handleApiError(error, showError, t, 'playlists');
-  //   }
-  // }, [error]);
+  if (playlistsErrorMessage) return <ErrorData title={playlistsErrorMessage} btnTitle={t('errors.retry-btn')} onClick={refetch} />;
+  // if (tracks?.length === 0) return <Empty description={t('empty')} />;
+  if (isLoading) return <Loader />;
 
-  return <></>;
+  return (
+    <>
+      <PlaylistsList playlists={playlists ?? []} />
+    </>
+  );
 };

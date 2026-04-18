@@ -12,15 +12,15 @@ type PlaylistsListModalProps = {
 export const PlaylistsListModal = ({ playlists, handleChangePlaylistId, selectedPlaylistId }: PlaylistsListModalProps) => {
   const { t } = useTranslation('common');
   return (
-    <ul className="playlists-list">
+    <ul className="playlists-list-modal">
       {playlists.map((playlist) => {
         return (
-          <li className="playlists-list__item" key={playlist.id}>
+          <li className="playlists-list-modal__item" key={playlist.id}>
             <button
-              className={clsx('playlists-list__btn', playlist.id === selectedPlaylistId && 'playlists-list__btn-selected')}
+              className={clsx('playlists-list-modal__btn', playlist.id === selectedPlaylistId && 'playlists-list-modal__btn-selected')}
               onClick={() => handleChangePlaylistId(playlist.id)}>
               <Note width={40} height={40} />
-              <div className="playlists-list__info">
+              <div className="playlists-list-modal__info">
                 <span>{playlist.name}</span>
                 <span>{t('count-tracks.count-tracks', { count: playlist.songs.length })}</span>
               </div>

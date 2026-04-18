@@ -14,6 +14,7 @@ import { RemoveTrackModalWithPlaylists } from '@shared/components/remove-track-m
 import { USERS_QUERY_KEYS, usersAPI } from '@shared/api/users-api';
 import { UsePlaylists } from '@shared/hooks/usePlaylists';
 import { ErrorData } from '@shared/components/error-data/ErrorData';
+import { Loader } from '@shared/components/loader/Loader';
 
 const { useBreakpoint } = Grid;
 export const LikesTracksPage = () => {
@@ -27,6 +28,7 @@ export const LikesTracksPage = () => {
     data: likes,
     error: likesError,
     refetch,
+    isLoading,
   } = useQuery<LikesResponse, AppError, Song[]>({
     queryKey: [USERS_QUERY_KEYS.LIKES_LIST],
     queryFn: () => usersAPI.getLikesList(user!.username),
@@ -90,6 +92,8 @@ export const LikesTracksPage = () => {
   if (likesErrorMessage) return <ErrorData title={likesErrorMessage} btnTitle={t('errors.retry-btn')} onClick={refetch} />;
 
   if (likes?.length === 0) return <Empty description={t('empty')} />;
+
+  if (isLoading) return <Loader />;
 
   return (
     <>

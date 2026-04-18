@@ -1,0 +1,6 @@
+@use '@shared/styles/mixin' as *;
+
+.loader {
+  @include flex(center, center);
+  padding-top: 80px;
+}

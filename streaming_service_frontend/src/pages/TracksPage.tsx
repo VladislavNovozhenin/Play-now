@@ -13,6 +13,7 @@ import { CreatePlaylistModal } from '@shared/components/create-playlist-modal/Cr
 import { RemoveTrackModalWithPlaylists } from '@shared/components/remove-track-modal-with-playlists/RemoveTrackModalWithPlaylists';
 import { UsePlaylists } from '@shared/hooks/usePlaylists';
 import { ErrorData } from '@shared/components/error-data/ErrorData';
+import { Loader } from '@shared/components/loader/Loader';
 
 const { useBreakpoint } = Grid;
 export const TracksPage = () => {
@@ -25,6 +26,7 @@ export const TracksPage = () => {
     data: tracks,
     error: tracksError,
     refetch,
+    isLoading,
   } = useQuery<Song[], AppError>({
     queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST],
     queryFn: () => tracksAPI.getTracksList(),
@@ -45,8 +47,6 @@ export const TracksPage = () => {
     },
     [tracksInPlaylists]
   );
-
-  console.log(playlists);
 
   const getMenuItems = useCallback(
     (trackId: number): MenuProps['items'] => {
@@ -88,6 +88,7 @@ export const TracksPage = () => {
 
   if (tracksErrorMessage) return <ErrorData title={tracksErrorMessage} btnTitle={t('errors.retry-btn')} onClick={refetch} />;
   if (tracks?.length === 0) return <Empty description={t('empty')} />;
+  if (isLoading) return <Loader />;
 
   return (
     <>

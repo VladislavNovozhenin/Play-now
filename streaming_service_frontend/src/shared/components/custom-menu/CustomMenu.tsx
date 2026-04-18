@@ -20,8 +20,8 @@ export const CustomMenu = () => {
 
   const menuItems = useMemo((): ItemType[] => {
     const base: ItemType[] = [
-      { key: '/playlists', label: t('aside-menu.playlists'), icon: <Note width={24} height={24} /> },
-      { key: '/tracks', label: t('aside-menu.tracks'), icon: <PlayTrack width={24} height={24} /> },
+      { key: '/playlists', label: t('aside-menu.playlists'), icon: <Note width={18} height={18} /> },
+      { key: '/tracks', label: t('aside-menu.tracks'), icon: <PlayTrack width={18} height={18} /> },
       { key: '/favorite', label: t('aside-menu.like-songs'), icon: <HeartOutlined /> },
     ];
     if (isNullOrUndefined(playlists) || playlistsError) return base;
@@ -31,7 +31,7 @@ export const CustomMenu = () => {
         {
           key: 'playlist-group',
           label: t('aside-menu.my-playlists'),
-          children: playlists.map((playlist) => ({ key: `/playlist/${playlist.id}`, label: playlist.name, icon: <Note width={24} height={24} /> })),
+          children: playlists.map((playlist) => ({ key: `/playlist/${playlist.id}`, label: playlist.name, icon: <Note width={18} height={18} /> })),
         },
       ];
     }

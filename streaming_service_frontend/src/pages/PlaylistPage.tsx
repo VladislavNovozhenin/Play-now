@@ -2,6 +2,7 @@ import { PLAYLISTS_QUERY_KEYS, playlistsAPI } from '@shared/api/playlists-api';
 import { NO_DATA } from '@shared/common/constants';
 import { isNullOrUndefined } from '@shared/common/helpers';
 import { ErrorData } from '@shared/components/error-data/ErrorData';
+import { Loader } from '@shared/components/loader/Loader';
 import { RemoveTrackModalWithoutPlaylists } from '@shared/components/remove-track-modal-without-playlists/RemoveTrackModalWithoutPlaylists';
 import { TracksList } from '@shared/components/tracks-list/TracksList';
 import { TracksTable } from '@shared/components/tracks-table/TracksTable';
@@ -24,6 +25,7 @@ export const PlaylistPage = () => {
     data: playlist,
     error: playlistError,
     refetch,
+    isLoading,
   } = useQuery<Playlist, AppError>({
     queryKey: [PLAYLISTS_QUERY_KEYS.PLAYLIST, id],
     queryFn: () => playlistsAPI.getPlaylist(id!),
@@ -52,6 +54,8 @@ export const PlaylistPage = () => {
   if (playlistErrorMessage) return <ErrorData title={playlistErrorMessage} btnTitle={t('errors.retry-btn')} onClick={refetch} />;
 
   if (playlist?.songs?.length === 0) return <Empty description={t('empty')} />;
+
+  if (isLoading) return <Loader />;
 
   return (
     <>

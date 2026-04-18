@@ -3,11 +3,11 @@ import type { Song } from '@shared/ts/types';
 
 const BASE_URL = import.meta.env.VITE_API;
 
-const getTracksList = (): Promise<Song[]> => getBaseQuery(`${BASE_URL}/songss`);
+const getTracksList = (): Promise<Song[]> => getBaseQuery(`${BASE_URL}/songs`);
 
 const getTrack = (trackId: number): Promise<Song> => getBaseQuery(`${BASE_URL}/songs/${trackId}`);
 
-const likeTrack = (songId: number): Promise<Song> => postBaseQuery(`${BASE_URL}/songs/${songId}/lik`);
+const likeTrack = (songId: number): Promise<Song> => postBaseQuery(`${BASE_URL}/songs/${songId}/like`);
 
 const unlikeTrack = (songId: number): Promise<Song> => postBaseQuery(`${BASE_URL}/songs/${songId}/unlike`);
 

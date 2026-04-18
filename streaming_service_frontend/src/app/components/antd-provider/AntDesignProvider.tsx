@@ -8,7 +8,7 @@ export const AntDesignProvider = ({ children }: AntDesignProviderProps) => {
     <ConfigProvider
       theme={{
         token: {
-          fontFamily: 'Circular, sans-serif',
+          fontFamily: 'Inter, sans-serif',
         },
       }}
       wave={{ disabled: true }}>

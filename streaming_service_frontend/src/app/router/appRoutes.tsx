@@ -4,6 +4,7 @@ import { HomePage } from '@pages/HomePage';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
+import { Loader } from '@shared/components/loader/Loader';
 
 const TracksPage = lazy(() => import('@pages/TracksPage').then((mod) => ({ default: mod.TracksPage })));
 const PlaylistPage = lazy(() => import('@pages/PlaylistPage').then((mod) => ({ default: mod.PlaylistPage })));
@@ -12,7 +13,7 @@ const LikesTracksPage = lazy(() => import('@pages/LikesTracksPage').then((mod) =
 
 export const AppRoutes = () => {
   return (
-    <Suspense fallback={<span>Загрузка...</span>}>
+    <Suspense fallback={<Loader />}>
       <Routes>
         <Route element={<AppLayout />}>
           <Route

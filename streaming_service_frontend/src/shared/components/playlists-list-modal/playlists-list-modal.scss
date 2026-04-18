@@ -1,6 +1,6 @@
 @use '@shared/styles/mixin' as *;
 
-.playlists-list {
+.playlists-list-modal {
   @include flex(start, start, 5px, column);
   @include scrollbar();
   width: 100%;
