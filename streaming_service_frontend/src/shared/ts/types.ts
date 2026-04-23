@@ -49,7 +49,9 @@ export interface Song {
   likes: User[];
 }
 
-export type ModalState = 'add' | 'remove' | 'createPlaylist' | null;
+export type PlaylistsModalState = 'add' | 'remove' | null;
+
+export type TracksModalState = PlaylistsModalState | 'createPlaylist';
 
 export interface RegisterRequest {
   username: string;

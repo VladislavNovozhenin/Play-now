@@ -1,7 +1,7 @@
 import type { Song, User } from '@shared/ts/types';
 import './tracks-list.scss';
 import ThreeDotsButton from '@shared/components/three-dots-button/ThreeDotsButton';
-import { Divider, Grid, Spin, type MenuProps } from 'antd';
+import { Divider, Empty, Grid, Spin, type MenuProps } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import Play from '@shared/assets/play.svg?react';
@@ -54,6 +54,8 @@ export const TracksList = ({ listData, isLikesPage, getMenuItems }: TracksListPr
   const scrollToUp = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (!listData.length) return <Empty description={t('empty')} />;
 
   return (
     <>

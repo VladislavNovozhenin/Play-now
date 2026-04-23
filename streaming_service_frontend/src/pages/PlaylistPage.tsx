@@ -9,7 +9,7 @@ import { TracksTable } from '@shared/components/tracks-table/TracksTable';
 import { parseApiError } from '@shared/helpers/helpers';
 import type { AppError, Playlist } from '@shared/ts/types';
 import { useQuery } from '@tanstack/react-query';
-import { Empty, Grid, type MenuProps } from 'antd';
+import {  Grid, type MenuProps } from 'antd';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -52,8 +52,6 @@ export const PlaylistPage = () => {
   );
 
   if (playlistErrorMessage) return <ErrorData title={playlistErrorMessage} btnTitle={t('errors.retry-btn')} onClick={refetch} />;
-
-  if (playlist?.songs?.length === 0) return <Empty description={t('empty')} />;
 
   if (isLoading) return <Loader />;
 

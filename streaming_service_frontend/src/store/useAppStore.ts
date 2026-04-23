@@ -7,16 +7,19 @@ type State = {
     username: string;
     token: string;
   } | null;
+  searchValue: string;
 };
 
 type Action = {
   setUser: (value: { username: string; token: string } | null) => void;
+  setSearchValue: (value: string) => void;
 };
 
 type Store = State & Action;
 
 const initialState: State = {
   user: null,
+  searchValue: '',
 };
 
 export const useAppStore = create<Store>()(
@@ -24,6 +27,10 @@ export const useAppStore = create<Store>()(
     persist(
       immer((set) => ({
         ...initialState,
+        setSearchValue: (value) =>
+          set((state) => {
+            state.searchValue = value;
+          }),
         setUser: (value) =>
           set((state) => {
             state.user = value;
@@ -36,3 +43,5 @@ export const useAppStore = create<Store>()(
 
 export const useGetUser = () => useAppStore((state) => state.user);
 export const setUserValue = (value: { username: string; token: string } | null) => useAppStore.getState().setUser(value);
+export const useGetSearchValue = () => useAppStore((state) => state.searchValue);
+export const setSearchValue = (value: string) => useAppStore.getState().setSearchValue(value);

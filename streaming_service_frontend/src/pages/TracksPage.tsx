@@ -2,16 +2,16 @@ import { useTranslation } from 'react-i18next';
 import { TracksTable } from '../shared/components/tracks-table/TracksTable';
 import { useQuery } from '@tanstack/react-query';
 import { TRACKS_QUERY_KEYS, tracksAPI } from '../shared/api/tracks-api';
-import { Empty, Grid, type MenuProps } from 'antd';
+import { Grid, type MenuProps } from 'antd';
 import { TracksList } from '@shared/components/tracks-list/TracksList';
-import type { AppError, ModalState, Song } from '@shared/ts/types';
+import type { AppError, TracksModalState, Song } from '@shared/ts/types';
 import { parseApiError } from '@shared/helpers/helpers';
 import { useCallback, useMemo, useState } from 'react';
 import { findTrackInPlaylists, isNullOrUndefined } from '@shared/common/helpers';
 import { AddTrackModal } from '@shared/components/add-track-modal/AddTrackModal';
 import { CreatePlaylistModal } from '@shared/components/create-playlist-modal/CreatePlaylistModal';
 import { RemoveTrackModalWithPlaylists } from '@shared/components/remove-track-modal-with-playlists/RemoveTrackModalWithPlaylists';
-import { UsePlaylists } from '@shared/hooks/usePlaylists';
+import { usePlaylists } from '@shared/hooks/usePlaylists';
 import { ErrorData } from '@shared/components/error-data/ErrorData';
 import { Loader } from '@shared/components/loader/Loader';
 
@@ -19,9 +19,9 @@ const { useBreakpoint } = Grid;
 export const TracksPage = () => {
   const { t } = useTranslation('common');
   const { xl, md } = useBreakpoint();
-  const [modalType, setModalType] = useState<ModalState>(null);
+  const [modalType, setModalType] = useState<TracksModalState>(null);
   const [trackId, setTrackId] = useState<number | null>(null);
-  const { data: playlists, error: playlistError } = UsePlaylists();
+  const { data: playlists, error: playlistError } = usePlaylists();
   const {
     data: tracks,
     error: tracksError,
@@ -78,7 +78,7 @@ export const TracksPage = () => {
     [tracksInPlaylists, t, playlistError]
   );
 
-  const handleOpenModal = (type: ModalState) => {
+  const handleOpenModal = (type: TracksModalState) => {
     setModalType(type);
   };
   const handleCloseModal = () => {
@@ -87,7 +87,6 @@ export const TracksPage = () => {
   };
 
   if (tracksErrorMessage) return <ErrorData title={tracksErrorMessage} btnTitle={t('errors.retry-btn')} onClick={refetch} />;
-  if (tracks?.length === 0) return <Empty description={t('empty')} />;
   if (isLoading) return <Loader />;
 
   return (

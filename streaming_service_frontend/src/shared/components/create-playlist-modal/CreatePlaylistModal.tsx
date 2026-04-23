@@ -1,7 +1,7 @@
 import { playlistsAPI } from '@shared/api/playlists-api';
 import { handleApiError } from '@shared/helpers/helpers';
 import { useNotification } from '@shared/hooks/useNotification';
-import type { ApiError, ModalState } from '@shared/ts/types';
+import type { AppError, TracksModalState } from '@shared/ts/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Form, Input, Modal } from 'antd';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ import { USERS_QUERY_KEYS } from '@shared/api/users-api';
 type CreatePlaylistModalProps = {
   onClose: () => void;
   isOpen: boolean;
-  openModal: (type: ModalState) => void;
+  openModal?: (type: TracksModalState) => void;
 };
 export const CreatePlaylistModal = ({ onClose, isOpen, openModal }: CreatePlaylistModalProps) => {
   const { t } = useTranslation('common');
@@ -24,9 +24,9 @@ export const CreatePlaylistModal = ({ onClose, isOpen, openModal }: CreatePlayli
     onSuccess: async () => {
       showSuccess({ title: t('success-notification.create-playlist') });
       await queryClient.invalidateQueries({ queryKey: [USERS_QUERY_KEYS.PLAYLISTS_LIST] });
-      openModal('add');
+      openModal ? openModal('add') : onClose();
     },
-    onError: (error: ApiError) => {
+    onError: (error: AppError) => {
       handleApiError(error, showError, t);
     },
   });

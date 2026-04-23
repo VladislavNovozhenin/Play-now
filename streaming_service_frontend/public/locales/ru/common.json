@@ -41,6 +41,12 @@
     "cancel-btn": "Отмена"
   },
 
+  "remove-playlist-modal": {
+    "title": "Удалить плейлист",
+    "remove-btn": "Удалить",
+    "cancel-btn": "Отмена"
+  },
+
   "create-playlist-modal": {
     "enter-playlist-name": "Введите имя плейлиста",
     "title": "Создать плейлист",
@@ -50,6 +56,7 @@
 
   "success-notification": {
     "create-playlist": "Плейлист успешно создан",
+    "remove-playlist": "Плейлист удален",
     "like": "Трек добавлен в любимые песни",
     "unlike": "Трек убран из любимые песни",
     "register": "Аккаунт создан, вы вошли в систему",

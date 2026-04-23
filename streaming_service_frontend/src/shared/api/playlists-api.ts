@@ -1,4 +1,4 @@
-import { getBaseQuery, postBaseQuery } from '@shared/api/base-api';
+import { deleteBaseQuery, getBaseQuery, postBaseQuery } from '@shared/api/base-api';
 
 const BASE_URL = import.meta.env.VITE_API;
 
@@ -10,11 +10,14 @@ const removeTrackFromPlaylist = (playlistId: number, trackId: number) => postBas
 
 const getPlaylist = (playlistId: string) => getBaseQuery(`${BASE_URL}/playlists/${playlistId}`);
 
+const removePlaylist = (playlistId: number) => deleteBaseQuery(`${BASE_URL}/playlists/${playlistId}`);
+
 export const playlistsAPI = {
   createPlaylist,
   addTrackInPlaylist,
   removeTrackFromPlaylist,
   getPlaylist,
+  removePlaylist,
 };
 
 export const PLAYLISTS_QUERY_KEYS = {

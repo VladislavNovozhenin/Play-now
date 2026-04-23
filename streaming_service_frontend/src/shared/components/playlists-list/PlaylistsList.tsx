@@ -1,20 +1,30 @@
-import type { Playlist } from '@shared/ts/types';
+import type { Playlist, PlaylistsModalState } from '@shared/ts/types';
 import { Link } from 'react-router-dom';
 import Note from '@shared/assets/note.svg?react';
 import './playlists-list.scss';
-import { PlusOutlined } from '@ant-design/icons';
+import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
 type PlaylistsListProps = {
   playlists: Playlist[];
+  openModal: (type: PlaylistsModalState) => void;
+  tooglePlaylistId: (id: number) => void;
 };
-export const PlaylistsList = ({ playlists }: PlaylistsListProps) => {
+export const PlaylistsList = ({ playlists, openModal, tooglePlaylistId }: PlaylistsListProps) => {
   const { t } = useTranslation('common');
   return (
     <ul className="playlists-list">
       {playlists.map((playlist) => {
         return (
           <li className="playlists-list__item" key={playlist.id}>
+            <button
+              onClick={() => {
+                tooglePlaylistId(playlist.id);
+                openModal('remove');
+              }}
+              className="playlists-list__btn-delete">
+              <CloseOutlined />
+            </button>
             <Link className="playlists-list__link" to={`/playlist/${playlist.id}`}>
               <Note width={40} height={40} />
               <span className="playlists-list__name">{playlist.name}</span>
@@ -23,7 +33,7 @@ export const PlaylistsList = ({ playlists }: PlaylistsListProps) => {
         );
       })}
       <li className="playlists-list__item">
-        <button className="playlists-list__btn">
+        <button onClick={() => openModal('add')} className="playlists-list__btn-add">
           <PlusOutlined />
           <span className="playlists-list__name">{t('create-new-playlist')}</span>
         </button>

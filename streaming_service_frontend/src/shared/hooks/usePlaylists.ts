@@ -4,7 +4,7 @@ import type { AppError, Playlist } from '@shared/ts/types';
 import { useGetUser } from '@store/useAppStore';
 import { useQuery } from '@tanstack/react-query';
 
-export const UsePlaylists = () => {
+export const usePlaylists = () => {
   const user = useGetUser();
   return useQuery<Playlist[], AppError>({
     queryKey: [USERS_QUERY_KEYS.PLAYLISTS_LIST, user?.username],

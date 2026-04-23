@@ -10,13 +10,14 @@ import './tracks-table.scss';
 import ThreeDotsButton from '@shared/components/three-dots-button/ThreeDotsButton';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Spin, type MenuProps } from 'antd';
+import { Empty, Spin, type MenuProps } from 'antd';
 import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
 import { UpOutlined } from '@ant-design/icons';
 import type { Song, Album, User } from '@shared/ts/types';
 
 import { LikesButton } from '../likes-button/LikesButton';
 import { useAutoLoadOnResize } from '@shared/hooks/useAutoLoadOnResize';
+import { useGetSearchValue } from '@store/useAppStore';
 
 type TracksTableProps = {
   tableData: Song[];
@@ -32,8 +33,14 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
   const INITIAL_COUNT = 9;
   const minVisibleRef = useRef<number>(INITIAL_COUNT);
   const isShowMore = visibleData.length < tableData.length && visibleData.length >= minVisibleRef.current;
+  const searchValue = useGetSearchValue();
 
   useAutoLoadOnResize({ isShowMore, visibleData, showMore });
+
+  const filterData = useMemo(
+    () => tableData.filter((track) => track.name.toLowerCase().includes(searchValue.toLowerCase())),
+    [tableData, searchValue]
+  );
 
   const updateVisibleData = (trackId: number, newLikes: User[]) => {
     if (isLikesPage) {
@@ -44,8 +51,8 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
   };
 
   useEffect(() => {
-    setVisibleData(tableData.slice(0, INITIAL_COUNT));
-  }, [tableData]);
+    setVisibleData(filterData.slice(0, INITIAL_COUNT));
+  }, [filterData]);
 
   function showMore() {
     setLoadingMore(true);
@@ -128,6 +135,9 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
     ],
     [getMenuItems]
   );
+
+  if (!filterData.length) return <Empty description={t('empty')} />;
+
   return (
     <>
       <InfiniteScroll

@@ -5,7 +5,7 @@ import PlayTrack from '@shared/assets/play-track.svg?react';
 import Note from '@shared/assets/note.svg?react';
 import './custom-menu.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { UsePlaylists } from '@shared/hooks/usePlaylists';
+import { usePlaylists } from '@shared/hooks/usePlaylists';
 import { useMemo } from 'react';
 import { isNullOrUndefined } from '@shared/common/helpers';
 import { HeartOutlined } from '@ant-design/icons';
@@ -16,7 +16,7 @@ export const CustomMenu = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { md } = useBreakpoint();
-  const { data: playlists, error: playlistsError } = UsePlaylists();
+  const { data: playlists, error: playlistsError } = usePlaylists();
 
   const menuItems = useMemo((): ItemType[] => {
     const base: ItemType[] = [

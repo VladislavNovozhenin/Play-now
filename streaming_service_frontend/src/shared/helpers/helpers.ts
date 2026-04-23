@@ -16,3 +16,15 @@ export const handleApiError = (error: AppError, showError: ({ title }: { title: 
   const errorMessage = parseApiError(error, t);
   showError({ title: errorMessage });
 };
+
+export const debounce = (fn: (value: string) => void, ms: number) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+  return (arg: string) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      fn(arg);
+    }, ms);
+  };
+};

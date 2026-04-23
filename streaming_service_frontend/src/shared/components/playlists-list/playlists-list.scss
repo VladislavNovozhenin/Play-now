@@ -8,15 +8,19 @@
     grid-template-columns: repeat(2, 1fr);
   }
   &__item {
+    position: relative;
     @include transition(background-color);
     &:hover {
       background-color: var(--color-greyLightBg) !important;
+      .playlists-list__btn-delete {
+        opacity: 1;
+      }
     }
     border-radius: 8px;
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
   }
   &__link,
-  &__btn {
+  &__btn-add {
     @include flex(center, center, 5px, column);
     padding: 16px;
   }
@@ -25,7 +29,7 @@
     font-weight: 500 !important;
     color: var(--color-blackTxt);
   }
-  &__btn {
+  &__btn-add {
     gap: 10px;
     color: var(--color-blackTxt);
     width: 100%;
@@ -34,6 +38,21 @@
     svg {
       width: 32px;
       height: 32px;
+    }
+  }
+  &__btn-delete {
+    @include transition(opacity);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0;
+    z-index: 1000;
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+    path {
+      fill: var(--color-danger);
     }
   }
 }
