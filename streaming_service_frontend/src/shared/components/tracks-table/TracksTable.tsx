@@ -12,12 +12,14 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Empty, Spin, type MenuProps } from 'antd';
 import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
-import { UpOutlined } from '@ant-design/icons';
+import { PauseOutlined, UpOutlined } from '@ant-design/icons';
 import type { Song, Album, User } from '@shared/ts/types';
 
 import { LikesButton } from '../likes-button/LikesButton';
 import { useAutoLoadOnResize } from '@shared/hooks/useAutoLoadOnResize';
 import { useGetSearchValue } from '@store/useAppStore';
+import { playNewTrack, tooglePlay, useCurrentTrack, useIsPlaying } from '@store/playerStore';
+import clsx from 'clsx';
 
 type TracksTableProps = {
   tableData: Song[];
@@ -34,6 +36,8 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
   const minVisibleRef = useRef<number>(INITIAL_COUNT);
   const isShowMore = visibleData.length < tableData.length && visibleData.length >= minVisibleRef.current;
   const searchValue = useGetSearchValue();
+  const isPlaying = useIsPlaying();
+  const currentTrack = useCurrentTrack();
 
   useAutoLoadOnResize({ isShowMore, visibleData, showMore });
 
@@ -70,6 +74,14 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleRowClick = (track: Song) => {
+    if (currentTrack?.id === track.id) {
+      tooglePlay();
+    } else {
+      playNewTrack(track, tableData)
+    }
+  };
+
   const colums = useMemo<ColumnType<Song>[]>(
     () => [
       {
@@ -87,7 +99,7 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
           <div className="track-table__name">
             <div className="track-table__name-img">
               <img src={track.image} alt="" />
-              <Play />
+              {isPlaying && currentTrack?.id === track.id ? <PauseOutlined /> : <Play />}
             </div>
 
             <div className="track-table__name-content">
@@ -133,7 +145,7 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
         render: (_, track) => <ThreeDotsButton getMenuItems={getMenuItems} trackId={track.id} />,
       },
     ],
-    [getMenuItems]
+    [getMenuItems, isPlaying, currentTrack]
   );
 
   if (!filterData.length) return <Empty description={t('empty')} />;
@@ -158,7 +170,8 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
           columns={colums}
           dataSource={visibleData}
           scroll={undefined}
-          rowClassName="track-table__row"
+          rowClassName={(record) => clsx('track-table__row', record.id === currentTrack?.id && 'track-table__row-selected')}
+          onRow={(record) => ({ onClick: () => handleRowClick(record) })}
         />
       </InfiniteScroll>
       {buttonToUp && (

@@ -1,5 +1,7 @@
-import type { AppError } from '@shared/ts/types';
+import type { AppError, Song } from '@shared/ts/types';
 import type { TFunction } from 'i18next';
+
+const TRACK_URL = import.meta.env.VITE_TRACK_API;
 
 export const parseApiError = (error: AppError, t: TFunction): string => {
   switch (error.type) {
@@ -20,11 +22,19 @@ export const handleApiError = (error: AppError, showError: ({ title }: { title: 
 export const debounce = (fn: (value: string) => void, ms: number) => {
   let timeoutId: ReturnType<typeof setTimeout>;
 
-  return (arg: string) => {
+  const debounced = (arg: string) => {
     clearTimeout(timeoutId);
 
     timeoutId = setTimeout(() => {
       fn(arg);
     }, ms);
   };
+
+  debounced.cancel = () => clearTimeout(timeoutId);
+  return debounced;
+};
+
+export const getTrackUrl = (track: Song) => {
+  const encodedFileName = track.path.replace(' ', '%20');
+  return `${TRACK_URL}${encodedFileName}`;
 };

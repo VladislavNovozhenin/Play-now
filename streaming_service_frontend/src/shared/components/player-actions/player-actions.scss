@@ -1,0 +1,16 @@
+@use '@shared/styles/mixin' as *;
+
+.player-actions {
+  @include flex(center, center, 20px);
+  &__play {
+    @include flex(center, center);
+    padding-left: 2px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-greyDarkBg);
+    path {
+      fill: var(--color-white);
+    }
+  }
+}

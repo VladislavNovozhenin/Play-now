@@ -1,0 +1,56 @@
+@use '@shared/styles/mixin' as *;
+
+.player {
+  display: grid;
+  grid-template-columns: 2fr auto 1fr;
+  align-items: center;
+  padding: 15px 30px;
+  width: 100%;
+  max-width: 1180px;
+  &__center {
+    @include flex(center, center, 0, column);
+  }
+  &__time {
+    @include flex(center, center, 4px);
+  }
+  &__speaker {
+    @include flex(center, center, 4px);
+    margin: auto 0 0 auto;
+  }
+  &__slider-time {
+    width: 600px;
+    .ant-slider-handle {
+      display: none;
+    }
+  }
+  &__slider-speaker {
+    width: 80px;
+    .ant-slider-handle {
+      width: 8px;
+      height: 8px;
+      inset-block-start: 2px;
+      &:hover,
+      &:focus {
+        inset-block-start: 1px;
+        &::after {
+          box-shadow: none !important;
+          outline: none;
+        }
+      }
+    }
+    .ant-slider-handle::after {
+      width: 8px;
+      height: 8px;
+      background-color: var(--color-promo) !important;
+      box-shadow: none !important;
+      outline: none;
+    }
+  }
+  .ant-slider-track {
+    background-color: var(--color-promo) !important;
+  }
+
+  .ant-slider {
+    margin: 0;
+  }
+}

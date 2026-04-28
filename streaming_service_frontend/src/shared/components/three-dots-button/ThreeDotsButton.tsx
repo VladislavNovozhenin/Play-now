@@ -1,6 +1,7 @@
 import { Dropdown, type MenuProps } from 'antd';
 import ThreeDots from '@shared/assets/three-dots.svg?react';
 import './three-dots-button.scss';
+import type React from 'react';
 
 type ThreeDotsButtonProps = {
   trackId: number;
@@ -8,6 +9,10 @@ type ThreeDotsButtonProps = {
 };
 
 const ThreeDotsButton = ({ trackId, getMenuItems }: ThreeDotsButtonProps) => {
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+  }
   return (
     <Dropdown
       className="three-dots-button-dropdown"
@@ -15,7 +20,7 @@ const ThreeDotsButton = ({ trackId, getMenuItems }: ThreeDotsButtonProps) => {
       trigger={['click']}
       menu={{ items: getMenuItems(trackId), style: { marginTop: 15 } }}
       classNames={{ root: 'three-dots-button-dropdown-root' }}>
-      <button className="three-dots-dropdown__button">
+      <button onClick={handleClick} className="three-dots-dropdown__button">
         <ThreeDots />
       </button>
     </Dropdown>

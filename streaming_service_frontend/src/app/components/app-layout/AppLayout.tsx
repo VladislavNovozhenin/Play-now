@@ -3,8 +3,9 @@ import { CustomHeader } from '@widgets/custom-header';
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 import './app-layout.scss';
+import { Player } from '@shared/components/player/Player';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout;
 
 export const AppLayout = () => {
   return (
@@ -17,14 +18,14 @@ export const AppLayout = () => {
         <Sider className="aside">
           <CustomMenu />
         </Sider>
-        <Content className="content" id='content'>
+        <Content className="content" id="content">
           <Outlet />
         </Content>
       </Layout>
 
-      {/* <Footer className="footer">
-        <CustomFooter />
-      </Footer> */}
+      <div className="global-player">
+        <Player />
+      </div>
     </Layout>
   );
 };

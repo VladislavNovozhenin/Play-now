@@ -3,13 +3,14 @@ import './tracks-list.scss';
 import ThreeDotsButton from '@shared/components/three-dots-button/ThreeDotsButton';
 import { Divider, Empty, Grid, Spin, type MenuProps } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import Play from '@shared/assets/play.svg?react';
 import { useTranslation } from 'react-i18next';
 import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
 import { UpOutlined } from '@ant-design/icons';
 import { LikesButton } from '../likes-button/LikesButton';
 import { useAutoLoadOnResize } from '@shared/hooks/useAutoLoadOnResize';
+import { useGetSearchValue } from '@store/useAppStore';
 
 type TracksListProps = {
   listData: Song[];
@@ -27,6 +28,9 @@ export const TracksList = ({ listData, isLikesPage, getMenuItems }: TracksListPr
   const INITIAL_COUNT = md ? 18 : 12;
   const minVisibleRef = useRef<number>(INITIAL_COUNT);
   const isShowMore = visibleData.length < listData.length && visibleData.length >= minVisibleRef.current;
+  const searchValue = useGetSearchValue();
+
+  const filterData = useMemo(() => listData.filter((track) => track.name.toLowerCase().includes(searchValue.toLowerCase())), [listData, searchValue]);
 
   useAutoLoadOnResize({ isShowMore, visibleData, showMore });
 
@@ -39,8 +43,8 @@ export const TracksList = ({ listData, isLikesPage, getMenuItems }: TracksListPr
   };
 
   useEffect(() => {
-    setVisibleData(listData.slice(0, INITIAL_COUNT));
-  }, [listData]);
+    setVisibleData(filterData.slice(0, INITIAL_COUNT));
+  }, [filterData]);
 
   function showMore() {
     if (loadingMore) return;
@@ -55,7 +59,7 @@ export const TracksList = ({ listData, isLikesPage, getMenuItems }: TracksListPr
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (!listData.length) return <Empty description={t('empty')} />;
+  if (!filterData.length) return <Empty description={t('empty')} />;
 
   return (
     <>

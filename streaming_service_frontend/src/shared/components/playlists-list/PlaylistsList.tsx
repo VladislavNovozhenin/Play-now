@@ -4,6 +4,8 @@ import Note from '@shared/assets/note.svg?react';
 import './playlists-list.scss';
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import { useMemo } from 'react';
+import { useGetSearchValue } from '@store/useAppStore';
 
 type PlaylistsListProps = {
   playlists: Playlist[];
@@ -12,9 +14,15 @@ type PlaylistsListProps = {
 };
 export const PlaylistsList = ({ playlists, openModal, tooglePlaylistId }: PlaylistsListProps) => {
   const { t } = useTranslation('common');
+  const searchValue = useGetSearchValue();
+
+  const filterPlaylists = useMemo(
+    () => playlists.filter((playlist) => playlist.name.toLowerCase().includes(searchValue.toLowerCase())),
+    [playlists, searchValue]
+  );
   return (
     <ul className="playlists-list">
-      {playlists.map((playlist) => {
+      {filterPlaylists.map((playlist) => {
         return (
           <li className="playlists-list__item" key={playlist.id}>
             <button

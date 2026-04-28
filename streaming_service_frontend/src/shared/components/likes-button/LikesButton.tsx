@@ -3,12 +3,13 @@ import Heart from '@shared/assets/heart.svg?react';
 import { getLikeTracksByUsername, isIterableArray } from '@shared/common/helpers';
 import { handleApiError } from '@shared/helpers/helpers';
 import { useNotification } from '@shared/hooks/useNotification';
-import type { ApiError, Song, User } from '@shared/ts/types';
+import type { AppError, Song, User } from '@shared/ts/types';
 import { useGetUser } from '@store/useAppStore';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import './likes-button.scss';
+import type React from 'react';
 
 type LikesButtonProps = {
   track: Song;
@@ -27,8 +28,8 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
       showSuccess({ title: t('success-notification.like') });
       updateVisibleData(track.id, response.likes);
     },
-    onError: (error: unknown) => {
-      handleApiError(error, showError, t, 'like');
+    onError: (error: AppError) => {
+      handleApiError(error, showError, t);
     },
   });
 
@@ -38,12 +39,13 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
       showSuccess({ title: t('success-notification.unlike') });
       updateVisibleData(track.id, response.likes);
     },
-    onError: (error: ApiError) => {
-      handleApiError(error, showError, t, 'unLike');
+    onError: (error: AppError) => {
+      handleApiError(error, showError, t);
     },
   });
 
-  const handleLikeOrUnLike = (track: Song) => {
+  const handleLikeOrUnLike = (track: Song, e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     if (isLiked) {
       unLikeMutation.mutate(track.id);
     } else {
@@ -51,7 +53,7 @@ export const LikesButton = ({ track, updateVisibleData }: LikesButtonProps) => {
     }
   };
   return (
-    <button onClick={() => handleLikeOrUnLike(track)} className="likes-btn">
+    <button onClick={(e) => handleLikeOrUnLike(track, e)} className="likes-btn">
       <Heart className={clsx(isLiked ? 'likes-btn__like' : 'likes-btn__unlike')} />
     </button>
   );
