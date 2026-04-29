@@ -78,3 +78,5 @@ export interface LikesResponse {
 export interface AppError {
   type: 'api' | 'network';
 }
+
+export type RepeatMode = 'off' | 'all' | 'one';

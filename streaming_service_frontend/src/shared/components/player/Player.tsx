@@ -1,24 +1,34 @@
-import { useEffect, useRef} from 'react';
+import { useEffect, useRef } from 'react';
 import { PlayerActions } from '../player-actions/PlayerActions';
 import Speaker from '@shared/assets/speaker.svg?react';
 import './player.scss';
 import { Slider } from 'antd';
 import { NO_DATA } from '@shared/common/constants';
-import { setVolume, useCurrentTrack, useIsPlaying, useVolume } from '@store/playerStore';
+import { nextTrack, setIsPlaying, setVolume, useCurrentTrack, useIsPlaying, useVolume } from '@store/playerStore';
 import { getTrackUrl } from '@shared/helpers/helpers';
 
 export const Player = () => {
-  const audioRef = useRef<HTMLAudioElement | null>(new Audio());
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const isPlaying = useIsPlaying();
   const currentTrack = useCurrentTrack();
-  const volume = useVolume()
+  const volume = useVolume();
 
   useEffect(() => {
-    if (audioRef.current && currentTrack) {
+    if (currentTrack) {
+      audioRef.current = new Audio();
       audioRef.current.src = getTrackUrl(currentTrack);
-      audioRef.current.volume = volume;
+      if (isPlaying) {
+        audioRef.current.play();
+      }
     }
-  }, [audioRef.current, currentTrack]);
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+        audioRef.current = null;
+      }
+    };
+  }, [currentTrack]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -27,13 +37,23 @@ export const Player = () => {
   }, [volume]);
 
   useEffect(() => {
-    if (!(audioRef.current && currentTrack)) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
     if (isPlaying) {
-      audioRef.current.play();
+      audio.play();
     } else {
-      audioRef.current.pause();
+      audio.pause();
     }
-  }, [isPlaying, currentTrack]);
+  }, [isPlaying]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!(audio && currentTrack)) return;
+
+    audio.addEventListener('ended', nextTrack);
+    return () => audio.removeEventListener('ended', nextTrack);
+  }, [currentTrack]);
 
   const handleVolumeChange = (value: number) => {
     setVolume(value);
@@ -52,7 +72,7 @@ export const Player = () => {
       </div>
 
       <div className="player__center">
-        <PlayerActions/>
+        <PlayerActions />
         <div className="player__time">
           <span>{NO_DATA}</span>
           <Slider className="player__slider-time" />
@@ -62,7 +82,15 @@ export const Player = () => {
 
       <div className="player__speaker">
         <Speaker />
-        <Slider className="player__slider-speaker" step={0.01} value={volume} onChange={handleVolumeChange} max={1} min={0} tooltip={{open: false}}/>
+        <Slider
+          className="player__slider-speaker"
+          step={0.01}
+          value={volume}
+          onChange={handleVolumeChange}
+          max={1}
+          min={0}
+          tooltip={{ open: false }}
+        />
       </div>
     </div>
   );

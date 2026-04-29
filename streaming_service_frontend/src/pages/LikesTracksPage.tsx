@@ -61,7 +61,8 @@ export const LikesTracksPage = () => {
         {
           label: t('tracks-table.add-in-playlist-btn'),
           key: 'add',
-          onClick: () => {
+          onClick: (info) => {
+            info.domEvent.stopPropagation();
             setTrackId(trackId);
             setModalType('add');
           },
@@ -70,7 +71,8 @@ export const LikesTracksPage = () => {
         {
           label: t('tracks-table.remove-from-playlist-btn'),
           key: 'remove',
-          onClick: () => {
+          onClick: (info) => {
+            info.domEvent.stopPropagation();
             setTrackId(trackId);
             setModalType('remove');
           },

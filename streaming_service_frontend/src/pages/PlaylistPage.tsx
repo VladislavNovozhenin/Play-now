@@ -9,7 +9,7 @@ import { TracksTable } from '@shared/components/tracks-table/TracksTable';
 import { parseApiError } from '@shared/helpers/helpers';
 import type { AppError, Playlist } from '@shared/ts/types';
 import { useQuery } from '@tanstack/react-query';
-import {  Grid, type MenuProps } from 'antd';
+import { Grid, type MenuProps } from 'antd';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -46,7 +46,16 @@ export const PlaylistPage = () => {
 
   const getMenuItems = useCallback(
     (id: number): MenuProps['items'] => {
-      return [{ key: 'remove', label: t('tracks-table.remove-from-playlist-btn'), onClick: () => handleOpenModal(id) }];
+      return [
+        {
+          key: 'remove',
+          label: t('tracks-table.remove-from-playlist-btn'),
+          onClick: (info) => {
+            info.domEvent.stopPropagation();
+            handleOpenModal(id);
+          },
+        },
+      ];
     },
     [t]
   );
