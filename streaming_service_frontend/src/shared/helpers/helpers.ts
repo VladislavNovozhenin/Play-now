@@ -35,6 +35,15 @@ export const debounce = (fn: (value: string) => void, ms: number) => {
 };
 
 export const getTrackUrl = (track: Song) => {
-  const encodedFileName = track.path.replace(' ', '%20');
-  return `${TRACK_URL}${encodedFileName}`;
+  const prefix = '/songs/';
+  const fileName = track.path.replace(prefix, '');
+  return `${TRACK_URL}${prefix}${encodeURIComponent(fileName)}`;
+};
+
+export const formatTime = (time: number) => {
+  if (!time) return '0:00';
+
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };

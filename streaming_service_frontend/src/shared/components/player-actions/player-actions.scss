@@ -13,4 +13,30 @@
       fill: var(--color-white);
     }
   }
+  &__repeat {
+    position: relative;
+    path {
+      @include transition(fill);
+    }
+    span {
+      @include transition(opacity);
+      opacity: 0;
+      position: absolute;
+      top: -2px;
+      right: -5px;
+      color: var(--color-promo);
+      font-size: 10px;
+    }
+  }
+  .one,
+  .all {
+    path {
+      fill: var(--color-promo);
+    }
+  }
+  .one {
+    span {
+      opacity: 1;
+    }
+  }
 }

@@ -1,62 +1,35 @@
-import { useEffect, useRef } from 'react';
 import { PlayerActions } from '../player-actions/PlayerActions';
 import Speaker from '@shared/assets/speaker.svg?react';
 import './player.scss';
 import { Slider } from 'antd';
-import { NO_DATA } from '@shared/common/constants';
-import { nextTrack, setIsPlaying, setVolume, useCurrentTrack, useIsPlaying, useVolume } from '@store/playerStore';
-import { getTrackUrl } from '@shared/helpers/helpers';
+import { setCurrentTime, setVolume, useCurrentTime, useDuration, useVolume } from '@store/playerStore';
+
+import { usePlayer } from '@shared/hooks/usePlayer';
+import { getAudio } from './player-engine';
+import { useRef } from 'react';
+import { formatTime } from '@shared/helpers/helpers';
 
 export const Player = () => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const isPlaying = useIsPlaying();
-  const currentTrack = useCurrentTrack();
   const volume = useVolume();
+  const currentTime = useCurrentTime();
+  const duration = useDuration();
+  const audio = getAudio();
+  const isPullingRef = useRef<boolean>(false);
 
-  useEffect(() => {
-    if (currentTrack) {
-      audioRef.current = new Audio();
-      audioRef.current.src = getTrackUrl(currentTrack);
-      if (isPlaying) {
-        audioRef.current.play();
-      }
-    }
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = '';
-        audioRef.current = null;
-      }
-    };
-  }, [currentTrack]);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
-  }, [isPlaying]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!(audio && currentTrack)) return;
-
-    audio.addEventListener('ended', nextTrack);
-    return () => audio.removeEventListener('ended', nextTrack);
-  }, [currentTrack]);
+  usePlayer({ isPullingRef });
 
   const handleVolumeChange = (value: number) => {
     setVolume(value);
+  };
+
+  const handleCurrentTimeChange = (value: number) => {
+    isPullingRef.current = true;
+    setCurrentTime(value);
+  };
+
+  const handleCurrentTimeChangeComplete = (value: number) => {
+    isPullingRef.current = false;
+    audio.currentTime = value;
   };
 
   return (
@@ -74,9 +47,17 @@ export const Player = () => {
       <div className="player__center">
         <PlayerActions />
         <div className="player__time">
-          <span>{NO_DATA}</span>
-          <Slider className="player__slider-time" />
-          <span>{NO_DATA}</span>
+          <span>{formatTime(audio.currentTime)}</span>
+          <Slider
+            step={0.1}
+            min={0}
+            max={duration ?? 0}
+            value={currentTime}
+            className="player__slider-time"
+            onChange={handleCurrentTimeChange}
+            onChangeComplete={handleCurrentTimeChangeComplete}
+          />
+          <span>{formatTime(audio.duration)}</span>
         </div>
       </div>
 

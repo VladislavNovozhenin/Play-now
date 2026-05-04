@@ -18,7 +18,7 @@ import type { Song, Album, User } from '@shared/ts/types';
 import { LikesButton } from '../likes-button/LikesButton';
 import { useAutoLoadOnResize } from '@shared/hooks/useAutoLoadOnResize';
 import { useGetSearchValue } from '@store/useAppStore';
-import { playNewTrack, tooglePlay, useCurrentTrack, useIsPlaying } from '@store/playerStore';
+import { playNewTrack, togglePlay, useCurrentTrack, useIsPlaying } from '@store/playerStore';
 import clsx from 'clsx';
 
 type TracksTableProps = {
@@ -76,7 +76,7 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
 
   const handleRowClick = (track: Song) => {
     if (currentTrack?.id === track.id) {
-      tooglePlay();
+      togglePlay();
     } else {
       playNewTrack(track, tableData)
     }

@@ -10,16 +10,19 @@ type State = {
   queue: Song[];
   repeatMode: RepeatMode;
   currentTime: number;
+  duration: number;
 };
 type Action = {
   setCurrentTrack: (track: Song) => void;
   setIsPlaying: (value: boolean) => void;
   setVolume: (volume: number) => void;
-  tooglePlay: () => void;
+  togglePlay: () => void;
   playNewTrack: (track: Song, queue: Song[]) => void;
   nextTrack: () => void;
   prevTrack: () => void;
-  setRepeatMode: (mode: RepeatMode) => void;
+  setRepeatMode: () => void;
+  setCurrentTime: (time: number) => void;
+  setDuration: (duration: number) => void;
 };
 type Store = State & Action;
 
@@ -30,6 +33,7 @@ const initialState: State = {
   queue: [],
   repeatMode: 'off',
   currentTime: 0,
+  duration: 0,
 };
 
 export const playerStore = create<Store>()(
@@ -49,7 +53,7 @@ export const playerStore = create<Store>()(
           set((state) => {
             state.volume = volume;
           }),
-        tooglePlay: () =>
+        togglePlay: () =>
           set((state) => {
             state.isPlaying = !state.isPlaying;
           }),
@@ -63,10 +67,14 @@ export const playerStore = create<Store>()(
           set((state) => {
             const currentTrackIndex = state.queue.findIndex((i) => i.id === state.currentTrack?.id);
             const nextTrack = state.queue[currentTrackIndex + 1];
-            if (nextTrack) {
+            if (!nextTrack) {
+              if (state.repeatMode === 'all') {
+                state.currentTrack = state.queue[0];
+              } else {
+                state.isPlaying = false;
+              }
+            } else {
               state.currentTrack = nextTrack;
-            } else if (state.repeatMode === 'all') {
-              state.currentTrack = state.queue[0];
             }
           }),
         prevTrack: () =>
@@ -77,9 +85,23 @@ export const playerStore = create<Store>()(
               state.currentTrack = prevTrack;
             }
           }),
-        setRepeatMode: (mode) =>
+        setRepeatMode: () =>
           set((state) => {
-            state.repeatMode = mode;
+            if (state.repeatMode === 'off') {
+              state.repeatMode = 'one';
+            } else if (state.repeatMode === 'one') {
+              state.repeatMode = 'all';
+            } else {
+              state.repeatMode = 'off';
+            }
+          }),
+        setCurrentTime: (time) =>
+          set((state) => {
+            state.currentTime = time;
+          }),
+        setDuration: (duration) =>
+          set((state) => {
+            state.duration = duration;
           }),
       })),
       {
@@ -97,12 +119,17 @@ export const useCurrentTrack = () => playerStore((state) => state.currentTrack);
 export const useVolume = () => playerStore((state) => state.volume);
 export const useIsPlaying = () => playerStore((state) => state.isPlaying);
 export const useQueue = () => playerStore((state) => state.queue);
+export const useDuration = () => playerStore((state) => state.duration);
+export const useCurrentTime = () => playerStore((state) => state.currentTime);
+export const useRepeatMode = () => playerStore((state) => state.repeatMode);
 
 export const setCurrentTrack = (track: Song) => playerStore.getState().setCurrentTrack(track);
 export const setVolume = (volume: number) => playerStore.getState().setVolume(volume);
 export const setIsPlaying = (value: boolean) => playerStore.getState().setIsPlaying(value);
-export const tooglePlay = () => playerStore.getState().tooglePlay();
+export const togglePlay = () => playerStore.getState().togglePlay();
 export const playNewTrack = (track: Song, queue: Song[]) => playerStore.getState().playNewTrack(track, queue);
 export const nextTrack = () => playerStore.getState().nextTrack();
 export const prevTrack = () => playerStore.getState().prevTrack();
-export const setRepeatMode = (mode: RepeatMode) => playerStore.getState().setRepeatMode(mode);
+export const setRepeatMode = () => playerStore.getState().setRepeatMode();
+export const setDuration = (duration: number) => playerStore.getState().setDuration(duration);
+export const setCurrentTime = (time: number) => playerStore.getState().setCurrentTime(time);

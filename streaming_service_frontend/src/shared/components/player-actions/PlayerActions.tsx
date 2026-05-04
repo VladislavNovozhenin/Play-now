@@ -5,11 +5,13 @@ import Repeat from '@shared/assets/repeat.svg?react';
 import Shuffle from '@shared/assets/shuffle.svg?react';
 import Back from '@shared/assets/skip-back.svg?react';
 import Forward from '@shared/assets/skip-forward.svg?react';
-import { nextTrack, prevTrack, tooglePlay, useIsPlaying } from '@store/playerStore';
+import { nextTrack, prevTrack, setRepeatMode, togglePlay, useIsPlaying, useRepeatMode } from '@store/playerStore';
+import clsx from 'clsx';
 
 type PlayerActionsProps = {};
 export const PlayerActions = ({}: PlayerActionsProps) => {
   const isPlaying = useIsPlaying();
+  const repeatMode = useRepeatMode();
   return (
     <div className="player-actions">
       <button>
@@ -18,14 +20,15 @@ export const PlayerActions = ({}: PlayerActionsProps) => {
       <button onClick={prevTrack}>
         <Back />
       </button>
-      <button onClick={tooglePlay} className="player-actions__play">
+      <button onClick={togglePlay} className="player-actions__play">
         {isPlaying ? <PauseOutlined /> : <Play />}
       </button>
       <button onClick={nextTrack}>
         <Forward />
       </button>
-      <button>
+      <button onClick={setRepeatMode} className={clsx('player-actions__repeat', repeatMode === 'one' && 'one', repeatMode === 'all' && 'all')}>
         <Repeat />
+        <span>1</span>
       </button>
     </div>
   );
