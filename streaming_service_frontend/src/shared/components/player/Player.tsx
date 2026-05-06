@@ -2,11 +2,11 @@ import { PlayerActions } from '../player-actions/PlayerActions';
 import Speaker from '@shared/assets/speaker.svg?react';
 import './player.scss';
 import { Slider } from 'antd';
-import { setCurrentTime, setVolume, useCurrentTime, useDuration, useVolume } from '@store/playerStore';
+import { setCurrentTime, setVolume, useCurrentTime, useCurrentTrack, useDuration, useVolume } from '@store/playerStore';
 
 import { usePlayer } from '@shared/hooks/usePlayer';
 import { getAudio } from './player-engine';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { formatTime } from '@shared/helpers/helpers';
 
 export const Player = () => {
@@ -15,6 +15,7 @@ export const Player = () => {
   const duration = useDuration();
   const audio = getAudio();
   const isPullingRef = useRef<boolean>(false);
+  const currentTrack = useCurrentTrack();
 
   usePlayer({ isPullingRef });
 
@@ -35,19 +36,20 @@ export const Player = () => {
   return (
     <div className="player">
       <div className="player__info">
-        <img src="" alt="" />
+        <img src={currentTrack?.image} alt="" />
+
         <div>
           <div>
-            <span></span>
+            <span>{currentTrack?.name}</span>
           </div>
-          <span></span>
+          <span>{currentTrack?.artist?.name}</span>
         </div>
       </div>
 
       <div className="player__center">
         <PlayerActions />
         <div className="player__time">
-          <span>{formatTime(audio.currentTime)}</span>
+          <span>{formatTime(currentTime)}</span>
           <Slider
             step={0.1}
             min={0}
@@ -57,7 +59,7 @@ export const Player = () => {
             onChange={handleCurrentTimeChange}
             onChangeComplete={handleCurrentTimeChangeComplete}
           />
-          <span>{formatTime(audio.duration)}</span>
+          <span>{formatTime(duration)}</span>
         </div>
       </div>
 

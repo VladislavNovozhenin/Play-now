@@ -80,3 +80,5 @@ export interface AppError {
 }
 
 export type RepeatMode = 'off' | 'all' | 'one';
+
+export type PageQueue = 'all' | 'likes' | 'playlist' | null;

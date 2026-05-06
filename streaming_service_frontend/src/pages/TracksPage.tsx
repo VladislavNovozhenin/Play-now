@@ -1,19 +1,20 @@
 import { useTranslation } from 'react-i18next';
 import { TracksTable } from '../shared/components/tracks-table/TracksTable';
-import { useQuery } from '@tanstack/react-query';
-import { TRACKS_QUERY_KEYS, tracksAPI } from '../shared/api/tracks-api';
 import { Grid, type MenuProps } from 'antd';
 import { TracksList } from '@shared/components/tracks-list/TracksList';
-import type { AppError, TracksModalState, Song } from '@shared/ts/types';
+import type { TracksModalState } from '@shared/ts/types';
 import { parseApiError } from '@shared/helpers/helpers';
-import { useCallback, useMemo, useState } from 'react';
-import { findTrackInPlaylists, isNullOrUndefined } from '@shared/common/helpers';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { findTrackInPlaylists, isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
 import { AddTrackModal } from '@shared/components/add-track-modal/AddTrackModal';
 import { CreatePlaylistModal } from '@shared/components/create-playlist-modal/CreatePlaylistModal';
 import { RemoveTrackModalWithPlaylists } from '@shared/components/remove-track-modal-with-playlists/RemoveTrackModalWithPlaylists';
 import { usePlaylists } from '@shared/hooks/usePlaylists';
 import { ErrorData } from '@shared/components/error-data/ErrorData';
 import { Loader } from '@shared/components/loader/Loader';
+import { useTracks } from '@shared/hooks/useTracks';
+import { useResolvedQueue } from '@shared/hooks/useResolvedQueue';
+import { initPlayer, useSource } from '@store/playerStore';
 
 const { useBreakpoint } = Grid;
 export const TracksPage = () => {
@@ -22,16 +23,16 @@ export const TracksPage = () => {
   const [modalType, setModalType] = useState<TracksModalState>(null);
   const [trackId, setTrackId] = useState<number | null>(null);
   const { data: playlists, error: playlistError } = usePlaylists();
-  const {
-    data: tracks,
-    error: tracksError,
-    refetch,
-    isLoading,
-  } = useQuery<Song[], AppError>({
-    queryKey: [TRACKS_QUERY_KEYS.TRACKS_LIST],
-    queryFn: () => tracksAPI.getTracksList(),
-    retry: false,
-  });
+  const { data: tracks, error: tracksError, refetch, isLoading } = useTracks();
+  const source = useSource();
+
+  const queue = useResolvedQueue(source);
+
+  useEffect(() => {
+    if (isIterableArray(queue)) {
+      initPlayer(queue);
+    }
+  }, [queue]);
 
   const tracksErrorMessage = tracksError ? parseApiError(tracksError, t) : null;
 
@@ -94,7 +95,11 @@ export const TracksPage = () => {
   return (
     <>
       {md && <h1 className="title">{t('tracks-title')}</h1>}
-      {xl ? <TracksTable tableData={tracks ?? []} getMenuItems={getMenuItems} /> : <TracksList getMenuItems={getMenuItems} listData={tracks ?? []} />}
+      {xl ? (
+        <TracksTable tableData={tracks ?? []} getMenuItems={getMenuItems} source={{ type: 'all' }} />
+      ) : (
+        <TracksList getMenuItems={getMenuItems} listData={tracks ?? []} />
+      )}
       {modalType === 'add' && !isNullOrUndefined(trackId) && !isNullOrUndefined(playlists) && (
         <AddTrackModal
           getPlaylistsByTrack={getPlaylistsByTrack}

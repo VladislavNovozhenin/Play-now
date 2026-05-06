@@ -1,16 +1,16 @@
-import { PLAYLISTS_QUERY_KEYS, playlistsAPI } from '@shared/api/playlists-api';
 import { NO_DATA } from '@shared/common/constants';
-import { isNullOrUndefined } from '@shared/common/helpers';
+import { isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
 import { ErrorData } from '@shared/components/error-data/ErrorData';
 import { Loader } from '@shared/components/loader/Loader';
 import { RemoveTrackModalWithoutPlaylists } from '@shared/components/remove-track-modal-without-playlists/RemoveTrackModalWithoutPlaylists';
 import { TracksList } from '@shared/components/tracks-list/TracksList';
 import { TracksTable } from '@shared/components/tracks-table/TracksTable';
 import { parseApiError } from '@shared/helpers/helpers';
-import type { AppError, Playlist } from '@shared/ts/types';
-import { useQuery } from '@tanstack/react-query';
+import { usePlaylist } from '@shared/hooks/usePlaylist';
+import { useResolvedQueue } from '@shared/hooks/useResolvedQueue';
+import { initPlayer, useSource } from '@store/playerStore';
 import { Grid, type MenuProps } from 'antd';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
@@ -21,16 +21,16 @@ export const PlaylistPage = () => {
   const { md, xl } = useBreakpoint();
   const [trackId, setTrackId] = useState<number | null>(null);
   const [openModal, setOpenModal] = useState(false);
-  const {
-    data: playlist,
-    error: playlistError,
-    refetch,
-    isLoading,
-  } = useQuery<Playlist, AppError>({
-    queryKey: [PLAYLISTS_QUERY_KEYS.PLAYLIST, id],
-    queryFn: () => playlistsAPI.getPlaylist(id!),
-    retry: false,
-  });
+  const { data: playlist, error: playlistError, refetch, isLoading } = usePlaylist({ id });
+  const source = useSource();
+
+  const queue = useResolvedQueue(source);
+
+  useEffect(() => {
+    if (isIterableArray(queue)) {
+      initPlayer(queue);
+    }
+  }, [queue]);
 
   const playlistErrorMessage = playlistError ? parseApiError(playlistError, t) : null;
 
@@ -68,7 +68,7 @@ export const PlaylistPage = () => {
     <>
       {md && <h1 className="title">{playlist?.name ?? NO_DATA}</h1>}
       {xl ? (
-        <TracksTable tableData={playlist?.songs ?? []} getMenuItems={getMenuItems} />
+        <TracksTable tableData={playlist?.songs ?? []} getMenuItems={getMenuItems} source={{ type: 'playlist', id }} />
       ) : (
         <TracksList listData={playlist?.songs ?? []} getMenuItems={getMenuItems} />
       )}

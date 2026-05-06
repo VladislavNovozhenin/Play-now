@@ -1,40 +1,38 @@
-import { useQuery } from '@tanstack/react-query';
 import { Grid, type MenuProps } from 'antd';
 import { TracksList } from '@shared/components/tracks-list/TracksList';
-import type { AppError, LikesResponse, TracksModalState, Song } from '@shared/ts/types';
+import type { TracksModalState } from '@shared/ts/types';
 import { TracksTable } from '@shared/components/tracks-table/TracksTable';
-import { useGetUser } from '@store/useAppStore';
 import { useTranslation } from 'react-i18next';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { parseApiError } from '@shared/helpers/helpers';
-import { findTrackInPlaylists, isNullOrUndefined } from '@shared/common/helpers';
+import { findTrackInPlaylists, isIterableArray, isNullOrUndefined } from '@shared/common/helpers';
 import { AddTrackModal } from '@shared/components/add-track-modal/AddTrackModal';
 import { CreatePlaylistModal } from '@shared/components/create-playlist-modal/CreatePlaylistModal';
 import { RemoveTrackModalWithPlaylists } from '@shared/components/remove-track-modal-with-playlists/RemoveTrackModalWithPlaylists';
-import { USERS_QUERY_KEYS, usersAPI } from '@shared/api/users-api';
 import { usePlaylists } from '@shared/hooks/usePlaylists';
 import { ErrorData } from '@shared/components/error-data/ErrorData';
 import { Loader } from '@shared/components/loader/Loader';
+import { useLikesTracks } from '@shared/hooks/useLikesTracks';
+import { initPlayer, useSource } from '@store/playerStore';
+import { useResolvedQueue } from '@shared/hooks/useResolvedQueue';
 
 const { useBreakpoint } = Grid;
 export const LikesTracksPage = () => {
   const { md, xl } = useBreakpoint();
-  const user = useGetUser();
   const { t } = useTranslation('common');
   const [modalType, setModalType] = useState<TracksModalState>(null);
   const [trackId, setTrackId] = useState<number | null>(null);
   const { data: playlists, error: playlistError } = usePlaylists();
-  const {
-    data: likes,
-    error: likesError,
-    refetch,
-    isLoading,
-  } = useQuery<LikesResponse, AppError, Song[]>({
-    queryKey: [USERS_QUERY_KEYS.LIKES_LIST],
-    queryFn: () => usersAPI.getLikesList(user!.username),
-    select: (data) => data.songLikes,
-    retry: false,
-  });
+  const { data: likes, error: likesError, refetch, isLoading } = useLikesTracks();
+  const source = useSource();
+
+  const queue = useResolvedQueue(source);
+
+   useEffect(() => {
+     if (isIterableArray(queue)) {
+       initPlayer(queue);
+     }
+   }, [queue]);
 
   const likesErrorMessage = likesError ? parseApiError(likesError, t) : null;
 
@@ -99,7 +97,7 @@ export const LikesTracksPage = () => {
     <>
       {md && <h1 className="title">{t('like-tracks-title')}</h1>}
       {xl ? (
-        <TracksTable getMenuItems={getMenuItems} tableData={likes ?? []} isLikesPage />
+        <TracksTable getMenuItems={getMenuItems} tableData={likes ?? []} isLikesPage source={{ type: 'likes' }} />
       ) : (
         <TracksList getMenuItems={getMenuItems} listData={likes ?? []} />
       )}

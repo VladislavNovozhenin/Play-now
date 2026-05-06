@@ -7,6 +7,14 @@
   padding: 15px 30px;
   width: 100%;
   max-width: 1180px;
+  &__info {
+    @include flex(start, center, 8);
+    img {
+      width: 70px;
+      height: 70px;
+      border-radius: 8px;
+    }
+  }
   &__center {
     @include flex(center, center, 0, column);
   }

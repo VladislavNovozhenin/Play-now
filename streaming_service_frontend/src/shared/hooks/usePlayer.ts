@@ -7,7 +7,6 @@ import {
   nextTrack,
   setDuration,
   setCurrentTime,
-  useRepeatMode,
   playerStore,
   useDuration,
   useCurrentTime,
@@ -59,6 +58,10 @@ export const usePlayer = ({ isPullingRef }: UsePlayerProps) => {
       audioPause();
     }
   }, [isPlaying, currentTrack]);
+
+  useEffect(() => {
+    audio.currentTime = currentTime;
+  }, []);
 
   useEffect(() => {
     const onTimeUpdate = () => {

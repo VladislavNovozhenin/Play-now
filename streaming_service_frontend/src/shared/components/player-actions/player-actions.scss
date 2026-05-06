@@ -2,6 +2,18 @@
 
 .player-actions {
   @include flex(center, center, 20px);
+
+  &__shuffle {
+    path {
+      @include transition(fill);
+    }
+    &--active {
+      path {
+        fill: var(--color-promo);
+      }
+    }
+  }
+
   &__play {
     @include flex(center, center);
     padding-left: 2px;
@@ -13,6 +25,7 @@
       fill: var(--color-white);
     }
   }
+
   &__repeat {
     position: relative;
     path {
@@ -27,16 +40,16 @@
       color: var(--color-promo);
       font-size: 10px;
     }
-  }
-  .one,
-  .all {
-    path {
-      fill: var(--color-promo);
+    &-one,
+    &-all {
+      path {
+        fill: var(--color-promo);
+      }
     }
-  }
-  .one {
-    span {
-      opacity: 1;
+    &-one {
+      span {
+        opacity: 1;
+      }
     }
   }
 }

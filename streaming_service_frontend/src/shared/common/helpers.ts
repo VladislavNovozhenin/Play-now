@@ -1,10 +1,10 @@
 import dayjs from '@shared/lib/dayjs';
 import { DEFAULT_DATE_FORMAT, SERVER_DATE_FORMAT } from './constants';
 import type { Playlist, User } from '@shared/ts/types';
-import { useMemo } from 'react';
+
 export const isNullOrUndefined = (value: unknown): value is null | undefined => value == null;
 
-export const isIterableArray = (value: any): boolean => Array.isArray(value) && !!value.length;
+export const isIterableArray = <T>(value: T[] | null | undefined): value is T[] => Array.isArray(value) && !!value.length;
 export const formatDate = (date: string) => {
   const parsed = dayjs(date, SERVER_DATE_FORMAT);
   if (dayjs().diff(parsed, 'day') < 7) {
@@ -24,25 +24,6 @@ export const formatMilliSecondsToMS = (ms: number) => {
 
   return `${minutes}:${paddedSeconds}`;
 };
-
-// export const findTrackInPlaylists = (playlists: Playlist[], trackId: number) => {
-
-//   const playlistsWithTrack: Playlist[] = [];
-//   const playlistsWithoutTrack: Playlist[] = [];
-//   for (let playlist of playlists) {
-//     const isFind = playlist.songs.some((track) => track.id === trackId);
-//     if (isFind) {
-//       playlistsWithTrack.push(playlist);
-//     } else {
-//       playlistsWithoutTrack.push(playlist);
-//     }
-//   }
-//   return {
-//     playlistsWithTrack,
-//     playlistsWithoutTrack,
-//     findLength: playlistsWithTrack.length,
-//   };
-// };
 
 export const findTrackInPlaylists = (playlists: Playlist[] | undefined) => {
   const map = new Map<number, Set<number>>();

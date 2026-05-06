@@ -13,7 +13,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Empty, Spin, type MenuProps } from 'antd';
 import { useScrollToTopButton } from '@shared/hooks/useScrollToTopButton';
 import { PauseOutlined, UpOutlined } from '@ant-design/icons';
-import type { Song, Album, User } from '@shared/ts/types';
+import type { Song, Album, User, PageQueue } from '@shared/ts/types';
 
 import { LikesButton } from '../likes-button/LikesButton';
 import { useAutoLoadOnResize } from '@shared/hooks/useAutoLoadOnResize';
@@ -25,8 +25,9 @@ type TracksTableProps = {
   tableData: Song[];
   getMenuItems: (trackId: number) => MenuProps['items'];
   isLikesPage?: boolean;
+  source: {type: PageQueue, id?: string}
 };
-export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTableProps) => {
+export const TracksTable = ({ tableData, getMenuItems, isLikesPage, source}: TracksTableProps) => {
   const { t } = useTranslation('common');
 
   const [visibleData, setVisibleData] = useState<Song[]>([]);
@@ -78,7 +79,7 @@ export const TracksTable = ({ tableData, getMenuItems, isLikesPage }: TracksTabl
     if (currentTrack?.id === track.id) {
       togglePlay();
     } else {
-      playNewTrack(track, tableData)
+      playNewTrack(track.id, tableData, source)
     }
   };
 
